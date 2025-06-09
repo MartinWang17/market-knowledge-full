@@ -61,7 +61,12 @@ export default function RootLayout({
             </ul>{" "}
           </header>{" "}
         </div>
-        {children}
+        <div
+          className="d-flex flex-column justify-content-center align-items-center"
+          style={{ minHeight: "calc(100vh - 72px)"}}
+        >
+          {children}
+        </div>
       </body>
     </html>
   );
