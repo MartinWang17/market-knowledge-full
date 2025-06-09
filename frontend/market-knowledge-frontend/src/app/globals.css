@@ -40,3 +40,16 @@ a {
     color-scheme: dark;
   }
 }
+
+.btn-brand {
+  background-color: #1E555C !important;
+  border-color: #1E555C !important;
+  color: #fff !important;
+}
+
+.btn-brand:hover,
+.btn-brand:focus {
+  background-color: #1E555C !important;
+  border-color: #fff !important;
+  color: #fff !important;
+}
