@@ -1,3 +1,5 @@
+from fastapi import FastAPI
+from pydantic import BaseModel, Field
 import os
 from dotenv import load_dotenv
 from supabase import create_client, Client
@@ -10,6 +12,32 @@ supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 
 supabase: Client = create_client(supabase_url, supabase_key)
 scraper = RedditScraper()
+
+app = FastAPI()
+
+class ScrapeRequest(BaseModel):
+    subreddit: str = Field(..., description="The name of the subreddit to scrape (without 'r/' prefix).")
+    commentCount: int = Field(10, ge=1, le=100, description="The number of top posts to fetch (default is 10, max is 100).")
+
+@app.post("/scrape")
+def scrape_comments(req: ScrapeRequest):
+    """
+    Endpoint to scrape top posts from a specified subreddit.
+    Accepts a JSON body with 'subreddit' and 'comments' parameters.
+    Returns a list of top posts in JSON format.
+    """
+    top_posts = scraper.fetch_top_posts(req.subreddit, req.commentCount)
+    for post in top_posts:
+        save_post_to_supabase(
+            title=post["title"],
+            body=post["body"],
+            link=post["link"],
+            upvotes=post["upvotes"],
+        )
+    
+    if not top_posts:
+        return {"message": f"No posts found for subreddit '{req.subreddit}'."}
+    return {"top_posts": top_posts}
 
 def save_post_to_supabase(title, body, link, upvotes):
     """Saves a Reddit post to Supabase. Returns nothing."""
