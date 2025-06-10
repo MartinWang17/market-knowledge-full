@@ -21,7 +21,7 @@ def save_post_to_supabase(title, body, link, upvotes):
     }
     supabase.table("reddit_posts").insert(data).execute()
 
-top_posts = scraper.fetch_top_posts("cats", limit=100)
+top_posts = scraper.fetch_top_posts("cats", limit=2)
 for post in top_posts:
     save_post_to_supabase(
         title=post["title"],
