@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import os
 from dotenv import load_dotenv
@@ -14,6 +15,13 @@ supabase: Client = create_client(supabase_url, supabase_key)
 scraper = RedditScraper()
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Allows all origins, adjust as needed
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods, adjust as needed
+    allow_headers=["*"],  # Allows all headers, adjust as needed
+)
 
 class ScrapeRequest(BaseModel):
     subreddit: str = Field(..., description="The name of the subreddit to scrape (without 'r/' prefix).")
@@ -49,11 +57,12 @@ def save_post_to_supabase(title, body, link, upvotes):
     }
     supabase.table("reddit_posts").insert(data).execute()
 
-top_posts = scraper.fetch_top_posts("cats", limit=2)
-for post in top_posts:
-    save_post_to_supabase(
-        title=post["title"],
-        body=post["body"],
-        link=post["link"],
-        upvotes=post["upvotes"],
-        )
+if __name__ == "__main__":
+    top_posts = scraper.fetch_top_posts("cats", limit=2)
+    for post in top_posts:
+        save_post_to_supabase(
+            title=post["title"],
+            body=post["body"],
+            link=post["link"],
+            upvotes=post["upvotes"],
+            )
