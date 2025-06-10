@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,9 +35,9 @@ export default function RootLayout({
             <ul className="nav nav-pills">
               {" "}
               <li className="nav-item">
-                <a href="#" className="nav-link active" aria-current="page">
+                <Link href="/" className="nav-link active">
                   Home
-                </a>
+                </Link>
               </li>{" "}
               <li className="nav-item">
                 <a href="#" className="nav-link">
@@ -49,9 +50,9 @@ export default function RootLayout({
                 </a>
               </li>{" "}
               <li className="nav-item">
-                <a href="#" className="nav-link">
-                  FAQs
-                </a>
+                <Link href="/comments" className="nav-link">
+                  My Comments
+                </Link>
               </li>{" "}
               <li className="nav-item">
                 <a href="#" className="nav-link">
