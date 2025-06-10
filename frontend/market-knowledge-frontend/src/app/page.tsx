@@ -4,15 +4,36 @@ import Image from "next/image";
 import styles from "./page.module.css";
 
 export default function Home() {
+
   const [subreddit, setSubreddit] = useState("");
   const [commentCount, setCommentCount] = useState(10);
-  const handleScrape = () => {
+  const handleScrape = async () => {
     console.log("Scraping comments from subreddit:", subreddit);
     console.log("Number of comments to scrape:", commentCount);
-    //Here I will add the API call in a bit once I ensure this part works
+
+    try {
+      const response = await fetch("http://localhost:8000/scrape", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          subreddit: subreddit,
+          commentCount: commentCount,
+        }),
+      });
+
+      //parse the JSON response
+      const data = await response.json()
+      console.log("Scrape response:", data);
+    } catch (error) {
+      console.error("Error scraping comments:", error);
+    }
+    // Reset the input fields after scraping
     setSubreddit("");
     setCommentCount(10);
   }
+  
   return (
     <div className="d-flex flex-column justify-content-center align-items-center"
          style={{ width: "100vw"}}>
