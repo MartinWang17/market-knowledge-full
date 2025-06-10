@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
-import Link from "next/link";
+import Navbar from "./navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,41 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {/* Navbar */}
-        <div className="container">
-          {" "}
-          <header className="d-flex justify-content-center py-3">
-            {" "}
-            <ul className="nav nav-pills">
-              {" "}
-              <li className="nav-item">
-                <Link href="/" className="nav-link active">
-                  Home
-                </Link>
-              </li>{" "}
-              <li className="nav-item">
-                <a href="#" className="nav-link">
-                  How-To-Use
-                </a>
-              </li>{" "}
-              <li className="nav-item">
-                <a href="#" className="nav-link">
-                  Pricing
-                </a>
-              </li>{" "}
-              <li className="nav-item">
-                <Link href="/comments" className="nav-link">
-                  My Comments
-                </Link>
-              </li>{" "}
-              <li className="nav-item">
-                <a href="#" className="nav-link">
-                  About
-                </a>
-              </li>{" "}
-            </ul>{" "}
-          </header>{" "}
-        </div>
+        <Navbar />
         <div
           className="d-flex flex-column justify-content-center align-items-center"
           style={{ minHeight: "calc(100vh - 72px)"}}
