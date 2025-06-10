@@ -40,7 +40,7 @@ export default function RootLayout({
               </li>{" "}
               <li className="nav-item">
                 <a href="#" className="nav-link">
-                  Features
+                  How-To-Use
                 </a>
               </li>{" "}
               <li className="nav-item">
