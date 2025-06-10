@@ -1,7 +1,18 @@
+"use client";
+import { useState } from 'react';
 import Image from "next/image";
 import styles from "./page.module.css";
 
 export default function Home() {
+  const [subreddit, setSubreddit] = useState("");
+  const [commentCount, setCommentCount] = useState(10);
+  const handleScrape = () => {
+    console.log("Scraping comments from subreddit:", subreddit);
+    console.log("Number of comments to scrape:", commentCount);
+    //Here I will add the API call in a bit once I ensure this part works
+    setSubreddit("");
+    setCommentCount(10);
+  }
   return (
     <div className="d-flex flex-column justify-content-center align-items-center"
          style={{ width: "100vw"}}>
@@ -28,6 +39,8 @@ export default function Home() {
             type="text"
             className="form-control"
             id="subreddit"
+            value={subreddit}
+            onChange={(e) => setSubreddit(e.target.value)}
             placeholder="e.g. cats (exclude r/ prefix)"
           />
         </div>
@@ -39,11 +52,16 @@ export default function Home() {
             type="number"
             className="form-control"
             id="commentCount"
+            value={commentCount}
+            onChange={(e) => setCommentCount(Number(e.target.value))}
             placeholder="e.g., 100"
             min={1}
           />
         </div>
-        <button type="button" className="btn btn-brand w-100">
+        <button 
+        type="button" 
+        className="btn btn-brand w-100"
+        onClick={handleScrape}>
           Scrape Comments
         </button>
       </div>
