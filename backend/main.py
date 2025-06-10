@@ -17,10 +17,10 @@ scraper = RedditScraper()
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Allows all origins, adjust as needed
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods, adjust as needed
-    allow_headers=["*"],  # Allows all headers, adjust as needed
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 class ScrapeRequest(BaseModel):
@@ -47,6 +47,15 @@ def scrape_comments(req: ScrapeRequest):
         return {"message": f"No posts found for subreddit '{req.subreddit}'."}
     return {"top_posts": top_posts}
 
+@app.get("/comments")
+def get_comments():
+    """
+    Returns all scraped Reddit comments/posts from the Supabase database.
+    """
+    result = supabase.table("reddit_posts").select("*").execute()
+    comments = result.data if hasattr(result, "data") else []
+    return {"comments": comments}
+
 def save_post_to_supabase(title, body, link, upvotes):
     """Saves a Reddit post to Supabase. Returns nothing."""
     data = {
@@ -57,6 +66,7 @@ def save_post_to_supabase(title, body, link, upvotes):
     }
     supabase.table("reddit_posts").insert(data).execute()
 
+# For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
 if __name__ == "__main__":
     top_posts = scraper.fetch_top_posts("cats", limit=2)
     for post in top_posts:
