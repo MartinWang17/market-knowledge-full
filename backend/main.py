@@ -41,6 +41,7 @@ def scrape_comments(req: ScrapeRequest):
             body=post["body"],
             link=post["link"],
             upvotes=post["upvotes"],
+            subreddit=req.subreddit
         )
     
     if not top_posts:
@@ -56,13 +57,14 @@ def get_comments():
     comments = result.data if hasattr(result, "data") else []
     return {"comments": comments}
 
-def save_post_to_supabase(title, body, link, upvotes):
+def save_post_to_supabase(title, body, link, upvotes, subreddit):
     """Saves a Reddit post to Supabase. Returns nothing."""
     data = {
         "title": title,
         "body": body,
         "link": link,
         "upvotes": upvotes,
+        "subreddit": subreddit
     }
     supabase.table("reddit_posts").insert(data).execute()
 
@@ -75,4 +77,5 @@ if __name__ == "__main__":
             body=post["body"],
             link=post["link"],
             upvotes=post["upvotes"],
+            subreddit=post["subreddit"]
             )
