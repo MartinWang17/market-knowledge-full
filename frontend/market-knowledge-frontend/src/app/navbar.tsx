@@ -18,9 +18,9 @@ export default function Navbar() {
                 </Link>
             </li>{" "}
             <li className="nav-item">
-                <a href="#" className={`nav-link ${pathname === "/how-to-use" ? "active" : ""}`}>
+                <Link href="/how-to-use" className={`nav-link ${pathname === "/how-to-use" ? "active" : ""}`}>
                 How-To-Use
-                </a>
+                </Link>
             </li>{" "}
             <li className="nav-item">
                 <Link href="/pricing" className={`nav-link ${pathname === "/pricing" ? "active" : ""}`}>
