@@ -25,8 +25,11 @@ export default function Comments() {
             })
             .catch(error => console.error("Error fetching comments:", error));
     }, [])
-    
+
     return (
+        comments.length === 0 ? (
+            <div className="text-center">No comments...yet. <br/>Start a scrape and start knowing your market!</div>
+        ) : (
         <div className="container py-4">
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 {comments.map((comment) => (
@@ -43,7 +46,7 @@ export default function Comments() {
                             <FaExternalLinkAlt style={{ verticalAlign: "middle", marginRight: 8}} />
                             {comment.title}
                             </a>
-                            <div className="card-text mb-4" style={{ color: "#b0d3db" }}>
+                            <div className="card-text mb-4" style={{ color: "#fff" }}>
                             {comment.body}
                             </div>
                             {comment.upvotes && (
@@ -58,5 +61,5 @@ export default function Comments() {
                 ))}
             </div>
         </div>
-    );
+    ));
 }

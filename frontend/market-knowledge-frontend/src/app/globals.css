@@ -53,3 +53,13 @@ a {
   border-color: #fff !important;
   color: #fff !important;
 }
+
+.nav-link.active {
+  background-color: #1E555C !important;
+}
+
+.nav-link{
+  color: #fff !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+}
