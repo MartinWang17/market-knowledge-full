@@ -6,7 +6,7 @@ export default function Navbar() {
     const pathname = usePathname();
 
     return (
-        <div className="container">
+        <div className="container-fluid">
         <header className="d-flex justify-content-center py-3">
             <ul className="nav nav-pills">
             <li className="nav-item">
