@@ -21,9 +21,10 @@ class RedditScraper:
             user_agent=self.user_agent,
             )
         
-    def fetch_top_posts(self, subreddit_name, limit=10):
+    def fetch_posts(self, subreddit_name, limit=10, method="top"):
         """
-        Takes a subreddit name and an optional limit (default is 10). NOTE: subreddit_name should not include the 'r/' prefix,
+        Takes a subreddit name, an optional limit (default is 10), and optional method (default is "top").
+        NOTE: subreddit_name should not include the 'r/' prefix,
         it should be just the name of the subreddit.
         
         Fetches top posts from a given subreddit and returns a json containing data of the posts including:
@@ -39,7 +40,9 @@ class RedditScraper:
             print(f"An error occurred while accessing the subreddit: {e}")
             return []
         else: 
-            subreddit = self.reddit.subreddit(subreddit_name).top(limit=limit)
+            subreddit_object = self.reddit.subreddit(subreddit_name)
+            method_function = getattr(subreddit_object, method)
+            subreddit = method_function(limit=limit)
             posts = list(subreddit)
             # Sort posts by score in descending order using anonymous func by getting hold of each post's score (item)
             posts_sorted = sorted(posts, key=lambda item: item.score, reverse=True)
@@ -60,6 +63,7 @@ class RedditScraper:
                 print("Link:", link)
                 print("Upvotes:", upvotes)
                 print("------------END POST------------")
+
                 post_data = {
                     "title": cleaned_title,
                     "body": cleaned_text,
@@ -70,7 +74,4 @@ class RedditScraper:
                     post_data
                 )
             return posts_data
-            
-
-
-
+        
