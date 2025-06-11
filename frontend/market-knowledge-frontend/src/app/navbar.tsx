@@ -7,38 +7,35 @@ export default function Navbar() {
 
     return (
         <div className="container">
-        {" "}
         <header className="d-flex justify-content-center py-3">
-            {" "}
             <ul className="nav nav-pills">
-            {" "}
             <li className="nav-item">
                 <Link href="/" className={`nav-link ${pathname === "/" ? "active" : ""}`}>
                 Home
                 </Link>
-            </li>{" "}
+            </li>
             <li className="nav-item">
                 <Link href="/how-to-use" className={`nav-link ${pathname === "/how-to-use" ? "active" : ""}`}>
                 How-To-Use
                 </Link>
-            </li>{" "}
+            </li>
             <li className="nav-item">
                 <Link href="/pricing" className={`nav-link ${pathname === "/pricing" ? "active" : ""}`}>
                 Pricing
                 </Link>
-            </li>{" "}
+            </li>
             <li className="nav-item">
                 <Link href="/comments" className={`nav-link ${pathname === "/comments" ? "active" : ""}`}>
                 My Comments
                 </Link>
-            </li>{" "}
+            </li>
             <li className="nav-item">
                 <Link href="/about" className={`nav-link ${pathname === "/about" ? "active" : ""}`}>
                 About
                 </Link>
-            </li>{" "}
-            </ul>{" "}
-        </header>{" "}
+            </li>
+            </ul>
+        </header>
         </div>
     );
 }
