@@ -71,7 +71,7 @@ def save_post_to_supabase(title, body, link, upvotes, subreddit):
 
 # For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
 if __name__ == "__main__":
-    hot_posts = scraper.fetch_posts("Anxiety", limit=5, method="top")
+    hot_posts = scraper.fetch_posts("Anxiety", limit=50, method="top", query="Night")
     for post in hot_posts:
         save_post_to_supabase(
             title=post["title"],
