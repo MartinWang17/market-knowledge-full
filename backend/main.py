@@ -34,7 +34,7 @@ def scrape_comments(req: ScrapeRequest):
     Accepts a JSON body with 'subreddit' and 'comments' parameters.
     Returns a list of top posts in JSON format.
     """
-    top_posts = scraper.fetch_top_posts(req.subreddit, req.commentCount)
+    top_posts = scraper.fetch_posts(req.subreddit, req.commentCount)
     for post in top_posts:
         save_post_to_supabase(
             title=post["title"],
