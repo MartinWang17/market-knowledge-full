@@ -17,7 +17,7 @@ scraper = RedditScraper()
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,6 +27,9 @@ class ScrapeRequest(BaseModel):
     subreddit: str = Field(..., description="The name of the subreddit to scrape (without 'r/' prefix).")
     commentCount: int = Field(10, ge=1, le=100, description="The number of top posts to fetch (default is 10, max is 100).")
     method: str = Field("top", description="The method to fetch posts (e.g., 'top', 'hot', 'new'). Default is 'top'.")
+    keyword: str = Field(None, description="Optional search query to filter posts. If provided, 'method' will be ignored.")
+    sort: str = Field("relevance", description="Sort order for search results. Default is 'relevance'.")
+    time_filter: str = Field("all", description="Time filter for search results. Default is 'all'.")
 
 @app.post("/scrape")
 def scrape_comments(req: ScrapeRequest):
@@ -35,19 +38,30 @@ def scrape_comments(req: ScrapeRequest):
     Accepts a JSON body with 'subreddit' and 'comments' parameters.
     Returns a list of top posts in JSON format.
     """
-    top_posts = scraper.fetch_posts(req.subreddit, req.commentCount, req.method)
-    for post in top_posts:
+    # If searching by keyword
+    if req.keyword:
+        all_posts = scraper.fetch_posts(
+            req.subreddit, 
+            limit=req.commentCount, 
+            keyword=req.keyword, 
+            sort=req.sort, 
+            timeFilter=req.time_filter
+        )
+    else:
+        all_posts = scraper.fetch_posts(req.subreddit, req.commentCount, req.method)
+    for post in all_posts:
         save_post_to_supabase(
             title=post["title"],
             body=post["body"],
             link=post["link"],
             upvotes=post["upvotes"],
-            subreddit=req.subreddit
+            subreddit=req.subreddit,
+            keyword=req.keyword
         )
     
-    if not top_posts:
+    if not all_posts:
         return {"message": f"No posts found for subreddit '{req.subreddit}'."}
-    return {"top_posts": top_posts}
+    return {"all_posts": all_posts}
 
 @app.get("/comments")
 def get_comments():
@@ -58,20 +72,21 @@ def get_comments():
     comments = result.data if hasattr(result, "data") else []
     return {"comments": comments}
 
-def save_post_to_supabase(title, body, link, upvotes, subreddit):
+def save_post_to_supabase(title, body, link, upvotes, subreddit, keyword=None):
     """Saves a Reddit post to Supabase. Returns nothing."""
     data = {
         "title": title,
         "body": body,
         "link": link,
         "upvotes": upvotes,
-        "subreddit": subreddit
+        "subreddit": subreddit,
+        "keyword": keyword,
     }
     supabase.table("reddit_posts").insert(data).execute()
 
 # For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
 if __name__ == "__main__":
-    hot_posts = scraper.fetch_posts("Anxiety", limit=50, method="top", query="Night")
+    hot_posts = scraper.fetch_posts("Anxiety", limit=10, method="top", query="Night")
     for post in hot_posts:
         save_post_to_supabase(
             title=post["title"],

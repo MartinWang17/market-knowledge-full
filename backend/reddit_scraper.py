@@ -51,8 +51,6 @@ class RedditScraper:
             posts = list(subreddit)
             # Sort posts by score in descending order using anonymous func by getting hold of each post's score (item). Only sort if query is not provided.
             posts_sorted = sorted(posts, key=lambda item: item.score, reverse=True) if not query else posts
-            print(f"posts sorted: {posts_sorted}")
-            print("posts", posts)
 
             posts_data = [] 
             for submission in posts_sorted:
