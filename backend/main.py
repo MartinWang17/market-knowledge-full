@@ -26,6 +26,7 @@ app.add_middleware(
 class ScrapeRequest(BaseModel):
     subreddit: str = Field(..., description="The name of the subreddit to scrape (without 'r/' prefix).")
     commentCount: int = Field(10, ge=1, le=100, description="The number of top posts to fetch (default is 10, max is 100).")
+    method: str = Field("top", description="The method to fetch posts (e.g., 'top', 'hot', 'new'). Default is 'top'.")
 
 @app.post("/scrape")
 def scrape_comments(req: ScrapeRequest):
@@ -34,7 +35,7 @@ def scrape_comments(req: ScrapeRequest):
     Accepts a JSON body with 'subreddit' and 'comments' parameters.
     Returns a list of top posts in JSON format.
     """
-    top_posts = scraper.fetch_posts(req.subreddit, req.commentCount)
+    top_posts = scraper.fetch_posts(req.subreddit, req.commentCount, req.method)
     for post in top_posts:
         save_post_to_supabase(
             title=post["title"],
