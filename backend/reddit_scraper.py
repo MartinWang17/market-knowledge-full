@@ -21,7 +21,7 @@ class RedditScraper:
             user_agent=self.user_agent,
             )
         
-    def fetch_posts(self, subreddit_name, limit=10, method="top"):
+    def fetch_posts(self, subreddit_name, limit=10, method="top", keyword=None, sort="relevance", time_filter="all"):
         """
         Takes a subreddit name, an optional limit (default is 10), and optional method (default is "top").
         NOTE: subreddit_name should not include the 'r/' prefix,
@@ -41,8 +41,13 @@ class RedditScraper:
             return []
         else: 
             subreddit_object = self.reddit.subreddit(subreddit_name)
-            method_function = getattr(subreddit_object, method)
-            subreddit = method_function(limit=limit)
+            # Check if searching by keyword
+            if keyword:
+                # Use the search method with the specified sort and time filter
+                subreddit = subreddit_object.search(keyword=keyword, sort=sort, time_filter=time_filter)
+            else:
+                method_function = getattr(subreddit_object, method)
+                subreddit = method_function(limit=limit)
             posts = list(subreddit)
             # Sort posts by score in descending order using anonymous func by getting hold of each post's score (item)
             posts_sorted = sorted(posts, key=lambda item: item.score, reverse=True)
