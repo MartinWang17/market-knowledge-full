@@ -7,9 +7,11 @@ export default function Home() {
 
   const [subreddit, setSubreddit] = useState("");
   const [commentCount, setCommentCount] = useState(10);
+  const [method, setMethod] = useState("top");
   const handleScrape = async () => {
     console.log("Scraping comments from subreddit:", subreddit);
     console.log("Number of comments to scrape:", commentCount);
+    console.log("Scrape method:", method);
 
     try {
       const response = await fetch("http://localhost:8000/scrape", {
@@ -20,6 +22,7 @@ export default function Home() {
         body: JSON.stringify({
           subreddit: subreddit,
           commentCount: commentCount,
+          method: method,
         }),
       });
 
@@ -37,7 +40,7 @@ export default function Home() {
   return (
     <div className="d-flex flex-column justify-content-center align-items-center"
          style={{ width: "100vw"}}>
-      <div className="mb-4 d-flex justify-content-center">
+      <div className="mb-1 d-flex justify-content-center">
         <Image
           className={styles.logo}
           src="/market-knowledge-logo.svg"
@@ -78,6 +81,23 @@ export default function Home() {
             placeholder="e.g., 100"
             min={1}
           />
+        </div>
+        <div className="mb-3 w-100">
+          <label htmlFor="method" className="form-label">
+            Type of posts to scrape
+          </label>
+          <select
+            className="form-select"
+            id="method"
+            value={method}
+            onChange={(e) => setMethod(e.target.value)}
+          >
+            <option value="top">Top Posts</option>
+            <option value="new">New Posts</option>
+            <option value="hot">Hot Posts</option>
+            <option value="rising">Rising Posts</option>
+            <option value="controversial">Controversial Posts</option>
+          </select>
         </div>
         <button 
         type="button" 
