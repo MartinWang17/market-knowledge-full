@@ -8,6 +8,9 @@ export default function Home() {
   const [subreddit, setSubreddit] = useState("");
   const [commentCount, setCommentCount] = useState(10);
   const [method, setMethod] = useState("top");
+  const [keyword, setKeyword] = useState("");
+  const [sortBy, setSortBy] = useState("relevance");
+  const [timeFilter, setTimeFilter] = useState("all");
   const handleScrape = async () => {
     console.log("Scraping comments from subreddit:", subreddit);
     console.log("Number of comments to scrape:", commentCount);
@@ -23,6 +26,9 @@ export default function Home() {
           subreddit: subreddit,
           commentCount: commentCount,
           method: method,
+          keyword: keyword,
+          sort: sortBy,
+          timeFilter: timeFilter,
         }),
       });
 
