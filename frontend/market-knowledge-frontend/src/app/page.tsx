@@ -69,7 +69,7 @@ export default function Home() {
         <button
           type="button"
           className="btn btn-outline-secondary mb-3"
-          onClick={handleScrape}
+          onClick={handleKeywordSearch}
           >
           <span className="me-2">🔙</span> Default Search
           </button>
