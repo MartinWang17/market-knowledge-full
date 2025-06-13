@@ -11,10 +11,12 @@ export default function Home() {
   const [keyword, setKeyword] = useState("");
   const [sortBy, setSortBy] = useState("relevance");
   const [timeFilter, setTimeFilter] = useState("all");
+
   const handleScrape = async () => {
     console.log("Scraping comments from subreddit:", subreddit);
     console.log("Number of comments to scrape:", commentCount);
     console.log("Scrape method:", method);
+    console.log("Keyword to search:", keyword);
 
     try {
       const response = await fetch("http://localhost:8000/scrape", {
@@ -28,7 +30,7 @@ export default function Home() {
           method: method,
           keyword: keyword,
           sort: sortBy,
-          timeFilter: timeFilter,
+          time_filter: timeFilter,
         }),
       });
 
@@ -42,76 +44,199 @@ export default function Home() {
     setSubreddit("");
     setCommentCount(10);
   }
-  
-  return (
-    <div className="d-flex flex-column justify-content-center align-items-center"
-         style={{ width: "100vw"}}>
-      <div className="mb-1 d-flex justify-content-center">
-        <Image
-          className={styles.logo}
-          src="/market-knowledge-logo.svg"
-          alt="market knowledge logo"
-          width={180}
-          height={180}
-          priority
-        />
-      </div>
 
-      <div
-        className="w-100 d-flex flex-column align-items-center"
-        style={{ maxWidth: "400px", width: "100%" }}
-      >
-        <div className="mb-3 w-100">
+  const [keywordSearch, setKeywordSearch] = useState(false);
+  // Method to toggle keyword search
+  const handleKeywordSearch = () => {
+    setKeywordSearch(!keywordSearch);
+  }
+
+  if (keywordSearch) {
+    return (
+      <div className="d-flex flex-column justify-content-center align-items-center"
+        style={{ width: "100vw" }}>
+          <div className="mb-1 d-flex justify-content-center">
+            <Image
+              className={styles.logo}
+              src="/market-knowledge-logo.svg"
+              alt="market knowledge logo"
+              width={180}
+              height={180}
+              priority
+            />
+          </div>
+
+        <button
+          type="button"
+          className="btn btn-outline-secondary mb-3"
+          onClick={handleScrape}
+          >
+          <span className="me-2">🔙</span> Default Search
+          </button>
+        
+        <div className="mb-3 w-100"
+          style={{ maxWidth: "400px", width: "100%" }}
+          >
           <label htmlFor="subreddit" className="form-label">
-            Subreddit to scrape
+            Subreddit to search
           </label>
           <input
             type="text"
-            className="form-control"
+            className="form-control mb-3"
             id="subreddit"
             value={subreddit}
             onChange={(e) => setSubreddit(e.target.value)}
-            placeholder="e.g. cats (exclude r/ prefix)"
+            placeholder="e.g. Anxiety (exclude r/ prefix)"
           />
+          <div className="mb-3 w-100">
+            <label htmlFor="commentCount" className="form-label">
+              Number of comments
+            </label>
+            <input
+              type="number"
+              className="form-control"
+              id="commentCount"
+              value={commentCount}
+              onChange={(e) => setCommentCount(Number(e.target.value))}
+              placeholder="e.g., 100"
+              min={1}
+            />
+          </div>
+          <div className="mb-3 w-100">
+            <label htmlFor="keyword" className="form-label">
+              Keyword to search
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="keyword"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              placeholder="e.g., Night"
+            />
+          </div>
+          <div className="mb-3 w-100">
+            <label htmlFor="sortBy" className="form-label">
+              Sort by
+            </label>
+            <select
+              className="form-select"
+              id="sortBy"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="relevance">Relevance</option>
+              <option value="new">New</option>
+              <option value="top">Top</option>
+              <option value="comments">Most Comments</option>
+            </select>
+          </div>
+          <div className="mb-3 w-100">
+            <label htmlFor="timeFilter" className="form-label">
+              Time Filter
+            </label>
+            <select
+              className="form-select"
+              id="timeFilter"
+              value={timeFilter}
+              onChange={(e) => setTimeFilter(e.target.value)}
+            >
+              <option value="all">All Time</option>
+              <option value="hour">Past Hour</option>
+              <option value="day">Past Day</option>
+              <option value="week">Past Week</option>
+              <option value="month">Past Month</option>
+              <option value="year">Past Year</option>
+            </select>
+          </div>
+          <button 
+          type="button" 
+          className="btn btn-brand w-100"
+          onClick={handleScrape}>
+            Scrape Comments
+          </button>
         </div>
-        <div className="mb-3 w-100">
-          <label htmlFor="commentCount" className="form-label">
-            Number of comments
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="commentCount"
-            value={commentCount}
-            onChange={(e) => setCommentCount(Number(e.target.value))}
-            placeholder="e.g., 100"
-            min={1}
-          />
-        </div>
-        <div className="mb-3 w-100">
-          <label htmlFor="method" className="form-label">
-            Type of posts to scrape
-          </label>
-          <select
-            className="form-select"
-            id="method"
-            value={method}
-            onChange={(e) => setMethod(e.target.value)}
-          >
-            <option value="top">Top Posts</option>
-            <option value="new">New Posts</option>
-            <option value="hot">Hot Posts</option>
-            <option value="rising">Rising Posts</option>
-            <option value="controversial">Controversial Posts</option>
-          </select>
-        </div>
-        <button 
-        type="button" 
-        className="btn btn-brand w-100"
-        onClick={handleScrape}>
-          Scrape Comments
-        </button>
       </div>
-    </div>
-  );
-}
+    );
+  }
+
+  else {
+    return (
+      <div className="d-flex flex-column justify-content-center align-items-center"
+          style={{ width: "100vw"}}>
+        <div className="mb-1 d-flex justify-content-center">
+          <Image
+            className={styles.logo}
+            src="/market-knowledge-logo.svg"
+            alt="market knowledge logo"
+            width={180}
+            height={180}
+            priority
+          />
+        </div>
+
+        <button
+          type="button"
+          className="btn btn-outline-secondary mb-3"
+          onClick={handleKeywordSearch}
+          >
+          <span className="me-2">🔍</span> Search by Keyword
+        </button>
+        <div
+          className="w-100 d-flex flex-column align-items-center"
+          style={{ maxWidth: "400px", width: "100%" }}
+        >
+          <div className="mb-3 w-100">
+            <label htmlFor="subreddit" className="form-label">
+              Subreddit to scrape
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="subreddit"
+              value={subreddit}
+              onChange={(e) => setSubreddit(e.target.value)}
+              placeholder="e.g. cats (exclude r/ prefix)"
+            />
+          </div>
+          <div className="mb-3 w-100">
+            <label htmlFor="commentCount" className="form-label">
+              Number of comments
+            </label>
+            <input
+              type="number"
+              className="form-control"
+              id="commentCount"
+              value={commentCount}
+              onChange={(e) => setCommentCount(Number(e.target.value))}
+              placeholder="e.g., 100"
+              min={1}
+            />
+          </div>
+          <div className="mb-3 w-100">
+            <label htmlFor="method" className="form-label">
+              Type of posts to scrape
+            </label>
+            <select
+              className="form-select"
+              id="method"
+              value={method}
+              onChange={(e) => setMethod(e.target.value)}
+            >
+              <option value="top">Top Posts</option>
+              <option value="new">New Posts</option>
+              <option value="hot">Hot Posts</option>
+              <option value="rising">Rising Posts</option>
+              <option value="controversial">Controversial Posts</option>
+            </select>
+          </div>
+          <button 
+          type="button" 
+          className="btn btn-brand w-100"
+          onClick={handleScrape}>
+            Scrape Comments
+          </button>
+        </div>
+      </div>
+    );
+}}

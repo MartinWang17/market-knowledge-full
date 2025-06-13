@@ -43,10 +43,11 @@ def scrape_comments(req: ScrapeRequest):
         all_posts = scraper.fetch_posts(
             req.subreddit, 
             limit=req.commentCount, 
-            keyword=req.keyword, 
+            query=req.keyword, 
             sort=req.sort, 
-            timeFilter=req.time_filter
+            time_filter=req.time_filter
         )
+
     else:
         all_posts = scraper.fetch_posts(req.subreddit, req.commentCount, req.method)
     for post in all_posts:
@@ -82,6 +83,7 @@ def save_post_to_supabase(title, body, link, upvotes, subreddit, keyword=None):
         "subreddit": subreddit,
         "keyword": keyword,
     }
+    print("\n\nSaving post to Supabase:", data, "\n\n")
     supabase.table("reddit_posts").insert(data).execute()
 
 # For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
