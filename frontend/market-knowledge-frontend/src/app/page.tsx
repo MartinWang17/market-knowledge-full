@@ -126,6 +126,7 @@ export default function Home() {
               onChange={(e) => setSortBy(e.target.value)}
             >
               <option value="relevance">Relevance</option>
+              <option value="hot">Hot</option>
               <option value="new">New</option>
               <option value="top">Top</option>
               <option value="comments">Most Comments</option>
@@ -182,10 +183,16 @@ export default function Home() {
           >
           <span className="me-2">🔍</span> Search by Keyword
         </button>
-        <div
+        {/* <div
           className="w-100 d-flex flex-column align-items-center"
           style={{ maxWidth: "400px", width: "100%" }}
-        >
+        > */}
+        <form className="w-100 d-flex flex-column align-items-center"
+          style={{ maxWidth: "400px", width: "100%" }}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleScrape();
+          }}>
           <div className="mb-3 w-100">
             <label htmlFor="subreddit" className="form-label">
               Subreddit to scrape
@@ -197,6 +204,7 @@ export default function Home() {
               value={subreddit}
               onChange={(e) => setSubreddit(e.target.value)}
               placeholder="e.g. cats (exclude r/ prefix)"
+              required
             />
           </div>
           <div className="mb-3 w-100">
@@ -231,12 +239,12 @@ export default function Home() {
             </select>
           </div>
           <button 
-          type="button" 
-          className="btn btn-brand w-100"
-          onClick={handleScrape}>
+          type="submit" 
+          className="btn btn-brand w-100">
             Scrape Comments
           </button>
-        </div>
+        </form>
+
       </div>
     );
 }}
