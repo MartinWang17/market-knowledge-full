@@ -27,8 +27,7 @@ export default function TitleCommentList( { comments, onDelete }: CommentListPro
                                 <span className="badge bg-primary rounded-pill">{comment.upvotes} upvotes</span>
                                 <span className="badge bg-secondary rounded-pill">{comment.subreddit}</span>
                                 <button 
-                                    className="btn btn-danger btn-sm ms-2"
-                                    style={{ userSelect: "none"}}
+                                    className="btn btn-danger btn-sm ms-2 noselect"
                                     onClick={() => onDelete(comment.id)}
                                     >
                                     Delete
