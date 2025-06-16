@@ -22,6 +22,25 @@ export default function Comments() {
             .catch(error => console.error("Error fetching comments:", error));
     }, [])
 
+    // delete comment function
+    const deleteComment = async (id: string) => {
+        try {
+            const response = await fetch('http://localhost:8000/comments/' + id, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                // Remove the deleted comment from local state
+                setComments(prev => prev.filter(comment => comment.id !== id));
+            } 
+            else {
+                const data = await response.json();
+                alert("Error deleting comment: " + (data.error || response.status));
+            }
+        }   catch (error) {
+            alert("Network error deleting comment.")
+        }
+    };
+
     if (comments.length === 0) {
         return (
             <div className="text-center">No comments...yet. <br/>Start a scrape and start knowing your market!</div>
@@ -49,7 +68,7 @@ export default function Comments() {
     return (
         <div className="container py-4">
             {renderFormatSelector}
-            {commentFormat === "card" && <CardCommentList comments={comments} />}
+            {commentFormat === "card" && <CardCommentList comments={comments} onDelete={deleteComment}/>}
             {commentFormat === "title" && <TitleCommentList comments={comments} />}
             {commentFormat === "body" && <BodyCommentList comments={comments} />}
         </div>

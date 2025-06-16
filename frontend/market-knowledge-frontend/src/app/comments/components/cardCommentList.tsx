@@ -1,7 +1,7 @@
 import { FaExternalLinkAlt } from 'react-icons/fa';
-import { Comment } from '../types';
+import { CommentListProps } from '../types';
 
-export default function CardCommentList({ comments }: { comments: Comment[] }) {
+export default function CardCommentList({ comments, onDelete }: CommentListProps) {
     return (
     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 {comments.map((comment) => (
@@ -25,6 +25,12 @@ export default function CardCommentList({ comments }: { comments: Comment[] }) {
                             <div className="mt-auto small text-light opacity-75">
                                 ⬆️ {comment.upvotes} upvotes 
                                 <span style={{ float: "right" }}>{comment.subreddit}</span>
+                            <button
+                                className="btn btn-danger btn-sm ms-2"
+                                onClick={() => onDelete(comment.id)}
+                                >
+                                Delete
+                            </button>
                             </div>
                             )}
                         </div>
