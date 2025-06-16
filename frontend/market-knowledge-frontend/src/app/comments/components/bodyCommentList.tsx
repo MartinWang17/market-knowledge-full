@@ -17,6 +17,7 @@ export default function BodyCommentList({ comments, onDelete }: CommentListProps
                                 <span className="badge bg-secondary rounded-pill ms-2">{comment.subreddit}</span>
                                 <button 
                                     className="btn btn-danger btn-sm ms-2"
+                                    style={{ userSelect: "none" }}
                                     onClick={() => onDelete(comment.id)}
                                     >
                                     Delete
