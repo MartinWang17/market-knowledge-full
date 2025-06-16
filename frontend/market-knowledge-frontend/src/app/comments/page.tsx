@@ -69,7 +69,7 @@ export default function Comments() {
         <div className="container py-4">
             {renderFormatSelector}
             {commentFormat === "card" && <CardCommentList comments={comments} onDelete={deleteComment}/>}
-            {commentFormat === "title" && <TitleCommentList comments={comments} />}
-            {commentFormat === "body" && <BodyCommentList comments={comments} />}
+            {commentFormat === "title" && <TitleCommentList comments={comments} onDelete={deleteComment}/>}
+            {commentFormat === "body" && <BodyCommentList comments={comments} onDelete={deleteComment}/>}
         </div>
     )};

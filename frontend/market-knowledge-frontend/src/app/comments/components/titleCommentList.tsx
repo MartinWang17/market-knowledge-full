@@ -1,6 +1,6 @@
-import { Comment } from '../types';
+import { CommentListProps } from '../types';
 
-export default function TitleCommentList( { comments }: { comments: Comment[] }) {
+export default function TitleCommentList( { comments, onDelete }: CommentListProps) {
     return (
         <ul className="list-group">
                     {comments.map((comment) => (
@@ -24,8 +24,13 @@ export default function TitleCommentList( { comments }: { comments: Comment[] })
                                 </span>
                             </span> */}
                             <div>
-                                <span className="badge bg-primary rounded-pill">{comment.upvotes} upvotes</span>
-                                <span className="badge bg-secondary rounded-pill ms-2">{comment.subreddit}</span>
+                                <span className="badge bg-primary rounded-pill">{comment.upvotes} upvotes <span className="badge bg-secondary rounded-pill">{comment.subreddit}</span></span>
+                                <button 
+                                    className="btn btn-danger btn-sm ms-2"
+                                    onClick={() => onDelete(comment.id)}
+                                    >
+                                    Delete
+                                </button>
                             </div>
                         </li>
                     ))}
