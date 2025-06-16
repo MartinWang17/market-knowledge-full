@@ -23,6 +23,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+def save_post_to_supabase(title, body, link, upvotes, subreddit, keyword=None):
+    """Saves a Reddit post to Supabase. Returns nothing."""
+    data = {
+        "title": title,
+        "body": body,
+        "link": link,
+        "upvotes": upvotes,
+        "subreddit": subreddit,
+        "keyword": keyword,
+    }
+    print("\n\nSaving post to Supabase:", data, "\n\n")
+    supabase.table("reddit_posts").insert(data).execute()
+
 class ScrapeRequest(BaseModel):
     subreddit: str = Field(..., description="The name of the subreddit to scrape (without 'r/' prefix).")
     commentCount: int = Field(10, ge=1, le=100, description="The number of top posts to fetch (default is 10, max is 100).")
@@ -73,18 +86,14 @@ def get_comments():
     comments = result.data if hasattr(result, "data") else []
     return {"comments": comments}
 
-def save_post_to_supabase(title, body, link, upvotes, subreddit, keyword=None):
-    """Saves a Reddit post to Supabase. Returns nothing."""
-    data = {
-        "title": title,
-        "body": body,
-        "link": link,
-        "upvotes": upvotes,
-        "subreddit": subreddit,
-        "keyword": keyword,
-    }
-    print("\n\nSaving post to Supabase:", data, "\n\n")
-    supabase.table("reddit_posts").insert(data).execute()
+@app.delete("/comments/{post_id}")
+def delete_post(post_id):
+    """
+    Deletes a post from the Supabase database. 
+    Returns the response from the delete operation.
+    """
+    response = supabase.table("reddit_posts").delete().eq("id", post_id).execute()
+    return response
 
 # For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
 if __name__ == "__main__":
