@@ -9,6 +9,7 @@ export default function Comments() {
 
     const [comments, setComments] = useState<Comment[]>([]);
     const [commentFormat, setCommentFormat] = useState("card"); // "card", "title", "body"
+    const [commentFilter, setCommentFilter] = useState("default"); // "all", "upvoted", "downvoted", etc.
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -24,7 +25,7 @@ export default function Comments() {
                 console.error("Error fetching comments:", error);
                 setLoading(false);
             });
-    }, [])
+    }, [commentFilter])
 
     // delete comment function
     const deleteComment = async (id: string) => {
@@ -86,12 +87,14 @@ export default function Comments() {
                     <select
                         className="form-select"
                         id="commentFormat"
-                        value={commentFormat}
-                        onChange={(e) => setCommentFormat(e.target.value)}
+                        value={commentFilter}
+                        onChange={(e) => {
+                            setCommentFilter(e.target.value)
+                            console.log("Comment filter changed to:", e.target.value);}}
                     >
-                        <option value="card">Card View</option>
-                        <option value="title">Title Only</option>
-                        <option value="body">Body Only</option>
+                        <option value="default">Default</option>
+                        <option value="descending">Descending</option>
+                        <option value="ascending">Acending</option>
                     </select>
                 </div>
             </div>
