@@ -58,7 +58,7 @@ export default function Home() {
           <div className="mb-1 d-flex justify-content-center">
             <Image
               className={styles.logo}
-              src="/market-knowledge-logo.svg"
+              src="/market-knowledge-logo-dark.png"
               alt="market knowledge logo"
               width={180}
               height={180}
@@ -168,7 +168,7 @@ export default function Home() {
         <div className="mb-1 d-flex justify-content-center">
           <Image
             className={styles.logo}
-            src="/market-knowledge-logo.svg"
+            src="/market-knowledge-logo-dark.png"
             alt="market knowledge logo"
             width={180}
             height={180}
