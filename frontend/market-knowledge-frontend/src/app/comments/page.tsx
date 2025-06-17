@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { FaExternalLinkAlt } from 'react-icons/fa';
 import { Comment } from './types';
 import CardCommentList from './components/cardCommentList';
 import TitleCommentList from './components/titleCommentList';
@@ -63,9 +62,26 @@ export default function Comments() {
     }
 
     const renderFormatSelector = (
-        <div className="mb-3 w-50">
+        <div className="mb-3 d-flex">
+            <div className="me-2 w-50">
                     <label htmlFor="commentFormat" className="form-label">
                         Select Comment Format
+                    </label>
+                
+                    <select
+                        className="form-select"
+                        id="commentFormat"
+                        value={commentFormat}
+                        onChange={(e) => setCommentFormat(e.target.value)}
+                    >
+                        <option value="card">Card View</option>
+                        <option value="title">Title Only</option>
+                        <option value="body">Body Only</option>
+                    </select>
+                </div>
+                <div className="ms-2 w-50">
+                    <label htmlFor="commentFormat" className="form-label">
+                        Select Comment Filter
                     </label>
                     <select
                         className="form-select"
@@ -77,6 +93,7 @@ export default function Comments() {
                         <option value="title">Title Only</option>
                         <option value="body">Body Only</option>
                     </select>
+                </div>
             </div>
     );
 

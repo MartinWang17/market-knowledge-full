@@ -12,7 +12,7 @@ export default function BodyCommentList({ comments, onDelete }: CommentListProps
                         style={{ backgroundColor: "#1E555C", color: "#fff", border: "none" }}>
                             {comment.body}
                             {/* <span className="badge bg-primary rounded-pill">{comment.upvotes} upvotes</span> */}
-                            <div>
+                            <div className="d-flex align-items-center">
                                 <span className="badge bg-primary rounded-pill">{comment.upvotes} upvotes</span>
                                 <span className="badge bg-secondary rounded-pill ms-2">{comment.subreddit}</span>
                                 <button 

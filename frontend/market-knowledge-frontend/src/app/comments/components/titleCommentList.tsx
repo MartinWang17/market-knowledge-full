@@ -23,7 +23,7 @@ export default function TitleCommentList( { comments, onDelete }: CommentListPro
                                     {comment.subreddit}
                                 </span>
                             </span> */}
-                            <div>
+                            <div className="d-flex align-items-center">
                                 <span className="badge bg-primary rounded-pill">{comment.upvotes} upvotes</span>
                                 <span className="badge bg-secondary rounded-pill">{comment.subreddit}</span>
                                 <button 
