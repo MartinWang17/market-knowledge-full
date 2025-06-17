@@ -6,7 +6,7 @@ export default function CardCommentList({ comments, onDelete }: CommentListProps
     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 {comments.map((comment) => (
                 <div className="col" key={comment.id}>
-                    <div className="card h-100 shadow" style={{ background: "rgba(30,85,92,0.7)", color: "#ededed" }}>
+                    <div className="card h-100 shadow" style={{ background: "#1E555C", color: "#ededed" }}>
                         <div className="card-body d-flex flex-column">
                             <a // External link to open the Reddit post in a new tab
                             href={comment.link} 

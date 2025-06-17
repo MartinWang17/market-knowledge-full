@@ -10,6 +10,7 @@ export default function Comments() {
 
     const [comments, setComments] = useState<Comment[]>([]);
     const [commentFormat, setCommentFormat] = useState("card"); // "card", "title", "body"
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetch("http://localhost:8000/comments")
@@ -18,8 +19,12 @@ export default function Comments() {
                 // data.comments is the array of posts from Supabase
                 console.log("Fetched comments:", data.comments);
                 setComments(data.comments);
+                setLoading(false);
             })
-            .catch(error => console.error("Error fetching comments:", error));
+            .catch(error => {
+                console.error("Error fetching comments:", error);
+                setLoading(false);
+            });
     }, [])
 
     // delete comment function
@@ -40,6 +45,16 @@ export default function Comments() {
             alert("Network error deleting comment.")
         }
     };
+
+    if (loading) {
+        return (
+            <div className="text-center">
+                <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        );
+    }
 
     if (comments.length === 0) {
         return (

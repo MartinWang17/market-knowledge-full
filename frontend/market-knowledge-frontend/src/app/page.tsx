@@ -18,6 +18,11 @@ export default function Home() {
     console.log("Scrape method:", method);
     console.log("Keyword to search:", keyword);
 
+    if (subreddit.includes("r/")) {
+      alert("Please enter the subreddit name without the 'r/' prefix.");
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:8000/scrape", {
         method: "POST",
@@ -55,7 +60,7 @@ export default function Home() {
     return (
       <div className="d-flex flex-column justify-content-center align-items-center"
         style={{ width: "100vw" }}>
-          <div className="mb-1 d-flex justify-content-center">
+          <div className="mb-1 d-flex">
             <Image
               className={styles.logo}
               src="/market-knowledge-logo-dark.png"
