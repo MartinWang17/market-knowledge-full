@@ -13,7 +13,7 @@ export default function Comments() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:8000/comments")
+        fetch(`http://localhost:8000/comments?filter=${commentFilter}`)
             .then(res => res.json())
             .then(data => {
                 // data.comments is the array of posts from Supabase
@@ -92,7 +92,7 @@ export default function Comments() {
                             setCommentFilter(e.target.value)
                             console.log("Comment filter changed to:", e.target.value);}}
                     >
-                        <option value="default">Default</option>
+                        <option value="relevance">Relevance</option>
                         <option value="descending">Descending</option>
                         <option value="ascending">Acending</option>
                     </select>
