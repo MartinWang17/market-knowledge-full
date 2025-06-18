@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import os
@@ -78,11 +78,18 @@ def scrape_comments(req: ScrapeRequest):
     return {"all_posts": all_posts}
 
 @app.get("/comments")
-def get_comments():
+def get_comments(
+    filter: str = Query("relevance", description="Sort order by upvotes for the comments. Default is 'relevance'."),
+):
     """
     Returns all scraped Reddit comments/posts from the Supabase database.
     """
-    result = supabase.table("reddit_posts").select("*").execute()
+    if filter == "relevance":
+        result = supabase.table("reddit_posts").select("*").execute()
+    elif filter == "descending":
+        result = supabase.table("reddit_posts").select("*").order("upvotes", desc=True).execute()
+    else:  #if filter == "ascending"
+        result = supabase.table("reddit_posts").select("*").order("upvotes", desc=False).execute()
     comments = result.data if hasattr(result, "data") else []
     return {"comments": comments}
 
