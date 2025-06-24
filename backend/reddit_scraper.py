@@ -44,11 +44,11 @@ class RedditScraper:
             # Check if searching by query
             if query:
                 # Use the search method with the specified sort and time filter
-                subreddit = subreddit_object.search(query=query, sort=sort, time_filter=time_filter, limit=limit)
+                subreddit_posts = subreddit_object.search(query=query, sort=sort, time_filter=time_filter, limit=limit)
             else:
                 method_function = getattr(subreddit_object, method)
-                subreddit = method_function(limit=limit)
-            posts = list(subreddit)
+                subreddit_posts = method_function(limit=limit)
+            posts = list(subreddit_posts)
             # Sort posts by score in descending order using anonymous func by getting hold of each post's score (item). Only sort if query is not provided.
             posts_sorted = sorted(posts, key=lambda item: item.score, reverse=True) if not query else posts
 
