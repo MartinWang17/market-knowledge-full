@@ -5,6 +5,7 @@ type Comment = {
     link: string;
     upvotes: number;
     subreddit: string;
+    collections: string;
 }
 
 export type { Comment };

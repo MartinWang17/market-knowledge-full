@@ -30,8 +30,8 @@ export default function Navbar() {
                 </Link>
             </li>
             <li className="nav-item">
-                <Link href="/about" className={`nav-link ${pathname === "/about" ? "active" : ""}`}>
-                About
+                <Link href="/collections" className={`nav-link ${pathname === "/collections" ? "active" : ""}`}>
+                Collections
                 </Link>
             </li>
             </ul>

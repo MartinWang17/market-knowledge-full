@@ -93,8 +93,8 @@ export default function Comments() {
                             console.log("Comment filter changed to:", e.target.value);}}
                     >
                         <option value="relevance">Relevance</option>
-                        <option value="descending">Descending</option>
-                        <option value="ascending">Acending</option>
+                        <option value="descending">Most Upvotes</option>
+                        <option value="ascending">Least Upvotes</option>
                     </select>
                 </div>
             </div>
