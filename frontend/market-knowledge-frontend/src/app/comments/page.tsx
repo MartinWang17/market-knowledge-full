@@ -9,7 +9,7 @@ export default function Comments() {
 
     const [comments, setComments] = useState<Comment[]>([]);
     const [commentFormat, setCommentFormat] = useState("card"); // "card", "title", "body"
-    const [commentFilter, setCommentFilter] = useState("default"); // "all", "upvoted", "downvoted", etc.
+    const [commentFilter, setCommentFilter] = useState("relevance"); //
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ export default function Comments() {
                 console.error("Error fetching comments:", error);
                 setLoading(false);
             });
-    }, [commentFilter])
+    }, [commentFilter]) //Refresh comments when filter changes
 
     // delete comment function
     const deleteComment = async (id: string) => {
