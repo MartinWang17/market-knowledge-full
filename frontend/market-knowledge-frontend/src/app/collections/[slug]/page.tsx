@@ -3,6 +3,7 @@ import { useParams } from 'next/navigation';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { Comment } from '../../comments/types';
+import RenderFormatSelector from '../../formatSelector';
 
 export default function CollectionSlugPage() {
 
@@ -20,13 +21,22 @@ export default function CollectionSlugPage() {
             .catch(error => {
                 console.error("Error fetching comments:", error);
             });
-    }, []) //Refresh comments when filter changes
+    }, [commentFilter]) //Refresh comments when filter changes
 
     const params = useParams();
     const slug = params.slug as string;
 
     return (
         <div className="container my-5">
+            <div className="text-center mb-4">
+                <span className="badge secondary-badge-color fs-3">Collection: {slug}</span>
+            </div>
+            <RenderFormatSelector
+                commentFormat={commentFormat}
+                setCommentFormat={setCommentFormat}
+                commentFilter={commentFilter}
+                setCommentFilter={setCommentFilter}
+            />
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 {comments
                     .filter((comment) => comment.collections && comment.collections.includes(slug))
@@ -57,7 +67,6 @@ export default function CollectionSlugPage() {
                     </div>
                 </div>
                 ))}
-            <h1 className="text-center mb-4">Collection: {slug}</h1>
         </div>
     </div>
     );

@@ -71,3 +71,8 @@ a {
 .noselect{
   user-select: none;
 }
+
+.secondary-badge-color {
+  background-color: #3599a690 !important;
+  color: #fff !important;
+}
