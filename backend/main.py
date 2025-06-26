@@ -102,6 +102,16 @@ def delete_post(post_id):
     response = supabase.table("reddit_posts").delete().eq("id", post_id).execute()
     return response
 
+@app.get("/collections")
+def get_collections():
+    """
+    Returns all collections from the database.
+    """
+    result = supabase.table("collections").select("*").execute()
+    collections = result.data if hasattr(result, "data") else []
+    return {"collections": collections}
+
+
 # For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
 if __name__ == "__main__":
     hot_posts = scraper.fetch_posts("Anxiety", limit=10, method="top", query="Night")
