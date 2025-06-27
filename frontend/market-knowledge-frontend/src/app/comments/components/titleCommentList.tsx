@@ -9,7 +9,7 @@ export default function TitleCommentList( { comments, onDelete }: CommentListPro
                             className="list-group-item d-flex justify-content-between align-items-center"
                             style={{ 
                                 backgroundColor: "#1E555C",
-                                color: "fff",
+                                color: "#fff",
                                 border: "none",
                             }}
                             >

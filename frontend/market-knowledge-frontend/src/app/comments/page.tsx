@@ -5,6 +5,7 @@ import CardCommentList from './components/cardCommentList';
 import TitleCommentList from './components/titleCommentList';
 import BodyCommentList from './components/bodyCommentList';
 import RenderFormatSelector from '../formatSelector';
+import LoadingSpinner from '../loadingSpinner'
 
 export default function Comments() {
 
@@ -48,13 +49,7 @@ export default function Comments() {
     };
 
     if (loading) {
-        return (
-            <div className="text-center">
-                <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>
-            </div>
-        );
+        return <LoadingSpinner />
     }
 
     if (comments.length === 0) {

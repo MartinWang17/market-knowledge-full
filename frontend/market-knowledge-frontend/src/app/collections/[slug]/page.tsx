@@ -4,12 +4,15 @@ import { FaExternalLinkAlt } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { Comment } from '../../comments/types';
 import RenderFormatSelector from '../../formatSelector';
+import LoadingSpinner from '../../loadingSpinner'
 
 export default function CollectionSlugPage() {
 
     const [comments, setComments] = useState<Comment[]>([]);
     const [commentFormat, setCommentFormat] = useState("card"); // "card", "title", "body"
     const [commentFilter, setCommentFilter] = useState("relevance"); // "all", "upvoted", "downvoted", etc.
+    const [loading, setLoading] = useState(true);
+
         useEffect(() => {
         fetch(`http://localhost:8000/comments?filter=${commentFilter}`)
             .then(res => res.json())
@@ -17,14 +20,20 @@ export default function CollectionSlugPage() {
                 // data.comments is the array of posts from Supabase
                 console.log("Fetched comments:", data.comments);
                 setComments(data.comments);
+                setLoading(false);
             })
             .catch(error => {
                 console.error("Error fetching comments:", error);
+                setLoading(false);
             });
     }, [commentFilter]) //Refresh comments when filter changes
 
     const params = useParams();
     const slug = params.slug as string;
+
+    if (loading) {
+        return <LoadingSpinner />
+    }
 
     return (
         <div className="container my-5">
