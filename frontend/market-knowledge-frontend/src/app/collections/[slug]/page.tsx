@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Comment } from '../../comments/types';
 import RenderFormatSelector from '../../formatSelector';
 import LoadingSpinner from '../../loadingSpinner'
+import { CardCommentList, TitleCommentList, BodyCommentList } from '../../comments/components'
 
 export default function CollectionSlugPage() {
 
@@ -28,8 +29,29 @@ export default function CollectionSlugPage() {
             });
     }, [commentFilter]) //Refresh comments when filter changes
 
+    const deleteComment = async (id: string) => {
+    try {
+        const response = await fetch('http://localhost:8000/comments/' + id, {
+            method: 'DELETE',
+        });
+        if (response.ok) {
+            // Remove the deleted comment from local state
+            setComments(prev => prev.filter(comment => comment.id !== id));
+        } 
+        else {
+            const data = await response.json();
+            alert("Error deleting comment: " + (data.error || response.status));
+        }
+    }   catch (error) {
+        alert("Network error deleting comment.")
+    }
+    };
+
     const params = useParams();
     const slug = params.slug as string;
+
+    //update comment to only include comments in the current collection
+    const collectionComments = comments.filter((comment) => comment.collections && comment.collections.includes(slug));
 
     if (loading) {
         return <LoadingSpinner />
@@ -46,37 +68,9 @@ export default function CollectionSlugPage() {
                 commentFilter={commentFilter}
                 setCommentFilter={setCommentFilter}
             />
-            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                {comments
-                    .filter((comment) => comment.collections && comment.collections.includes(slug))
-                    .map((comment) => (
-                <div className="col" key={comment.id}>
-                    <div className="card h-100 shadow" style={{ background: "#1E555C", color: "#ededed" }}>
-                        <div className="card-body d-flex flex-column">
-                            <a // External link to open the Reddit post in a new tab
-                             href={comment.link} 
-                             target="_blank" 
-                             rel="noopener noreferrer"
-                             className="card-title fw-bold text-info mb-2 text-decoration-none"
-                             style={{ fontSize: "1.1rem" }}
-                             >
-                             <FaExternalLinkAlt style={{ verticalAlign: "middle", marginRight: 8}} />
-                             {comment.title}
-                             </a>
-                             <div className="card-text mb-4" style={{ color: "#fff" }}>
-                             {comment.body}
-                             </div>
-                             {comment.upvotes && (
-                             <div className="mt-auto small text-light opacity-75">
-                                 ⬆️ {comment.upvotes} upvotes 
-                                 <span style={{ float: "right" }}>{comment.subreddit}</span>
-                            </div>
-                             )}
-                        </div>
-                    </div>
-                </div>
-                ))}
-        </div>
+        {commentFormat === "card" && <CardCommentList comments={collectionComments} onDelete={deleteComment} />}
+        {commentFormat === "body" && <BodyCommentList comments={collectionComments} onDelete={deleteComment} />}
+        {commentFormat === "title" && <TitleCommentList comments={collectionComments} onDelete={deleteComment} />}
     </div>
     );
 }

@@ -1,9 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { Comment } from './types';
-import CardCommentList from './components/cardCommentList';
-import TitleCommentList from './components/titleCommentList';
-import BodyCommentList from './components/bodyCommentList';
+import { CardCommentList, TitleCommentList, BodyCommentList } from './components';
 import RenderFormatSelector from '../formatSelector';
 import LoadingSpinner from '../loadingSpinner'
 
@@ -57,44 +55,6 @@ export default function Comments() {
             <div className="text-center">No comments...yet. <br/>Start a scrape and start knowing your market!</div>
         );
     }
-
-    // const renderFormatSelector = (
-    //     <div className="mb-3 d-flex">
-    //         <div className="me-2 w-50">
-    //                 <label htmlFor="commentFormat" className="form-label">
-    //                     Select Comment Format
-    //                 </label>
-                
-    //                 <select
-    //                     className="form-select"
-    //                     id="commentFormat"
-    //                     value={commentFormat}
-    //                     onChange={(e) => setCommentFormat(e.target.value)}
-    //                 >
-    //                     <option value="card">Card View</option>
-    //                     <option value="title">Title Only</option>
-    //                     <option value="body">Body Only</option>
-    //                 </select>
-    //             </div>
-    //             <div className="ms-2 w-50">
-    //                 <label htmlFor="commentFormat" className="form-label">
-    //                     Select Comment Filter
-    //                 </label>
-    //                 <select
-    //                     className="form-select"
-    //                     id="commentFormat"
-    //                     value={commentFilter}
-    //                     onChange={(e) => {
-    //                         setCommentFilter(e.target.value)
-    //                         console.log("Comment filter changed to:", e.target.value);}}
-    //                 >
-    //                     <option value="relevance">Relevance</option>
-    //                     <option value="descending">Most Upvotes</option>
-    //                     <option value="ascending">Least Upvotes</option>
-    //                 </select>
-    //             </div>
-    //         </div>
-    // );
 
     return (
         <div className="container py-4">
