@@ -1,9 +1,10 @@
 import { CommentListProps } from '../types';
-import { useState } from 'react'
-import RenderCollectionModal from './collectionModal'
+import { useState } from 'react';
+import RenderCollectionModal from './collectionModal';
 
 export default function TitleCommentList( { comments, onDelete }: CommentListProps) {
     const [showCollectionModal, setShowCollectionModal] = useState(false);
+    const [saveToCollectionModal, setSaveToCollectionModal] = useState(false);
     return (
         <ul className="list-group">
                     {comments.map((comment) => (
@@ -38,6 +39,8 @@ export default function TitleCommentList( { comments, onDelete }: CommentListPro
                                 <RenderCollectionModal
                                     showCollectionModal={showCollectionModal}
                                     setShowCollectionModal={setShowCollectionModal}
+                                    saveToCollectionModal={saveToCollectionModal}
+                                    setSaveToCollectionModal={setSaveToCollectionModal}
                                     />
                             </div>
                         </li>

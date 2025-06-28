@@ -26,12 +26,12 @@ export default function RenderFormatSelector(props: FormatSelectorProps) {
                     </select>
                 </div>
                 <div className="ms-2 w-50">
-                    <label htmlFor="commentFormat" className="form-label">
+                    <label htmlFor="commentFilter" className="form-label">
                         Select Comment Filter
                     </label>
                     <select
                         className="form-select"
-                        id="commentFormat"
+                        id="commentFilter"
                         value={commentFilter}
                         onChange={(e) => {
                             setCommentFilter(e.target.value)

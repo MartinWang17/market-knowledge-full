@@ -4,6 +4,7 @@ import RenderCollectionModal from './collectionModal';
 
 export default function BodyCommentList({ comments, onDelete }: CommentListProps) {
     const [showCollectionModal, setShowCollectionModal] = useState(false);
+    const [saveToCollectionModal, setSaveToCollectionModal] = useState(false);
     return (
         <ul className="list-group">
                     {comments.map((comment) => (
@@ -27,6 +28,8 @@ export default function BodyCommentList({ comments, onDelete }: CommentListProps
                                 <RenderCollectionModal 
                                     showCollectionModal={showCollectionModal}
                                     setShowCollectionModal={setShowCollectionModal}
+                                    saveToCollectionModal={saveToCollectionModal}
+                                    setSaveToCollectionModal={setSaveToCollectionModal}
                                     />
                             </div>
                         </li>

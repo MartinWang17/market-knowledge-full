@@ -4,9 +4,9 @@ import { CommentListProps } from '../types';
 import { useState } from 'react';
 import RenderCollectionModal from './collectionModal'
 
-    
 export default function CardCommentList({ comments, onDelete }: CommentListProps) {
     const [showCollectionModal, setShowCollectionModal] = useState(false);
+    const [saveToCollectionModal, setSaveToCollectionModal] = useState(false);
     return ( 
     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 {comments.map((comment) => (
@@ -39,6 +39,8 @@ export default function CardCommentList({ comments, onDelete }: CommentListProps
                             <RenderCollectionModal 
                                 showCollectionModal={showCollectionModal}
                                 setShowCollectionModal={setShowCollectionModal}
+                                saveToCollectionModal={saveToCollectionModal}
+                                setSaveToCollectionModal={setSaveToCollectionModal}
                             />
                             </div>
                             )}
