@@ -1,7 +1,11 @@
+'use client'
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { CommentListProps } from '../types';
+import { useState } from 'react';
 
+    
 export default function CardCommentList({ comments, onDelete }: CommentListProps) {
+    const [showCollectionModal, setShowCollectionModal] = useState(false);
     return ( 
     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 {comments.map((comment) => (
@@ -26,11 +30,32 @@ export default function CardCommentList({ comments, onDelete }: CommentListProps
                                 ⬆️ {comment.upvotes} upvotes 
                                 <span style={{ float: "right" }}>{comment.subreddit}</span>
                             <button
-                                className="btn btn-danger btn-sm ms-2"
+                                className="btn btn-danger btn-sm ms-2 noselect"
                                 onClick={() => onDelete(comment.id)}
                                 >
                                 Delete
                             </button>
+                            <button
+                                className="btn secondary-btn-color btn-sm ms-2 noselect"
+                                onClick={() => setShowCollectionModal(true)}
+                                >
+                            Save
+                            </button>
+                            {showCollectionModal && (
+                                <div className="modal-backdrop" style={{
+                                    position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', 
+                                    background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                }}>
+                                    <div className="modal-content" style={{
+                                    background: '#fff', padding: '2rem', borderRadius: '10px', minWidth: '300px', width: '50vw'
+                                    }}>
+                                    <h5>Manage Collections</h5>
+                                    <button className="btn btn-success mb-2" style={{width: "100%"}} onClick={() => { /* logic for create new */ }}>Create New Collection</button>
+                                    <button className="btn btn-secondary mb-2" style={{width: "100%"}} onClick={() => { /* logic for add to collection */ }}>Add to Collection</button>
+                                    <button className="btn btn-danger" style={{width: "100%"}} onClick={() => setShowCollectionModal(false)}>Close</button>
+                                    </div>
+                                </div>
+                                )}
                             </div>
                             )}
                         </div>
