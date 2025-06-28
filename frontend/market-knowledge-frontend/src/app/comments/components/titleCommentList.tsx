@@ -1,6 +1,9 @@
 import { CommentListProps } from '../types';
+import { useState } from 'react'
+import RenderCollectionModal from './collectionModal'
 
 export default function TitleCommentList( { comments, onDelete }: CommentListProps) {
+    const [showCollectionModal, setShowCollectionModal] = useState(false);
     return (
         <ul className="list-group">
                     {comments.map((comment) => (
@@ -32,6 +35,10 @@ export default function TitleCommentList( { comments, onDelete }: CommentListPro
                                     >
                                     Delete
                                 </button>
+                                <RenderCollectionModal
+                                    showCollectionModal={showCollectionModal}
+                                    setShowCollectionModal={setShowCollectionModal}
+                                    />
                             </div>
                         </li>
                     ))}
