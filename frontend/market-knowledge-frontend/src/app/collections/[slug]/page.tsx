@@ -6,6 +6,7 @@ import { Comment } from '../../comments/types';
 import RenderFormatSelector from '../../formatSelector';
 import LoadingSpinner from '../../loadingSpinner'
 import { CardCommentList, TitleCommentList, BodyCommentList } from '../../comments/components'
+import GetCollections from '../../getCollections'
 
 export default function CollectionSlugPage() {
 
@@ -13,6 +14,7 @@ export default function CollectionSlugPage() {
     const [commentFormat, setCommentFormat] = useState("card"); // "card", "title", "body"
     const [commentFilter, setCommentFilter] = useState("relevance"); // "all", "upvoted", "downvoted", etc.
     const [loading, setLoading] = useState(true);
+    const { collections } = GetCollections();
 
         useEffect(() => {
         fetch(`http://localhost:8000/comments?filter=${commentFilter}`)
@@ -68,9 +70,9 @@ export default function CollectionSlugPage() {
                 commentFilter={commentFilter}
                 setCommentFilter={setCommentFilter}
             />
-        {commentFormat === "card" && <CardCommentList comments={collectionComments} onDelete={deleteComment} />}
-        {commentFormat === "body" && <BodyCommentList comments={collectionComments} onDelete={deleteComment} />}
-        {commentFormat === "title" && <TitleCommentList comments={collectionComments} onDelete={deleteComment} />}
+        {commentFormat === "card" && <CardCommentList comments={collectionComments} onDelete={deleteComment} collections={collections}/>}
+        {commentFormat === "body" && <BodyCommentList comments={collectionComments} onDelete={deleteComment} collections={collections}/>}
+        {commentFormat === "title" && <TitleCommentList comments={collectionComments} onDelete={deleteComment} collections={collections}/>}
     </div>
     );
 }

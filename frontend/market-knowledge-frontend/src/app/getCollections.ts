@@ -14,6 +14,7 @@ export default function GetCollections(): { collections: Collection[] } {
             .catch(error => {
                 console.error("Error fetching comments:", error)
             })
-    })
-    return {collections};
+    }, [])
+    console.log("This is getCollections collections:", collections)
+    return { collections };
 }

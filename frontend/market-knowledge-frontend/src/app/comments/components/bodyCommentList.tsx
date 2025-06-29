@@ -1,10 +1,13 @@
 import { CommentListProps } from '../types';
 import { useState } from 'react';
 import RenderCollectionModal from './collectionModal';
+import { Comment } from '../types'
 
-export default function BodyCommentList({ comments, onDelete }: CommentListProps) {
+export default function BodyCommentList({ comments, onDelete, collections }: CommentListProps) {
     const [showCollectionModal, setShowCollectionModal] = useState(false);
     const [saveToCollectionModal, setSaveToCollectionModal] = useState(false);
+    const [activePost, setActivePost] = useState<Comment | null>(null);
+
     return (
         <ul className="list-group">
                     {comments.map((comment) => (
@@ -25,12 +28,23 @@ export default function BodyCommentList({ comments, onDelete }: CommentListProps
                                     >
                                     Delete
                                 </button>
-                                <RenderCollectionModal 
-                                    showCollectionModal={showCollectionModal}
-                                    setShowCollectionModal={setShowCollectionModal}
-                                    saveToCollectionModal={saveToCollectionModal}
-                                    setSaveToCollectionModal={setSaveToCollectionModal}
+                                <button
+                                    className="btn secondary-btn-color btn-sm ms-2 noselect"
+                                    onClick={() => {
+                                        setShowCollectionModal(true)
+                                        setActivePost(comment)}}>
+                                    Save
+                                </button>
+                                {showCollectionModal && activePost && (
+                                    <RenderCollectionModal 
+                                        showCollectionModal={showCollectionModal}
+                                        setShowCollectionModal={setShowCollectionModal}
+                                        saveToCollectionModal={saveToCollectionModal}
+                                        setSaveToCollectionModal={setSaveToCollectionModal}
+                                        post={activePost}
+                                        collections={collections}
                                     />
+                                )}
                             </div>
                         </li>
                     )

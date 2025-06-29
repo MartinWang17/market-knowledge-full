@@ -3,10 +3,15 @@ import { FaExternalLinkAlt } from 'react-icons/fa';
 import { CommentListProps } from '../types';
 import { useState } from 'react';
 import RenderCollectionModal from './collectionModal'
+import { Comment } from '../types'
 
-export default function CardCommentList({ comments, onDelete }: CommentListProps) {
+console.log("Rendering CardCommentList")
+export default function CardCommentList({ comments, onDelete, collections }: CommentListProps) {
     const [showCollectionModal, setShowCollectionModal] = useState(false);
     const [saveToCollectionModal, setSaveToCollectionModal] = useState(false);
+    const [activePost, setActivePost] = useState<Comment | null>(null);
+
+    // {comments.map((comment) => (console.log(comment)))}
     return ( 
     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 {comments.map((comment) => (
@@ -36,12 +41,23 @@ export default function CardCommentList({ comments, onDelete }: CommentListProps
                                 >
                                 Delete
                             </button>
+                            <button
+                            className="btn secondary-btn-color btn-sm ms-2 noselect"
+                            onClick={() => {
+                                setShowCollectionModal(true)
+                                setActivePost(comment)}}>
+                                Save
+                            </button>
+                            {showCollectionModal && activePost && (
                             <RenderCollectionModal 
                                 showCollectionModal={showCollectionModal}
                                 setShowCollectionModal={setShowCollectionModal}
                                 saveToCollectionModal={saveToCollectionModal}
                                 setSaveToCollectionModal={setSaveToCollectionModal}
+                                post={activePost}
+                                collections={collections}
                             />
+                            )}
                             </div>
                             )}
                         </div>

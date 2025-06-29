@@ -1,8 +1,5 @@
 "use client";
-import { FaExternalLinkAlt } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import LoadingSpinner from '../loadingSpinner'
 import GetCollections from '../getCollections'
 
 export default function Collections() {
