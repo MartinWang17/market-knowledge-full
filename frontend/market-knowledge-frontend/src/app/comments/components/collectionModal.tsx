@@ -4,14 +4,12 @@ import { Collection } from '../types'
 type collectionModalProps = {
     setShowCollectionModal: (show: boolean) => void;
     showCollectionModal: boolean;
-    setSaveToCollectionModal: (show: boolean) => void;
-    saveToCollectionModal: boolean;
     post: Comment;
     collections: Collection[];
 }
 
 export default function RenderCollectionModal(props: collectionModalProps) {
-    const {setShowCollectionModal, showCollectionModal, saveToCollectionModal, setSaveToCollectionModal, post, collections} = props
+    const {setShowCollectionModal, showCollectionModal, post, collections} = props
 
     return (
         <>
@@ -54,23 +52,9 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                         color: "#fff",
                         border: "none",
                         }} onClick={() => { /* logic for create new */ }}>Create New Collection</button>
-                    <button className="btn mb-2" style={{width: "100%", background: "rgb(39, 39, 39)"}} onClick={() => {}}>Add to Collection</button>
                     <button className="btn btn-danger" style={{width: "100%"}} onClick={() => setShowCollectionModal(false)}>Close</button>
                 </div>
             </div>
         )}
-        {/* {saveToCollectionModal && (
-            <div className="modal-backdrop d-flex justify-content-center align-items-center" style={{
-                position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-                background: 'rgba(0, 0, 0, 0.2)'
-            }}>
-                <div className="modal-content" style={{
-                    background: '#000', padding: '2rem', borderRadius: '10px', minWidth: '30px', width: '50vw'
-                }}>
-                    <h5>Testing for save to collection</h5>
-                    <button className="btn btn-danger" style={{width: "100%"}} onClick={() => setSaveToCollectionModal(false)}>Close</button>
-                </div>
-            </div>
-        )} */}
     </>
 )}

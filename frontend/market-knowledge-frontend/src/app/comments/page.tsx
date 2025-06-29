@@ -6,6 +6,7 @@ import RenderFormatSelector from '../formatSelector';
 import LoadingSpinner from '../loadingSpinner'
 import GetCollections from '../getCollections'
 
+console.log("Running in parent page of comments")
 export default function Comments() {
 
     const [comments, setComments] = useState<Comment[]>([]);

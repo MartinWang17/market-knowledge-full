@@ -50,8 +50,6 @@ export default function TitleCommentList( { comments, onDelete, collections }: C
                                     <RenderCollectionModal 
                                         showCollectionModal={showCollectionModal}
                                         setShowCollectionModal={setShowCollectionModal}
-                                        saveToCollectionModal={saveToCollectionModal}
-                                        setSaveToCollectionModal={setSaveToCollectionModal}
                                         post={activePost}
                                         collections={collections}
                                     />

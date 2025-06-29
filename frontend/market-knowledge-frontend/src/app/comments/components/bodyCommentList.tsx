@@ -39,8 +39,6 @@ export default function BodyCommentList({ comments, onDelete, collections }: Com
                                     <RenderCollectionModal 
                                         showCollectionModal={showCollectionModal}
                                         setShowCollectionModal={setShowCollectionModal}
-                                        saveToCollectionModal={saveToCollectionModal}
-                                        setSaveToCollectionModal={setSaveToCollectionModal}
                                         post={activePost}
                                         collections={collections}
                                     />

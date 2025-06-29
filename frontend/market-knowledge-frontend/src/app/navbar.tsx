@@ -15,8 +15,8 @@ export default function Navbar() {
                 </Link>
             </li>
             <li className="nav-item">
-                <Link href="/how-to-use" className={`nav-link ${pathname === "/how-to-use" ? "active" : ""}`}>
-                How-To-Use
+                <Link href="/tutorial" className={`nav-link ${pathname === "/tutorial" ? "active" : ""}`}>
+                Tutorial
                 </Link>
             </li>
             <li className="nav-item">
@@ -26,7 +26,7 @@ export default function Navbar() {
             </li>
             <li className="nav-item">
                 <Link href="/comments" className={`nav-link ${pathname === "/comments" ? "active" : ""}`}>
-                My Comments
+                Comments
                 </Link>
             </li>
             <li className="nav-item">

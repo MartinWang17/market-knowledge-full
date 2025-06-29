@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Collection } from './comments/types';
 
+console.log("Running in getCollections")
 export default function GetCollections(): { collections: Collection[] } {
     const [collections, setCollections] = useState([])
     useEffect(() => {
@@ -15,6 +16,5 @@ export default function GetCollections(): { collections: Collection[] } {
                 console.error("Error fetching comments:", error)
             })
     }, [])
-    console.log("This is getCollections collections:", collections)
     return { collections };
 }
