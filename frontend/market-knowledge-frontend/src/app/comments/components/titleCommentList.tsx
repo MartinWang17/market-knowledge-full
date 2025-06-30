@@ -3,10 +3,15 @@ import { useState } from 'react';
 import RenderCollectionModal from './collectionModal';
 import { Comment } from '../types'
 
-export default function TitleCommentList( { comments, onDelete, collections }: CommentListProps) {
-    const [showCollectionModal, setShowCollectionModal] = useState(false);
-    const [saveToCollectionModal, setSaveToCollectionModal] = useState(false);
-    const [activePost, setActivePost] = useState<Comment | null>(null);
+export default function TitleCommentList( { 
+    comments, 
+    onDelete, 
+    collections,
+    showCollectionModal,
+    setShowCollectionModal,
+    activePost,
+    setActivePost,
+    }: CommentListProps) {
 
     return (
         <ul className="list-group">

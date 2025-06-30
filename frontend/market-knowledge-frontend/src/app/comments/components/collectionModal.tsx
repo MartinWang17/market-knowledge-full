@@ -4,7 +4,7 @@ import { Collection } from '../types'
 type collectionModalProps = {
     setShowCollectionModal: (show: boolean) => void;
     showCollectionModal: boolean;
-    post: Comment;
+    post: Comment | null;
     collections: Collection[];
 }
 
@@ -34,6 +34,7 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                                         }}
                                     >
                                         <label>
+                                        {showCollectionModal && post &&
                                         <input
                                             type="checkbox"
                                             key={collection.id}
@@ -41,6 +42,7 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                                             onChange={() => console.log(collection.collection_names, post.collections, post)}
                                             className="me-2"
                                             />
+                                        }                           
                                         {collection.collection_names}
                                         </label>     
                                     </li>

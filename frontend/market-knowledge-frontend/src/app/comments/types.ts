@@ -20,4 +20,9 @@ export type { Collection };
 export type CommentListProps = {
     comments: Comment[];
     onDelete: (id: string) => void;
+    collections: Collection[];
+    showCollectionModal: boolean;
+    setShowCollectionModal: (show: boolean) => void;
+    activePost: (Comment | null);
+    setActivePost: (post: Comment) => void;
 }

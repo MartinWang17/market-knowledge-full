@@ -5,6 +5,7 @@ import { CardCommentList, TitleCommentList, BodyCommentList } from './components
 import RenderFormatSelector from '../formatSelector';
 import LoadingSpinner from '../loadingSpinner'
 import GetCollections from '../getCollections'
+import CommentsManager from './components/CommentsManager'
 
 console.log("Running in parent page of comments")
 export default function Comments() {
@@ -67,8 +68,14 @@ export default function Comments() {
                 commentFilter={commentFilter}
                 setCommentFilter={setCommentFilter}
                 />
-            {commentFormat === "card" && <CardCommentList comments={comments} onDelete={deleteComment} collections={collections}/>}
+            {/* {commentFormat === "card" && <CardCommentList comments={comments} onDelete={deleteComment} collections={collections}/>}
             {commentFormat === "title" && <TitleCommentList comments={comments} onDelete={deleteComment} collections={collections}/>}
-            {commentFormat === "body" && <BodyCommentList comments={comments} onDelete={deleteComment} collections={collections}/>}
+            {commentFormat === "body" && <BodyCommentList comments={comments} onDelete={deleteComment} collections={collections}/>} */}
+            <CommentsManager 
+                comments={comments}
+                onDelete={deleteComment}
+                collections={collections} 
+                commentFormat={commentFormat}
+                />
         </div>
     )};
