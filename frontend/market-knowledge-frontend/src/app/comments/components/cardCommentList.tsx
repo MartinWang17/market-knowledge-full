@@ -13,8 +13,6 @@ export default function CardCommentList({
     activePost,
     setActivePost 
     }: CommentListProps) {
-    // const [showCollectionModal, setShowCollectionModal] = useState(false);
-    // const [activePost, setActivePost] = useState<Comment | null>(null);
 
     return ( 
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">

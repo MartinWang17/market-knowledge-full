@@ -1,7 +1,5 @@
 import { CommentListProps } from '../types';
-import { useState } from 'react';
 import RenderCollectionModal from './collectionModal';
-import { Comment } from '../types'
 
 export default function TitleCommentList( { 
     comments, 

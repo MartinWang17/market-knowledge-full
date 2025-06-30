@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { Comment } from './types';
-import { CardCommentList, TitleCommentList, BodyCommentList } from './components';
 import RenderFormatSelector from '../formatSelector';
 import LoadingSpinner from '../loadingSpinner'
 import GetCollections from '../getCollections'
@@ -68,9 +67,6 @@ export default function Comments() {
                 commentFilter={commentFilter}
                 setCommentFilter={setCommentFilter}
                 />
-            {/* {commentFormat === "card" && <CardCommentList comments={comments} onDelete={deleteComment} collections={collections}/>}
-            {commentFormat === "title" && <TitleCommentList comments={comments} onDelete={deleteComment} collections={collections}/>}
-            {commentFormat === "body" && <BodyCommentList comments={comments} onDelete={deleteComment} collections={collections}/>} */}
             <CommentsManager 
                 comments={comments}
                 onDelete={deleteComment}
