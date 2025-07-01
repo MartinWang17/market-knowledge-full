@@ -83,7 +83,7 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                                     </li>
                             ))}
                         </ul>
-                    <button className="btn btn-secondary mb-2" style={{
+                    <button className="btn btn-secondary no-hover mb-2" style={{
                         width: "100%",
                         background: "rgb(66, 66, 66)",
                         color: "#fff",
@@ -91,7 +91,7 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                         }} onClick={() => { /* logic for create new */ }}>
                         Create New Collection
                     </button>
-                    <button className="btn btn-danger" style={{width: "100%"}} onClick={() => setShowCollectionModal(false)}>Close</button>
+                    <button className="btn btn-danger no-hover" style={{width: "100%"}} onClick={() => setShowCollectionModal(false)}>Close</button>
                 </div>
             </div>
         )}

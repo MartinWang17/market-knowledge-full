@@ -81,3 +81,10 @@ a {
   background-color: #3599a690 !important;
   color: #fff !important;
 }
+
+.no-hover:hover {
+  background: inherit !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
