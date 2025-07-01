@@ -30,7 +30,14 @@ export default function CardCommentList({
                                 {comment.title}
                             </a>
                             <div className="card-text mb-4" style={{ color: "fff" }}>
-                                {comment.body}
+                                {comment.body.length > 500 ? (
+                                <>
+                                {comment.body.slice(0, 500)} ...
+                                <br />
+                                <br />
+                                ...click link to read more
+                                </>
+                                ) : (comment.body)}
                             </div>
                             {comment.upvotes && (
                             <div className="mt-auto small text-light opacity-75">
