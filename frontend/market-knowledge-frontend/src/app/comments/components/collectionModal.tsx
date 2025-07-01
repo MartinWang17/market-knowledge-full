@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 type collectionModalProps = {
     setShowCollectionModal: (show: boolean) => void;
     showCollectionModal: boolean;
-    post: Comment;
+    post: Comment | null;
     collections: Collection[];
 }
 
@@ -26,7 +26,6 @@ export default function RenderCollectionModal(props: collectionModalProps) {
             });
             if (response.ok) {
                 console.log(`Saved ${post.title} to ${collection_name}`)
-                alert("Collection added!")
                 setLocalCollections(prev => 
                     prev.includes(collection_name)
                     ? prev.filter(name => name !== collection_name)
@@ -46,6 +45,7 @@ export default function RenderCollectionModal(props: collectionModalProps) {
         setLocalCollections(post?.collections ?? []);
     }, [post])
 
+    if (!post) return null
 
     return (
         <>
@@ -57,7 +57,7 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                 <div className="modal-content" style={{
                 background: 'rgb(31, 30, 30)', padding: '2rem', borderRadius: '10px', minWidth: '300px', width: '20vw'
                 }}>
-                    <h6 className="mb-4">Manage Collections</h6>
+                    <h6 className="mb-4" style={{ color: "#fff" }}>Manage Collections</h6>
                         <ul style={{ listStyleType: "none", padding: 0}}>
                             {collections.map((collection) => (
                                     <li
@@ -83,15 +83,10 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                                     </li>
                             ))}
                         </ul>
-                    <button className="btn btn-secondary no-hover mb-2" style={{
-                        width: "100%",
-                        background: "rgb(66, 66, 66)",
-                        color: "#fff",
-                        border: "none",
-                        }} onClick={() => { /* logic for create new */ }}>
+                    <button className="collection-button mb-2">
                         Create New Collection
                     </button>
-                    <button className="btn btn-danger no-hover" style={{width: "100%"}} onClick={() => setShowCollectionModal(false)}>Close</button>
+                    <button className="custom-close-button" style={{width: "100%"}} onClick={() => setShowCollectionModal(false)}>Close</button>
                 </div>
             </div>
         )}

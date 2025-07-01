@@ -5,6 +5,7 @@ import RenderFormatSelector from '../formatSelector';
 import LoadingSpinner from '../loadingSpinner'
 import GetCollections from '../getCollections'
 import CommentsManager from './components/CommentsManager'
+import RenderCollectionModal from './components/collectionModal'
 
 console.log("Running in parent page of comments")
 export default function Comments() {
@@ -12,6 +13,8 @@ export default function Comments() {
     const [comments, setComments] = useState<Comment[]>([]);
     const [commentFormat, setCommentFormat] = useState("card"); // "card", "title", "body"
     const [commentFilter, setCommentFilter] = useState("relevance"); //
+    const [showCollectionModal, setShowCollectionModal] = useState(false);
+    const [activePost, setActivePost] = useState<Comment | null>(null);
     const [loading, setLoading] = useState(true);
     const { collections } = GetCollections();
 
@@ -72,6 +75,16 @@ export default function Comments() {
                 onDelete={deleteComment}
                 collections={collections} 
                 commentFormat={commentFormat}
+                showCollectionModal={showCollectionModal}
+                setShowCollectionModal={setShowCollectionModal}
+                activePost={activePost}
+                setActivePost={setActivePost}
                 />
+            <RenderCollectionModal 
+                showCollectionModal={showCollectionModal}
+                setShowCollectionModal={setShowCollectionModal}
+                post={activePost}
+                collections={collections}
+            />
         </div>
     )};

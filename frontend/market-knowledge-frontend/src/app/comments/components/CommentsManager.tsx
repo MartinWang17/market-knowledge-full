@@ -8,6 +8,10 @@ type CommentsManagerProps = {
     onDelete: (id: string) => void;
     collections: Collection[];
     commentFormat: string;
+    showCollectionModal: boolean;
+    setShowCollectionModal: (show: boolean) => void;
+    activePost: (Comment | null);
+    setActivePost: (post: Comment) => void;
 }
 
 //Object to store component references
@@ -17,9 +21,16 @@ const COMMENT_LIST_COMPONENTS: Record<string, React.ComponentType<any>> = {
     body: BodyCommentList,
 };
 
-export default function CommentsManager({ comments, onDelete, collections, commentFormat } : CommentsManagerProps) {
-    const [showCollectionModal, setShowCollectionModal] = useState(false);
-    const [activePost, setActivePost] = useState<Comment | null>(null);
+export default function CommentsManager({
+    comments, 
+    onDelete, 
+    collections, 
+    commentFormat, 
+    showCollectionModal,
+    setShowCollectionModal,
+    activePost,
+    setActivePost,
+    } : CommentsManagerProps) {
     const CommentListComponents = COMMENT_LIST_COMPONENTS[commentFormat] || CardCommentList;
 
     return (
