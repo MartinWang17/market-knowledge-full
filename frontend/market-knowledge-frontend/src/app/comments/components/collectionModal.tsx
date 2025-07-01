@@ -21,7 +21,7 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                 },
                 body: JSON.stringify({
                     post_id: post.id,
-                    new_collection: collection_name
+                    collection: collection_name
                 })
             });
             if (response.ok) {
