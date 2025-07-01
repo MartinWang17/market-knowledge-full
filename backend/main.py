@@ -111,12 +111,12 @@ def get_collections():
     collections = result.data if hasattr(result, "data") else []
     return {"collections": collections}
 
-class SaveToCollection(BaseModel):
+class Collection(BaseModel):
     post_id: str = Field(..., description="The id of the post to add the collection to")
-    new_collection: str = Field("Favorites", description="The collection to save the post to. Default is 'Favorites'")
+    collection: str = Field("Favorites", description="The collection to save the post to. Default is 'Favorites'")
 
 @app.post("/save-to-collection")
-def save_to_collection(req: SaveToCollection):
+def save_to_collection(req: Collection):
     """
     Takes a post id and a collection name. Adds the post to the new collection. Returns nothing. 
     """
@@ -126,12 +126,18 @@ def save_to_collection(req: SaveToCollection):
     if not collections: #No collections yet for this post
         collections = []
 
-    if req.new_collection not in collections:
-        collections.append(req.new_collection)
+    if req.collection not in collections:
+        collections.append(req.collection)
         supabase.table("reddit_posts").update({"collections": collections}).eq("id", req.post_id).execute()
         return {"message": "Collection added"}
     else: 
-        return {"message": f"Post already in '{req.new_collection}'"}
+        return {"message": f"Post already in '{req.collection}'"}
+    
+def remove_from_collection(req: Collection):
+    """
+    Takes a post id and a collection name. Adds the post to the new collection. Returns nothing. 
+    """
+    pass
 
 
 # For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
