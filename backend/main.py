@@ -111,15 +111,38 @@ def get_collections():
     collections = result.data if hasattr(result, "data") else []
     return {"collections": collections}
 
+class SaveToCollection(BaseModel):
+    post_id: str = Field(..., description="The id of the post to add the collection to")
+    new_collection: str = Field("Favorites", description="The collection to save the post to. Default is 'Favorites'")
+
+@app.post("/save-to-collection")
+def save_to_collection(req: SaveToCollection):
+    """
+    Takes a post id and a collection name. Adds the post to the new collection. Returns nothing. 
+    """
+    response = supabase.table("reddit_posts").select("collections").eq("id", req.post_id).single().execute()
+    collections = response.data["collections"]
+        
+    if not collections: #No collections yet for this post
+        collections = []
+
+    if req.new_collection not in collections:
+        collections.append(req.new_collection)
+        supabase.table("reddit_posts").update({"collections": collections}).eq("id", req.post_id).execute()
+        return {"message": "Collection added"}
+    else: 
+        return {"message": f"Post already in '{req.new_collection}'"}
+
 
 # For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
 if __name__ == "__main__":
-    hot_posts = scraper.fetch_posts("Anxiety", limit=10, method="top", query="Night")
-    for post in hot_posts:
-        save_post_to_supabase(
-            title=post["title"],
-            body=post["body"],
-            link=post["link"],
-            upvotes=post["upvotes"],
-            subreddit="Anxiety"
-            )
+    # hot_posts = scraper.fetch_posts("Anxiety", limit=10, method="top", query="Night")
+    # for post in hot_posts:
+    #     save_post_to_supabase(
+    #         title=post["title"],
+    #         body=post["body"],
+    #         link=post["link"],
+    #         upvotes=post["upvotes"],
+    #         subreddit="Anxiety"
+    #         )
+    save_to_collection("8558ce46-b830-4adb-8e08-a30050b7a9b2")
