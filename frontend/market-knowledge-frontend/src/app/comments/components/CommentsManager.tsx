@@ -10,6 +10,7 @@ type CommentsManagerProps = {
     commentFormat: string;
 }
 
+//Object to store component references
 const COMMENT_LIST_COMPONENTS: Record<string, React.ComponentType<any>> = {
     card: CardCommentList,
     title: TitleCommentList,

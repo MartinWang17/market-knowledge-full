@@ -49,12 +49,13 @@ export default function CardCommentList({
                                     setActivePost(comment)}}>
                                 Save
                             </button>
+                            {activePost &&
                             <RenderCollectionModal 
                                 showCollectionModal={showCollectionModal}
                                 setShowCollectionModal={setShowCollectionModal}
                                 post={activePost}
                                 collections={collections}
-                            />
+                            />}
                             </div>
                             )}
                         </div>
