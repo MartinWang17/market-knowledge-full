@@ -118,7 +118,7 @@ class Collection(BaseModel):
 @app.post("/save-to-collection")
 def save_to_collection(req: Collection):
     """
-    Takes a post id and a collection name. Adds the post to the new collection. Returns nothing. 
+    Takes a post id and a collection name. Adds the post to the new collection.
     """
     response = supabase.table("reddit_posts").select("collections").eq("id", req.post_id).single().execute()
     collections = response.data["collections"]
@@ -132,12 +132,21 @@ def save_to_collection(req: Collection):
         return {"message": "Collection added"}
     else: 
         return {"message": f"Post already in '{req.collection}'"}
-    
+
+@app.post("/remove-from-collection")
 def remove_from_collection(req: Collection):
     """
-    Takes a post id and a collection name. Adds the post to the new collection. Returns nothing. 
+    Takes a post id and a collection name. Removes the collection from the post. Returns nothing. 
     """
-    pass
+    response = supabase.table("reddit_posts").select("collections").eq("id", req.post_id).single().execute()
+    collections = response.data["collections"]
+    
+    if req.collection in collections:
+        collections.remove(req.collection)
+        supabase.table("reddit_posts").update({"collections": collections}).eq("id", req.post_id).execute()
+        return {"message": "Collection removed"}
+    else:
+        return {"message": "Collection not found on this post"}
 
 
 # For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
@@ -151,4 +160,4 @@ if __name__ == "__main__":
     #         upvotes=post["upvotes"],
     #         subreddit="Anxiety"
     #         )
-    save_to_collection("8558ce46-b830-4adb-8e08-a30050b7a9b2")
+    remove_from_collection("8558ce46-b830-4adb-8e08-a30050b7a9b2", "Favorites")
