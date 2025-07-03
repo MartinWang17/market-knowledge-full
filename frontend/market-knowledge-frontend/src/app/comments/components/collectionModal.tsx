@@ -26,11 +26,7 @@ export default function RenderCollectionModal(props: collectionModalProps) {
             });
             if (response.ok) {
                 console.log(`Saved ${post.title} to ${collection_name}`)
-                setLocalCollections(prev => 
-                    prev.includes(collection_name)
-                    ? prev.filter(name => name !== collection_name)
-                    : [...prev, collection_name]
-                )
+                setLocalCollections(prev => [...prev, collection_name])
             }
             else {
                 alert("Error saving post to collection")
@@ -39,13 +35,37 @@ export default function RenderCollectionModal(props: collectionModalProps) {
             alert("Network error adding to collection.")
         }
     };
+    const removeFromCollection = async (post: Comment, collection_name: string) => {
+        try{
+            const response = await fetch("http://localhost:8000/remove-from-collection", {
+                method: "POST", 
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    post_id: post.id,
+                    collection: collection_name
+                })
+            });
+            if (response.ok) {
+                console.log(`Removed ${post.title} from ${collection_name}`)
+                //Goes through the collection array and saves all collections that is not the collection_name being removed
+                setLocalCollections(prev => prev.filter(name => name !== collection_name))
+            }
+            else {
+                alert(`Error removing ${post.title} from ${collection_name}`)
+            }
+        }   catch (error) {
+                alert("Nerwork error removing from collection")
+        }
+    }
     
     useEffect(() => {
         post && 
         setLocalCollections(post?.collections ?? []);
     }, [post])
 
-    if (!post) return null
+    if (!post) return null //When modal first renders and post does not exist yet
 
     return (
         <>
@@ -74,7 +94,17 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                                         <input
                                             type="checkbox"
                                             checked={Array.isArray(localCollections) && localCollections.includes(collection.collection_names)}
-                                            onChange={() => saveToCollection(post, collection.collection_names)}
+                                            onChange={(e) => {
+                                                console.log(e.target.checked)
+                                                if (e.target.checked) {
+                                                    //collection.collection_names is the CURRENT collection name. It's the collection column in table collections
+                                                    saveToCollection(post, collection.collection_names)
+                                                }
+                                                else {
+                                                    removeFromCollection(post, collection.collection_names)
+                                                }
+                                                
+                                            }}
                                             className="me-2"
                                             />
                                         }                           

@@ -1,16 +1,12 @@
 'use client'
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { CommentListProps } from '../types';
-import RenderCollectionModal from './collectionModal'
 
 console.log("Rendering CardCommentList")
 export default function CardCommentList({
     comments, 
     onDelete, 
-    collections, 
-    showCollectionModal,
     setShowCollectionModal,
-    activePost,
     setActivePost 
     }: CommentListProps) {
 
