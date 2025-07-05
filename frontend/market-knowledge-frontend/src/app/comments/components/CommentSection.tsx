@@ -7,8 +7,10 @@ import GetCollections from '../../getCollections'
 import CommentsManager from './CommentsManager'
 import RenderCollectionModal from './collectionModal'
 
+//Later come back to this and make it a reusable component across comments/page.tsx and collections/[slug]/page.tsx
 export default function CommentSection() {
-const [comments, setComments] = useState<Comment[]>([]);
+
+    const [comments, setComments] = useState<Comment[]>([]);
     const [commentFormat, setCommentFormat] = useState("card"); // "card", "title", "body"
     const [commentFilter, setCommentFilter] = useState("relevance"); //
     const [showCollectionModal, setShowCollectionModal] = useState(false);

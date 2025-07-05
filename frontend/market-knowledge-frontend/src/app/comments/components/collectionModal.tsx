@@ -75,9 +75,25 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                 background: 'rgba(0, 0, 0, 0.2)',
             }}>
                 <div className="modal-content" style={{
-                background: 'rgb(31, 30, 30)', padding: '2rem', borderRadius: '10px', minWidth: '300px', width: '20vw'
+                background: 'rgb(31, 30, 30)', padding: '1rem 2rem 2rem 2rem', borderRadius: '10px', minWidth: '300px', width: '20vw'
                 }}>
-                    <h6 className="mb-4" style={{ color: "#fff" }}>Manage Collections</h6>
+                    <div className="d-flex justify-content-between align-items-center mb-4">
+                        <h6 style={{ color: "#fff", margin: 0 }}>Manage Collections</h6>
+                        <button
+                                onClick={() => setShowCollectionModal(false)}
+                                style={{ 
+                                    background: 'none',
+                                    border: 'none',
+                                    color: 'white',
+                                    float: "right",
+                                    padding: 0,
+                                }}
+                                className="fs-2"
+                                aria-label="Close modal"
+                                >
+                                    &times;
+                            </button>
+                    </div>
                         <ul style={{ listStyleType: "none", padding: 0}}>
                             {collections.map((collection) => (
                                     <li
@@ -116,7 +132,7 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                     <button className="collection-button mb-2">
                         Create New Collection
                     </button>
-                    <button className="custom-close-button" style={{width: "100%"}} onClick={() => setShowCollectionModal(false)}>Close</button>
+                    {/* <button className="custom-close-button" style={{width: "100%"}} onClick={() => setShowCollectionModal(false)}>Close</button> */}
                 </div>
             </div>
         )}

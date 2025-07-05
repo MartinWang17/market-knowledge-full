@@ -11,6 +11,7 @@ export default function Home() {
   const [keyword, setKeyword] = useState("");
   const [sortBy, setSortBy] = useState("relevance");
   const [timeFilter, setTimeFilter] = useState("all");
+  const [scraping, setScraping] = useState(false)
 
   const handleScrape = async () => {
     console.log("Scraping comments from subreddit:", subreddit);
@@ -22,6 +23,8 @@ export default function Home() {
       alert("Please enter the subreddit name without the 'r/' prefix.");
       return;
     }
+
+    setScraping(true);
 
     try {
       const response = await fetch("http://localhost:8000/scrape", {
@@ -46,6 +49,7 @@ export default function Home() {
       console.error("Error scraping comments:", error);
     }
     // Reset the input fields after scraping
+    setScraping(false);
     setSubreddit("");
     setCommentCount(10);
   }
@@ -77,7 +81,7 @@ export default function Home() {
           onClick={handleKeywordSearch}
           >
           <span className="me-2">🔙</span> Default Search
-          </button>
+        </button>
         
         <div className="mb-3 w-100"
           style={{ maxWidth: "400px", width: "100%" }}
@@ -162,6 +166,16 @@ export default function Home() {
             Scrape Comments
           </button>
         </div>
+        {scraping && (
+          <div
+            className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)', zIndex: 1050 }}
+          >
+            <div className="bg-dark text-white p-4 rounded">
+              <h5>⏳ Scraping comments...</h5>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -249,7 +263,16 @@ export default function Home() {
             Scrape Comments
           </button>
         </form>
-
+        {scraping && (
+          <div
+            className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)', zIndex: 1050 }}
+          >
+            <div className="bg-dark text-white p-4 rounded">
+              <h5>⏳ Scraping comments...</h5>
+            </div>
+          </div>
+        )}
       </div>
     );
 }}
