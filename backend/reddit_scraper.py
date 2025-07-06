@@ -19,7 +19,14 @@ class RedditScraper:
             client_id=self.client_id,
             client_secret=self.client_secret,
             user_agent=self.user_agent,
+            username=self.username,
+            password=self.password
             )
+        
+        print("username:", self.username)
+        print("password:", self.password)
+        print("logged in as:", self.reddit.user.me())
+        
         
     def fetch_posts(self, subreddit_name, limit=10, method="top", query=None, sort="relevance", time_filter="all"):
         """

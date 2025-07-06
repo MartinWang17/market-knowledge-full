@@ -148,6 +148,25 @@ def remove_from_collection(req: Collection):
     else:
         return {"message": "Collection not found on this post"}
 
+class CollectionName(BaseModel): 
+    collection_name: str
+
+@app.post("/add-collection")
+def add_collection(req: CollectionName): 
+    
+    #first check if the name is already in the column, and if not, then add it. 
+    response = supabase.table("collections").select("collection_names").execute()
+    print("RESPONSE IS: \n\n", response)
+    collection_names = [row["collection_names"] for row in response.data]
+    print("Collections names is:", collection_names)
+    if req.collection_name in collection_names: 
+        print("Did not add!")
+        return {"message": "Collection name already exists!"}
+    else:
+        supabase.table("collections").insert({"collection_names": req.collection_name}).execute()
+        print("Did add!")
+        return {"message": "Collection added!"}
+
 
 # For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
 if __name__ == "__main__":
@@ -160,4 +179,7 @@ if __name__ == "__main__":
     #         upvotes=post["upvotes"],
     #         subreddit="Anxiety"
     #         )
-    remove_from_collection("8558ce46-b830-4adb-8e08-a30050b7a9b2", "Favorites")
+
+    # remove_from_collection("8558ce46-b830-4adb-8e08-a30050b7a9b2", "Favorites")
+
+    add_collection("new")
