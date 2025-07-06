@@ -29,6 +29,11 @@ export default function Navbar() {
                 Collections
                 </Link>
             </li>
+            <li className="nav-item">
+                <Link href="/login" className={`nav-link ${pathname === "/login" ? "active" : ""}`}>
+                Profile
+                </Link>
+            </li>
             </ul>
         </header>
         </div>
