@@ -5,6 +5,7 @@ import GetCollections from '../getCollections'
 export default function Collections() {
 
     const { collections, setCollections } = GetCollections();
+    // const [confirmDelete, setConfirmDelete] = useState
     const deleteCollection = async (collection_name: string) => {
         try {
             const response = await fetch("http://localhost:8000/delete-collection", {
@@ -42,8 +43,10 @@ export default function Collections() {
                     className="btn btn-danger"
                     style={{ float: "right" }}
                     onClick={() => {
-                        console.log(collection.collection_names)
+                        const confirmed = window.confirm("Are you sure you want to delete this collection?");
+                        if (confirmed) {
                         deleteCollection(collection.collection_names)
+                        }
                     }}
                 >
                     Delete
