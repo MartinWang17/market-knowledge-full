@@ -136,7 +136,7 @@ def save_to_collection(req: Collection):
 @app.post("/remove-from-collection")
 def remove_from_collection(req: Collection):
     """
-    Takes a post id and a collection name. Removes the collection from the post. Returns nothing. 
+    Takes a post id and a collection name. Removes the collection from the post.
     """
     response = supabase.table("reddit_posts").select("collections").eq("id", req.post_id).single().execute()
     collections = response.data["collections"]
@@ -153,7 +153,9 @@ class CollectionName(BaseModel):
 
 @app.post("/add-collection")
 def add_collection(req: CollectionName): 
-    
+    """
+    Takes a collection name as a string to add a collection. 
+    """
     #first check if the name is already in the column, and if not, then add it. 
     response = supabase.table("collections").select("collection_names").execute()
     print("RESPONSE IS: \n\n", response)
@@ -167,6 +169,14 @@ def add_collection(req: CollectionName):
         print("Did add!")
         return {"message": "Collection added!"}
 
+@app.delete("/delete-collection")
+def remove_collection(req: CollectionName):
+    """
+    Takes a collection name and deletes the matching collection. 
+    """
+
+    response = supabase.table("collections").delete().eq("collection_names", req.collection_name).execute()
+    return response
 
 # For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
 if __name__ == "__main__":
@@ -182,4 +192,4 @@ if __name__ == "__main__":
 
     # remove_from_collection("8558ce46-b830-4adb-8e08-a30050b7a9b2", "Favorites")
 
-    add_collection("new")
+    remove_collection("martin")
