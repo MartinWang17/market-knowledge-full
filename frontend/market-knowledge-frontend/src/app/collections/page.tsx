@@ -5,7 +5,6 @@ import GetCollections from '../getCollections'
 export default function Collections() {
 
     const { collections, setCollections } = GetCollections();
-    // const [confirmDelete, setConfirmDelete] = useState
     const deleteCollection = async (collection_name: string) => {
         try {
             const response = await fetch("http://localhost:8000/delete-collection", {
@@ -38,7 +37,7 @@ export default function Collections() {
                             border: "none",
                             }}
                 >
-                <Link href={`/collections/${collection.collection_names}`}>{collection.collection_names}</Link>
+                <Link href={`/collections/${collection.slug}`}>{collection.collection_names}</Link>
                 <button
                     className="btn btn-danger"
                     style={{ float: "right" }}

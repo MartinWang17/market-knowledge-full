@@ -13,6 +13,7 @@ export type { Comment };
 type Collection = {
     id: string;
     collection_names: string;
+    slug: string;
 }
 
 export type { Collection };

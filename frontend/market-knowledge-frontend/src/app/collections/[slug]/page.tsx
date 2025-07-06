@@ -55,7 +55,9 @@ export default function CollectionSlugPage() {
     const slug = params.slug as string;
 
     //update comment to only include comments in the current collection. Checks if the comment has a collection and if it includes the current collection name
-    const collectionComments = comments.filter((comment) => comment.collections && comment.collections.includes(slug));
+    const collectionComments = comments.filter((comment) => 
+        comment.collections && 
+        comment.collections.some((name) => encodeURIComponent(name) === slug));
 
     if (loading) {
         return <LoadingSpinner />
