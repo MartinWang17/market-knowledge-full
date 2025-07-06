@@ -16,7 +16,7 @@ export default function CollectionSlugPage() {
     const [showCollectionModal, setShowCollectionModal] = useState(false);
     const [activePost, setActivePost] = useState<Comment | null>(null);
     const [loading, setLoading] = useState(true);
-    const { collections } = GetCollections();
+    const { collections, refreshCollections } = GetCollections();
 
     useEffect(() => {
     fetch(`http://localhost:8000/comments?filter=${commentFilter}`)
@@ -64,7 +64,7 @@ export default function CollectionSlugPage() {
     return (
         <div className="container my-5">
             <div className="text-center mb-4">
-                <span className="badge secondary-badge-color fs-3">Collection: {slug}</span>
+                <span className="badge secondary-badge-color fs-3">Collection: {decodeURIComponent(slug)}</span>
             </div>
             <RenderFormatSelector
                 commentFormat={commentFormat}
@@ -87,6 +87,7 @@ export default function CollectionSlugPage() {
                 setShowCollectionModal={setShowCollectionModal}
                 post={activePost}
                 collections={collections}
+                refreshCollections={refreshCollections}
             />
     </div>
     );

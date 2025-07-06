@@ -4,10 +4,7 @@ import RenderCollectionModal from './collectionModal';
 export default function TitleCommentList( { 
     comments, 
     onDelete, 
-    collections,
-    showCollectionModal,
     setShowCollectionModal,
-    activePost,
     setActivePost,
     }: CommentListProps) {
 
