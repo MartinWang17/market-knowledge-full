@@ -49,14 +49,6 @@ export default function TitleCommentList( {
                                         setActivePost(comment)}}>
                                     Save
                                 </button>
-                                {showCollectionModal && activePost && (
-                                    <RenderCollectionModal 
-                                        showCollectionModal={showCollectionModal}
-                                        setShowCollectionModal={setShowCollectionModal}
-                                        post={activePost}
-                                        collections={collections}
-                                    />
-                                )}
                             </div>
                         </li>
                     ))}

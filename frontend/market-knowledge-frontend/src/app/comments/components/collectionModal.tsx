@@ -8,10 +8,12 @@ type collectionModalProps = {
     showCollectionModal: boolean;
     post: Comment | null;
     collections: Collection[];
+    refreshCollections: () => Promise<void>
 }
 
 export default function RenderCollectionModal(props: collectionModalProps) {
-    const {setShowCollectionModal, showCollectionModal, post, collections} = props
+    const {setShowCollectionModal, showCollectionModal, post, collections, refreshCollections} = props
+    //use localCollections to auto update collections
     const [localCollections, setLocalCollections] = useState<string[]>(post?.collections ?? []); //Set localCollections to post.collections if it exists
     const [addToCollectionModal, setAddToCollectionModal] = useState(false)
     const saveToCollection = async (post: Comment, collection_name: string) => {
@@ -73,8 +75,8 @@ export default function RenderCollectionModal(props: collectionModalProps) {
         <>
         {addToCollectionModal &&
             <AddToCollectionModal 
-                addToCollectionModal={addToCollectionModal}
                 setAddToCollectionModal={setAddToCollectionModal}
+                refreshCollections={refreshCollections}
         />}
         {showCollectionModal && (
             <div className="modal-backdrop d-flex justify-content-center align-items-center" style={{

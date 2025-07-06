@@ -16,7 +16,7 @@ export default function CommentSection() {
     const [showCollectionModal, setShowCollectionModal] = useState(false);
     const [activePost, setActivePost] = useState<Comment | null>(null);
     const [loading, setLoading] = useState(true);
-    const { collections } = GetCollections();
+    const { collections, refreshCollections } = GetCollections();
 
     useEffect(() => {
     fetch(`http://localhost:8000/comments?filter=${commentFilter}`)
@@ -85,6 +85,7 @@ export default function CommentSection() {
                     setShowCollectionModal={setShowCollectionModal}
                     post={activePost}
                     collections={collections}
+                    refreshCollections={refreshCollections}
                 />
             </div>
 )};

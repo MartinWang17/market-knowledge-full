@@ -2,9 +2,10 @@ import { useState } from 'react'
 
 type AddToCollectionModalProps = {
     setAddToCollectionModal: (add: boolean) => void;
+    refreshCollections: () => Promise<void>
 }
 
-export default function AddToCollectionModal({setAddToCollectionModal} : AddToCollectionModalProps) {
+export default function AddToCollectionModal({setAddToCollectionModal, refreshCollections} : AddToCollectionModalProps) {
 
     const [collectionName, setCollectionName] = useState("")
     const [error, setError] = useState("")
@@ -19,12 +20,14 @@ export default function AddToCollectionModal({setAddToCollectionModal} : AddToCo
                     collection_name: collection_name
                 })
             })
-            const data = await response.json()
-            alert(data.message)
-            console.log(data)
-            setAddToCollectionModal(false)
+            if (response.ok) {
+                const data = await response.json()
+                setAddToCollectionModal(false)
+                alert(data.message)
+                await refreshCollections();
+            } 
         } catch (error) {
-            alert("Network error adding collection")
+            alert("Network error adding collection right here")
         }
     }
     
@@ -75,7 +78,8 @@ export default function AddToCollectionModal({setAddToCollectionModal} : AddToCo
                         className="collection-button me-2" 
                         style={{ borderRadius: "30px" }}
                         onClick={() => setAddToCollectionModal(false)}
-                        >Cancel
+                        >
+                        Cancel
                     </button>
                     <button //button to create the collection
                         className="collection-button" 
@@ -86,7 +90,6 @@ export default function AddToCollectionModal({setAddToCollectionModal} : AddToCo
                                 setError("You must pick a title")
                                 return;
                             }
-
                             addCollection(collectionName)
                         }}>
                         Create

@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react'
 import { Collection } from './comments/types';
 
 console.log("Running in getCollections")
-export default function GetCollections(): { collections: Collection[]; setCollections: React.Dispatch<React.SetStateAction<Collection[]>> } {
+export default function GetCollections(): { 
+    collections: Collection[];
+    setCollections: React.Dispatch<React.SetStateAction<Collection[]>>;
+    refreshCollections: () => Promise<void>;
+    } {
     const [collections, setCollections] = useState<Collection[]>([])
     useEffect(() => {
         fetch(`http://localhost:8000/collections`)
@@ -16,5 +20,14 @@ export default function GetCollections(): { collections: Collection[]; setCollec
                 console.error("Error fetching comments:", error)
             })
     }, [])
-    return { collections, setCollections };
+
+    const refreshCollections = async (): Promise<void> => {
+        return fetch("http://localhost:8000/collections")
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("comments in refresh:", data.collections)
+                        setCollections(data.collections)
+                    })
+    };
+    return { collections, setCollections, refreshCollections };
 }
