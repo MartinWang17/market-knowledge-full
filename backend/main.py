@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from reddit_scraper import RedditScraper
+from urllib.parse import quote
 
 load_dotenv()
 
@@ -165,7 +166,11 @@ def add_collection(req: CollectionName):
         print("Did not add!")
         return {"message": "Collection name already exists!"}
     else:
-        supabase.table("collections").insert({"collection_names": req.collection_name}).execute()
+        slug = quote(req.collection_name, safe="")
+        supabase.table("collections").insert({
+            "collection_names": req.collection_name,
+            "slug": slug
+            }).execute()
         print("Did add!")
         return {"message": "Collection added!"}
 
@@ -174,7 +179,6 @@ def remove_collection(req: CollectionName):
     """
     Takes a collection name and deletes the matching collection. 
     """
-
     response = supabase.table("collections").delete().eq("collection_names", req.collection_name).execute()
     return response
 
