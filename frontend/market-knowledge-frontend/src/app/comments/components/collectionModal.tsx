@@ -1,6 +1,7 @@
 import { Comment } from '../types'
 import { Collection } from '../types'
 import { useState, useEffect } from 'react'
+import AddToCollectionModal from './AddToCollectionModal'
 
 type collectionModalProps = {
     setShowCollectionModal: (show: boolean) => void;
@@ -12,6 +13,7 @@ type collectionModalProps = {
 export default function RenderCollectionModal(props: collectionModalProps) {
     const {setShowCollectionModal, showCollectionModal, post, collections} = props
     const [localCollections, setLocalCollections] = useState<string[]>(post?.collections ?? []); //Set localCollections to post.collections if it exists
+    const [addToCollectionModal, setAddToCollectionModal] = useState(false)
     const saveToCollection = async (post: Comment, collection_name: string) => {
         try {
             const response = await fetch('http://localhost:8000/save-to-collection', {
@@ -69,6 +71,11 @@ export default function RenderCollectionModal(props: collectionModalProps) {
 
     return (
         <>
+        {addToCollectionModal &&
+            <AddToCollectionModal 
+                addToCollectionModal={addToCollectionModal}
+                setAddToCollectionModal={setAddToCollectionModal}
+        />}
         {showCollectionModal && (
             <div className="modal-backdrop d-flex justify-content-center align-items-center" style={{
                 position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', 
@@ -85,7 +92,6 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                                     background: 'none',
                                     border: 'none',
                                     color: 'white',
-                                    float: "right",
                                     padding: 0,
                                 }}
                                 className="fs-2"
@@ -129,7 +135,13 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                                     </li>
                             ))}
                         </ul>
-                    <button className="collection-button mb-2">
+                    <button 
+                        className="collection-button mb-2"
+                        style={{ borderRadius: "30px" }}
+                        onClick={() => {
+                            setAddToCollectionModal(true);
+                            setShowCollectionModal(false);
+                            }}>
                         Create New Collection
                     </button>
                     {/* <button className="custom-close-button" style={{width: "100%"}} onClick={() => setShowCollectionModal(false)}>Close</button> */}
