@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Image from "next/image";
 import styles from "./page.module.css";
+import { useUser } from '@/context/UserContext';
 
 export default function Home() {
 
@@ -12,12 +13,24 @@ export default function Home() {
   const [sortBy, setSortBy] = useState("relevance");
   const [timeFilter, setTimeFilter] = useState("all");
   const [scraping, setScraping] = useState(false)
+  const user = useUser();
+
+  if (user) {
+    console.log("User ID:", user.id);
+  } else {
+    console.log("User not loaded yet or not logged in")
+  }
 
   const handleScrape = async () => {
+    if (!user) {
+      alert("You must be logged in to scrape comments.");
+      return;
+    }
     console.log("Scraping comments from subreddit:", subreddit);
     console.log("Number of comments to scrape:", commentCount);
     console.log("Scrape method:", method);
     console.log("Keyword to search:", keyword);
+    console.log("User ID in handleScrape:", user.id)
 
     if (subreddit.includes("r/")) {
       alert("Please enter the subreddit name without the 'r/' prefix.");
@@ -39,8 +52,12 @@ export default function Home() {
           keyword: keyword,
           sort: sortBy,
           time_filter: timeFilter,
+          user_id: user.id
         }),
       });
+      if (!response.ok) {
+        throw new Error("Server Error:" + response.status)
+      }
 
       //parse the JSON response
       const data = await response.json()
@@ -64,7 +81,7 @@ export default function Home() {
     return (
       <div className="d-flex flex-column justify-content-center align-items-center"
         style={{ width: "100vw" }}>
-          <div className="mb-1 d-flex">
+          {/* <div className="mb-1 d-flex">
             <Image
               className={styles.logo}
               src="/market-knowledge-logo-dark.png"
@@ -73,8 +90,13 @@ export default function Home() {
               height={180}
               priority
             />
-          </div>
-
+          </div> */}
+          <h1 className="main-heading text-center mt-5 mb-4">
+            Start scraping and <br />
+            <span className="highlighted ms-2">
+              know your market
+            </span>
+          </h1>
         <button
           type="button"
           className="btn btn-outline-secondary mb-3"
@@ -184,7 +206,7 @@ export default function Home() {
     return (
       <div className="d-flex flex-column justify-content-center align-items-center"
           style={{ width: "100vw"}}>
-        <div className="mb-1 d-flex justify-content-center">
+        {/* <div className="mb-1 d-flex justify-content-center">
           <Image
             className={styles.logo}
             src="/market-knowledge-logo-dark.png"
@@ -193,8 +215,13 @@ export default function Home() {
             height={180}
             priority
           />
-        </div>
-
+        </div> */}
+        <h1 className="main-heading text-center mt-5 mb-4">
+          Start scraping and <br />
+          <span className="highlighted ms-2">
+            know your market
+          </span>
+        </h1>
         <button
           type="button"
           className="btn btn-outline-secondary mb-3"
@@ -202,10 +229,6 @@ export default function Home() {
           >
           <span className="me-2">🔍</span> Search by Keyword
         </button>
-        {/* <div
-          className="w-100 d-flex flex-column align-items-center"
-          style={{ maxWidth: "400px", width: "100%" }}
-        > */}
         <form className="w-100 d-flex flex-column align-items-center"
           style={{ maxWidth: "400px", width: "100%" }}
           onSubmit={(e) => {

@@ -11,18 +11,18 @@ import { supabase } from "@/app/supabaseClient";
 console.log("Running in parent page of comments")
 export default function Comments() {
 
-    useEffect(() => {
-        async function testSupabase() {
-            const { data, error } = await supabase.from("reddit_posts").select("*").limit(1);
-            if (error) {
-                console.error("Supabase error:", error.message);
-            } else {
-                console.log("Supabase test data:", data);
-            }
-        }
+    // useEffect(() => {
+    //     async function testSupabase() {
+    //         const { data, error } = await supabase.from("reddit_posts").select("*").limit(1);
+    //         if (error) {
+    //             console.error("Supabase error:", error.message);
+    //         } else {
+    //             console.log("Supabase test data:", data);
+    //         }
+    //     }
 
-        testSupabase();
-    }, []);
+    //     testSupabase();
+    // }, []);
 
     const [comments, setComments] = useState<Comment[]>([]);
     const [commentFormat, setCommentFormat] = useState("card"); // "card", "title", "body"
