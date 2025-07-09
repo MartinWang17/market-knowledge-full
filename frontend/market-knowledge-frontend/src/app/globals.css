@@ -110,3 +110,21 @@ a {
   background-color: rgb(90, 90, 90); /* your hover color */
   cursor: pointer;
 }
+
+.main-heading {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+.highlighted {
+  background: #285280;
+  color: #fff;
+  border-radius: 0.2em;
+  padding: 0.15em 0.4em;
+  font-weight: 700;
+  display: inline-block;
+  transform: skew(-5deg);
+  box-shadow: 2px 3px 6px rgba(40, 82, 128, 0.07)
+}
