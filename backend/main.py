@@ -24,7 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def save_post_to_supabase(title, body, link, upvotes, subreddit, keyword=None):
+def save_post_to_supabase(title, body, link, upvotes, subreddit, user_id, keyword=None):
     """Saves a Reddit post to Supabase. Returns nothing."""
     data = {
         "title": title,
@@ -33,8 +33,9 @@ def save_post_to_supabase(title, body, link, upvotes, subreddit, keyword=None):
         "upvotes": upvotes,
         "subreddit": subreddit,
         "keyword": keyword,
+        "user_id": user_id
     }
-    print("\n\nSaving post to Supabase:", data, "\n\n")
+    # print("\n\nSaving post to Supabase:", data, "\n\n")
     supabase.table("reddit_posts").insert(data).execute()
 
 class ScrapeRequest(BaseModel):
@@ -44,6 +45,7 @@ class ScrapeRequest(BaseModel):
     keyword: str = Field(None, description="Optional search query to filter posts. If provided, 'method' will be ignored.")
     sort: str = Field("relevance", description="Sort order for search results. Default is 'relevance'.")
     time_filter: str = Field("all", description="Time filter for search results. Default is 'all'.")
+    user_id: str = Field("", description="The users unique id to attach to posts that are scraped. Default is ''.")
 
 @app.post("/scrape")
 def scrape_comments(req: ScrapeRequest):
@@ -59,7 +61,8 @@ def scrape_comments(req: ScrapeRequest):
             limit=req.commentCount, 
             query=req.keyword, 
             sort=req.sort, 
-            time_filter=req.time_filter
+            time_filter=req.time_filter,
+            user_id=req.user_id,
         )
 
     else:
@@ -71,7 +74,8 @@ def scrape_comments(req: ScrapeRequest):
             link=post["link"],
             upvotes=post["upvotes"],
             subreddit=req.subreddit,
-            keyword=req.keyword
+            keyword=req.keyword,
+            user_id=req.user_id,
         )
     
     if not all_posts:
@@ -196,4 +200,5 @@ if __name__ == "__main__":
 
     # remove_from_collection("8558ce46-b830-4adb-8e08-a30050b7a9b2", "Favorites")
 
-    remove_collection("martin")
+    # remove_collection("martin")
+    pass

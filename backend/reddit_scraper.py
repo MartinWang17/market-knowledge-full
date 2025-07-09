@@ -12,20 +12,20 @@ class RedditScraper:
         self.client_id = os.getenv("REDDIT_CLIENT_ID")
         self.client_secret = os.getenv("REDDIT_CLIENT_SECRET")
         self.user_agent = os.getenv("REDDIT_USER_AGENT")
-        self.username = os.getenv("REDDIT_USER_NAME")
-        self.password = os.getenv("REDDIT_USER_PASSWORD")
+        # self.username = os.getenv("REDDIT_USER_NAME")
+        # self.password = os.getenv("REDDIT_USER_PASSWORD")
 
         self.reddit = praw.Reddit(
             client_id=self.client_id,
             client_secret=self.client_secret,
             user_agent=self.user_agent,
-            username=self.username,
-            password=self.password
+            # username=self.username,
+            # password=self.password
             )
         
-        print("username:", self.username)
-        print("password:", self.password)
-        print("logged in as:", self.reddit.user.me())
+        # print("username:", self.username)
+        # print("password:", self.password)
+        # print("logged in as:", self.reddit.user.me())
         
         
     def fetch_posts(self, subreddit_name, limit=10, method="top", query=None, sort="relevance", time_filter="all"):
