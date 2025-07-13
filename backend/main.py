@@ -154,7 +154,8 @@ def remove_from_collection(req: Collection):
         return {"message": "Collection not found on this post"}
 
 class CollectionName(BaseModel): 
-    collection_name: str
+    collection_name: str = Field(..., description="The name of the collection to add or remove.")
+    user_id: str = Field("", description="The user's unique id to attach to the collection. Default is ''.")
 
 @app.post("/add-collection")
 def add_collection(req: CollectionName): 
@@ -173,7 +174,8 @@ def add_collection(req: CollectionName):
         slug = quote(req.collection_name, safe="")
         supabase.table("collections").insert({
             "collection_names": req.collection_name,
-            "slug": slug
+            "slug": slug,
+            "user_id": req.user_id
             }).execute()
         print("Did add!")
         return {"message": "Collection added!"}
