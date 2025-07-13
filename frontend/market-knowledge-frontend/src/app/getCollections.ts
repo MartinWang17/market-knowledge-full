@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Collection } from './comments/types';
+import { useUser } from '@/context/UserContext';
 
 console.log("Running in getCollections")
 export default function GetCollections(): { 
@@ -7,14 +8,21 @@ export default function GetCollections(): {
     setCollections: React.Dispatch<React.SetStateAction<Collection[]>>;
     refreshCollections: () => Promise<void>;
     } {
+    const user = useUser();
     const [collections, setCollections] = useState<Collection[]>([])
     useEffect(() => {
         fetch(`http://localhost:8000/collections`)
             .then(res => res.json())
             .then(data => {
                 //data.collections is the array of collections from supabase
-                console.log("Fetched collections:", data.collections);
-                setCollections(data.collections);
+                // Check if user is logged in
+                if (!user) {
+                    console.log("User not logged in, no collections to fetch")
+                    return;
+                }
+                // Filter collections by user ID if user is logged in
+                const userCollections = data.collections.filter((collection: Collection) => collection.user_id === user.id);
+                setCollections(userCollections);
             })
             .catch(error => {
                 console.error("Error fetching comments:", error)
@@ -25,8 +33,9 @@ export default function GetCollections(): {
         return fetch("http://localhost:8000/collections")
                     .then(res => res.json())
                     .then(data => {
-                        console.log("comments in refresh:", data.collections)
-                        setCollections(data.collections)
+                        const userCollections = data.collections.filter((collection: Collection) => collection.user_id === user?.id);
+                        console.log("comments in refresh:", data.userCollections);
+                        setCollections(userCollections);
                     })
     };
     return { collections, setCollections, refreshCollections };

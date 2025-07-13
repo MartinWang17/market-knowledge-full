@@ -6,7 +6,7 @@ import LoadingSpinner from '../loadingSpinner'
 import GetCollections from '../getCollections'
 import CommentsManager from './components/CommentsManager'
 import RenderCollectionModal from './components/collectionModal'
-import { supabase } from "@/app/supabaseClient";
+import { useUser } from "@/context/UserContext";
 
 console.log("Running in parent page of comments")
 export default function Comments() {
@@ -31,21 +31,32 @@ export default function Comments() {
     const [activePost, setActivePost] = useState<Comment | null>(null);
     const [loading, setLoading] = useState(true);
     const { collections, refreshCollections } = GetCollections();
+    const user = useUser();
 
     useEffect(() => {
+        if (!user) {
+            setLoading(false);
+            return;
+        }
         fetch(`http://localhost:8000/comments?filter=${commentFilter}`)
             .then(res => res.json())
             .then(data => {
                 // data.comments is the array of posts from Supabase
-                console.log("Fetched comments:", data.comments);
-                setComments(data.comments);
+                // // Check if user is logged in
+                // if (!user) {
+                //     setLoading(false);
+                //     return;
+                // }
+                // Filter comments by user ID if user is logged in
+                const userComments = data.comments.filter((comment: Comment) => comment.user_id === user.id)
+                setComments(userComments);
                 setLoading(false);
             })
             .catch(error => {
                 console.error("Error fetching comments:", error);
                 setLoading(false);
             });
-    }, [commentFilter]) //Refresh comments when filter changes
+    }, [commentFilter, user]) //Refresh comments when filter changes
 
     // delete comment function
     const deleteComment = async (id: string) => {
@@ -68,6 +79,10 @@ export default function Comments() {
 
     if (loading) {
         return <LoadingSpinner />
+    }
+
+    if (!user) {
+        return <div className="text-center">Please log in to view comments.</div>;
     }
 
     if (comments.length === 0) {

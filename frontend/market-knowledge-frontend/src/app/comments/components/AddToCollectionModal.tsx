@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useUser } from '@/context/UserContext'
 
 type AddToCollectionModalProps = {
     setAddToCollectionModal: (add: boolean) => void;
@@ -9,6 +10,7 @@ export default function AddToCollectionModal({setAddToCollectionModal, refreshCo
 
     const [collectionName, setCollectionName] = useState("")
     const [error, setError] = useState("")
+    const user = useUser()
     const addCollection = async (collection_name: string) => {
         try {
             const response = await fetch("http://localhost:8000/add-collection", {
@@ -17,7 +19,8 @@ export default function AddToCollectionModal({setAddToCollectionModal, refreshCo
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    collection_name: collection_name
+                    collection_name: collection_name,
+                    user_id: user?.id 
                 })
             })
             if (response.ok) {

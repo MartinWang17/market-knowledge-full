@@ -1,10 +1,12 @@
 "use client";
 import Link from 'next/link';
 import GetCollections from '../getCollections'
+import { useUser } from '@/context/UserContext';
 
 export default function Collections() {
 
     const { collections, setCollections } = GetCollections();
+    const user = useUser();
     const deleteCollection = async (collection_name: string) => {
         try {
             const response = await fetch("http://localhost:8000/delete-collection", {
@@ -23,6 +25,14 @@ export default function Collections() {
             alert("Network error deleting collection")
         }
     }
+
+ if (!user) {
+    return <div className="text-center">Please log in to view your collections.</div>;
+ }
+
+ if (collections.length === 0) {
+    return <div className="text-center">No collections found. Start adding some!</div>;
+ }
 
  return ( 
     <div className="container my-5">

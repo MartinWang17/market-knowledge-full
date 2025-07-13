@@ -6,6 +6,7 @@ type Comment = {
     upvotes: number;
     subreddit: string;
     collections: string[];
+    user_id: string;
 }
 
 export type { Comment };
@@ -14,6 +15,7 @@ type Collection = {
     id: string;
     collection_names: string;
     slug: string;
+    user_id: string;
 }
 
 export type { Collection };
