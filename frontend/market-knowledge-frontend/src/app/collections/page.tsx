@@ -4,11 +4,13 @@ import GetCollections from '../getCollections'
 import { useUser } from '@/context/UserContext';
 import { useState, useEffect } from 'react';
 import LoadingSpinner from '../loadingSpinner';
+import AddToCollectionModal from '../comments/components/AddToCollectionModal';
 
 export default function Collections() {
 
     const { collections, setCollections, refreshCollections } = GetCollections();
     const [loading, setLoading] = useState(true);
+    const [addToCollectionModal, setAddToCollectionModal] = useState(false);
     const user = useUser();
 
     useEffect(() => {
@@ -52,7 +54,23 @@ export default function Collections() {
  }
 
  if (collections.length === 0) {
-    return <div className="text-center">No collections found. Start adding some!</div>;
+    return (
+        <div className="container my-5">
+            {addToCollectionModal && 
+                <AddToCollectionModal 
+                    setAddToCollectionModal={setAddToCollectionModal} 
+                    refreshCollections={refreshCollections} 
+                />
+            }
+            <div className="d-flex justify-content-center text-start mb-3">No collections found... <br /> Start adding some!</div>
+            <button 
+                className="collection-button mb-2 w-auto d-block mx-auto"
+                style={{ borderRadius: "30px" }}
+                onClick={() => setAddToCollectionModal(true)}>
+                Create New Collection
+            </button>
+        </div>
+    );
  }
 
  return ( 
