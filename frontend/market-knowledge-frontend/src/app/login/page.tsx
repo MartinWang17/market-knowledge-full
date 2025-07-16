@@ -7,11 +7,17 @@ export default function AuthForm() {
     const user = useUser()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
     const [message, setMessage] = useState("");
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!isLogin && password !== confirmPassword) {
+            setMessage("❌ Passwords do not match");
+            return;
+        }
         setMessage(isLogin ? "Logging in..." : "Signing up...");
         let result;
         if (isLogin) {
@@ -72,6 +78,18 @@ export default function AuthForm() {
                                 required
                             />
                         </div>
+                            {!isLogin && 
+                            <div className="mb-3">
+                                <input 
+                                    type="password"
+                                    className="form-control form-control-lg"
+                                    placeholder="Confirm Password"
+                                    value={confirmPassword}
+                                    onChange={e => setConfirmPassword(e.target.value)}
+                                    required={!isLogin}
+                                />
+                            </div>
+                            }  
                         <button type="submit" 
                             className="btn btn-primary w-100 mb-2"
                             style={{ backgroundColor: "#1E555C", color: "#fff", border: "none"}}
