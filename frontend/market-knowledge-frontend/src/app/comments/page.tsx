@@ -11,19 +11,6 @@ import { useUser } from "@/context/UserContext";
 console.log("Running in parent page of comments")
 export default function Comments() {
 
-    // useEffect(() => {
-    //     async function testSupabase() {
-    //         const { data, error } = await supabase.from("reddit_posts").select("*").limit(1);
-    //         if (error) {
-    //             console.error("Supabase error:", error.message);
-    //         } else {
-    //             console.log("Supabase test data:", data);
-    //         }
-    //     }
-
-    //     testSupabase();
-    // }, []);
-
     const [comments, setComments] = useState<Comment[]>([]);
     const [commentFormat, setCommentFormat] = useState("card"); // "card", "title", "body"
     const [commentFilter, setCommentFilter] = useState("relevance"); //
@@ -35,28 +22,32 @@ export default function Comments() {
 
     useEffect(() => {
         if (!user) {
+            setComments([]);
             setLoading(false);
             return;
-        }
-        fetch(`http://localhost:8000/comments?filter=${commentFilter}`)
-            .then(res => res.json())
-            .then(data => {
-                // data.comments is the array of posts from Supabase
-                // // Check if user is logged in
-                // if (!user) {
-                //     setLoading(false);
-                //     return;
-                // }
-                // Filter comments by user ID if user is logged in
-                const userComments = data.comments.filter((comment: Comment) => comment.user_id === user.id)
-                setComments(userComments);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error("Error fetching comments:", error);
-                setLoading(false);
-            });
-    }, [commentFilter, user]) //Refresh comments when filter changes
+        } else {
+            setLoading(true);
+            fetch(`http://localhost:8000/comments?filter=${commentFilter}`)
+                .then(res => res.json())
+                .then(data => {
+                    // data.comments is the array of posts from Supabase
+                    // // Check if user is logged in
+                    // if (!user) {
+                    //     setLoading(false);
+                    //     return;
+                    // }
+                    // Filter comments by user ID if user is logged in
+                    const userComments = data.comments.filter((comment: Comment) => comment.user_id === user.id)
+                    setComments(userComments);
+                })
+                .catch(error => {
+                    console.error("Error fetching comments:", error);
+                })
+                .finally(() => {
+                    setLoading(false);
+                })
+            }
+    }, [commentFilter, user]); //Refresh comments when filter changes
 
     // delete comment function
     const deleteComment = async (id: string) => {
@@ -77,12 +68,12 @@ export default function Comments() {
         }
     };
 
-    if (loading) {
-        return <LoadingSpinner />
-    }
-
     if (!user) {
-        return <div className="text-center">Please log in to view comments.</div>;
+            return <div className="text-center">Please log in to view comments.</div>;
+        }
+
+    if (loading) {
+        return <LoadingSpinner />;
     }
 
     if (comments.length === 0) {

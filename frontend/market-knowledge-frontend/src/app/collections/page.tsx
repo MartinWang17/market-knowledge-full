@@ -2,11 +2,28 @@
 import Link from 'next/link';
 import GetCollections from '../getCollections'
 import { useUser } from '@/context/UserContext';
+import { useState, useEffect } from 'react';
+import LoadingSpinner from '../loadingSpinner';
 
 export default function Collections() {
 
-    const { collections, setCollections } = GetCollections();
+    const { collections, setCollections, refreshCollections } = GetCollections();
+    const [loading, setLoading] = useState(true);
     const user = useUser();
+
+    useEffect(() => {
+        if (!user) {
+            setCollections([]);
+            setLoading(false);
+        } else {
+            setLoading(true);
+            refreshCollections()
+                .catch(error => {
+                console.error("Error refreshing collections:", error);
+                })
+                .finally(() => setLoading(false));
+        }
+    }, [user, setCollections]);
     const deleteCollection = async (collection_name: string) => {
         try {
             const response = await fetch("http://localhost:8000/delete-collection", {
@@ -28,6 +45,10 @@ export default function Collections() {
 
  if (!user) {
     return <div className="text-center">Please log in to view your collections.</div>;
+ }
+
+ if (loading) {
+    return <LoadingSpinner />;
  }
 
  if (collections.length === 0) {
