@@ -69,14 +69,25 @@ export default function AuthForm() {
                             />
                         </div>
                         <div className="mb-3">
-                            <input
-                                type="password"
-                                className="form-control form-control-lg"
-                                placeholder="Password"
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                                required
-                            />
+                            <div className="input-group" style={{ border: "none" }}>
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    className="form-control form-control-lg"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={e => setPassword(e.target.value)}
+                                    required
+                                />
+                                <span
+                                    className="input-group-text"
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    tabIndex={0}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                    >
+                                    <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i>
+                                </span>
+                            </div>
                         </div>
                             {!isLogin && 
                             <div className="mb-3">

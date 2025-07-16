@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 import Navbar from "./navbar";
 import { UserProvider } from '@/context/UserContext';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
