@@ -163,29 +163,38 @@ def add_collection(req: CollectionName):
     Takes a collection name as a string to add a collection. 
     """
     #first check if the name is already in the column, and if not, then add it. 
-    response = supabase.table("collections").select("collection_names").execute()
-    print("RESPONSE IS: \n\n", response)
-    collection_names = [row["collection_names"] for row in response.data]
-    print("Collections names is:", collection_names)
-    if req.collection_name in collection_names: 
-        print("Did not add!")
+    response = supabase.table("collections").select("collection_names") \
+        .eq("user_id", req.user_id) \
+        .eq("collection_names", req.collection_name) \
+        .execute()
+    if response.data: 
         return {"message": "Collection name already exists!"}
-    else:
-        slug = quote(req.collection_name, safe="")
-        supabase.table("collections").insert({
-            "collection_names": req.collection_name,
-            "slug": slug,
-            "user_id": req.user_id
-            }).execute()
-        print("Did add!")
-        return {"message": "Collection added!"}
+    
+    # collection_names = [row["collection_names"] for row in response.data]
+    # print("Collections names is:", collection_names)
+    # if req.collection_name in collection_names: 
+    #     print("Did not add!")
+    #     return {"message": "Collection name already exists!"}
+    # else:
+    slug = quote(req.collection_name, safe="")
+    supabase.table("collections").insert({
+        "collection_names": req.collection_name,
+        "slug": slug,
+        "user_id": req.user_id
+        }).execute()
+    print("Did add!")
+    return {"message": "Collection added!"}
 
 @app.delete("/delete-collection")
 def remove_collection(req: CollectionName):
     """
     Takes a collection name and deletes the matching collection. 
     """
-    response = supabase.table("collections").delete().eq("collection_names", req.collection_name).execute()
+    response = supabase.table("collections") \
+        .delete() \
+        .eq("collection_names", req.collection_name) \
+        .eq("user_id", req.user_id) \
+        .execute()
     return response
 
 # For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
