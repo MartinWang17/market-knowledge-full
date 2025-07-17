@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Comment } from '../types';
 import RenderFormatSelector from '../../formatSelector';
-import LoadingSpinner from '../../loadingSpinner'
+import LoadingSpinner from '@/app/loadingSpinner'
 import GetCollections from '../../getCollections'
 import CommentsManager from './CommentsManager'
 import RenderCollectionModal from './collectionModal'

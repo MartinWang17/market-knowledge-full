@@ -34,7 +34,8 @@ export default function Collections() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    collection_name: collection_name
+                    collection_name: collection_name,
+                    user_id: user?.id
                 })
             });
             if (response.ok) {

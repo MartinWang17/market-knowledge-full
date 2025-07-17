@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useUser } from '@/context/UserContext'
+import MessageModal from '../../messageModal';
 
 type AddToCollectionModalProps = {
     setAddToCollectionModal: (add: boolean) => void;
@@ -11,6 +12,8 @@ export default function AddToCollectionModal({setAddToCollectionModal, refreshCo
     const [collectionName, setCollectionName] = useState("")
     const [error, setError] = useState("")
     const user = useUser()
+    const [message, setMessage] = useState("")
+    const [showMessageModal, setShowMessageModal] = useState(false);
     const addCollection = async (collection_name: string) => {
         try {
             const response = await fetch("http://localhost:8000/add-collection", {
@@ -25,16 +28,23 @@ export default function AddToCollectionModal({setAddToCollectionModal, refreshCo
             })
             if (response.ok) {
                 const data = await response.json()
-                setAddToCollectionModal(false)
-                alert(data.message)
+                setMessage(data.message || "Collection created successfully!");
+                setShowMessageModal(true);
+                // setAddToCollectionModal(false)
+                // alert(data.message)
                 await refreshCollections();
             } 
         } catch (error) {
-            alert("Network error adding collection right here")
+            alert(`Network error adding collection right here ${error}`)
         }
     }
     
-    return(
+    if (showMessageModal) {
+        return (
+            <MessageModal message={message} setMessage={setMessage} />
+        );
+    }
+    else return(
         <>
         <div className="modal-backdrop d-flex justify-content-center align-items-center" style={{
                 position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', 
