@@ -11,6 +11,7 @@ export default function AuthForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
     const [message, setMessage] = useState("");
+    const [showReset, setShowReset] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -37,6 +38,16 @@ export default function AuthForm() {
         result = await supabase.auth.signOut();
     }
 
+    const handleResetPassword = async (e : React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const { error } = await supabase.auth.resetPasswordForEmail(email);
+        if (error) {
+            setMessage("❌ " + error.message);
+        } else {
+            setMessage("✅ Check your email for password reset instructions.");
+        }
+    }
+
     return (
 
     <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
@@ -51,73 +62,111 @@ export default function AuthForm() {
                         Log Out
                     </button>
                 </div>
-            ) : (
-                <>
-                    <h2 className="mb-3 text-center fw-bold" style={{ letterSpacing: '.5px' }}>
-                        {isLogin ? "Log In" : "Sign Up"}
-                    </h2>
-                    <form onSubmit={handleSubmit} className="mb-2">
-                        <div className="mb-3">
-                            <input
-                                type="email"
-                                className="form-control form-control-lg"
-                                placeholder="Email"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                                autoComplete="username"
-                                required
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <div className="input-group" style={{ border: "none" }}>
+            ) : showReset ? (
+                    // --- NEW: Reset Password Form ---
+                    <>
+                        <h2 className="mb-3 text-center fw-bold">Reset Password</h2>
+                        <form onSubmit={handleResetPassword} className="mb-2">
+                            <div className="mb-3">
                                 <input
-                                    type={showPassword ? "text" : "password"}
+                                    type="email"
                                     className="form-control form-control-lg"
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={e => setPassword(e.target.value)}
+                                    placeholder="Enter your email"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
                                     required
                                 />
-                                <span
-                                    className="input-group-text"
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    tabIndex={0}
-                                    aria-label={showPassword ? "Hide password" : "Show password"}
-                                    >
-                                    <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i>
-                                </span>
                             </div>
-                        </div>
-                            {!isLogin && 
+                            <button type="submit" className="btn btn-primary w-100 mb-2">
+                                Send Reset Link
+                            </button>
+                        </form>
+                        <button
+                            className="btn btn-link w-100"
+                            style={{ textDecoration: "none" }}
+                            onClick={() => {
+                                setShowReset(false);
+                                setMessage("");
+                            }}>
+                            Back to Login
+                        </button>
+                        {message && <div className="alert alert-info text-center py-2 my-2">{message}</div>}
+                    </>
+                ) : (
+                    <>
+                        <h2 className="mb-3 text-center fw-bold" style={{ letterSpacing: '.5px' }}>
+                            {isLogin ? "Log In" : "Sign Up"}
+                        </h2>
+                        <form onSubmit={handleSubmit} className="mb-2">
                             <div className="mb-3">
-                                <input 
-                                    type="password"
+                                <input
+                                    type="email"
                                     className="form-control form-control-lg"
-                                    placeholder="Confirm Password"
-                                    value={confirmPassword}
-                                    onChange={e => setConfirmPassword(e.target.value)}
-                                    required={!isLogin}
+                                    placeholder="Email"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    autoComplete="username"
+                                    required
                                 />
                             </div>
-                            }  
-                        <button type="submit" 
-                            className="btn btn-primary w-100 mb-2"
-                            style={{ backgroundColor: "#1E555C", color: "#fff", border: "none"}}
-                            >
-                            {isLogin ? "Sign In" : "Sign Up"}
+                            <div className="mb-3">
+                                <div className="input-group" style={{ border: "none" }}>
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        className="form-control form-control-lg"
+                                        placeholder="Password"
+                                        value={password}
+                                        onChange={e => setPassword(e.target.value)}
+                                        required
+                                    />
+                                    <span
+                                        className="input-group-text"
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        tabIndex={0}
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                        >
+                                        <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i>
+                                    </span>
+                                </div>
+                            </div>
+                                {!isLogin && 
+                                <div className="mb-3">
+                                    <input 
+                                        type="password"
+                                        className="form-control form-control-lg"
+                                        placeholder="Confirm Password"
+                                        value={confirmPassword}
+                                        onChange={e => setConfirmPassword(e.target.value)}
+                                        required={!isLogin}
+                                    />
+                                </div>
+                                }  
+                            <button type="submit" 
+                                className="btn btn-primary w-100 mb-2"
+                                style={{ backgroundColor: "#1E555C", color: "#fff", border: "none"}}
+                                >
+                                {isLogin ? "Sign In" : "Sign Up"}
+                            </button>
+                        </form>
+                        <button
+                            type="button"
+                            className="btn btn-link w-100 mb-1"
+                            onClick={() => setIsLogin(!isLogin)}
+                            style={{ textDecoration: "none", backgroundColor: "#3599a690", color: "#fff", border: "none" }}
+                        >
+                            {isLogin ? "Create an account" : "Have an account? Sign in"}
                         </button>
-                    </form>
-                    <button
-                        type="button"
-                        className="btn btn-link w-100 mb-1"
-                        onClick={() => setIsLogin(!isLogin)}
-                        style={{ textDecoration: "none", backgroundColor: "#3599a690", color: "#fff", border: "none" }}
-                    >
-                        {isLogin ? "Create an account" : "Have an account? Sign in"}
-                    </button>
-                    {message && <div className="alert alert-info text-center py-2 my-2">{message}</div>}
-                </>
+                        <button 
+                            type="button"
+                            className="btn btn-link w-100"
+                            onClick={() => setShowReset(true)}
+                            style={{ textDecoration: "none", color: "red", border: "none" }}
+                            >
+                            Forgot Password?
+                        </button>
+                        {message && <div className="alert alert-info text-center py-2 my-2">{message}</div>}
+                    </>
             )}
         </div>
     </div>
