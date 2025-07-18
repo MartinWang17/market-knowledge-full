@@ -32,7 +32,7 @@ export default function AddToCollectionModal({setAddToCollectionModal, refreshCo
                 const data = await response.json()
                 setMessage(data.message || "Collection created successfully!");
                 setShowMessageModal(true);
-                setAddToCollectionModal(false)
+                // setAddToCollectionModal(false)
                 // alert(data.message)
                 if (onCollectionAdded) {
                     onCollectionAdded(data.message); // Call the optional callback if provided
