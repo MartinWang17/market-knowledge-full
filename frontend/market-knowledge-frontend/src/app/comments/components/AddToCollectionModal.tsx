@@ -1,20 +1,22 @@
 import { useState } from 'react'
 import { useUser } from '@/context/UserContext'
-import MessageModal from '../../messageModal';
+// import MessageModal from '../../messageModal';
+import { useNotification } from '@/context/NotificationContext'
 
 type AddToCollectionModalProps = {
     setAddToCollectionModal: (add: boolean) => void;
     refreshCollections: () => Promise<void>;
-    onCollectionAdded?: (message: string) => void; // Optional callback when a collection is added
+    // onCollectionAdded?: (message: string) => void; // Optional callback when a collection is added
 }
 
-export default function AddToCollectionModal({setAddToCollectionModal, refreshCollections, onCollectionAdded} : AddToCollectionModalProps) {
+export default function AddToCollectionModal({setAddToCollectionModal, refreshCollections } : AddToCollectionModalProps) {
 
     const [collectionName, setCollectionName] = useState("")
     const [error, setError] = useState("")
     const user = useUser()
     const [message, setMessage] = useState("")
     const [showMessageModal, setShowMessageModal] = useState(false);
+    const { showMessage } = useNotification();
 
     const addCollection = async (collection_name: string) => {
         try {
@@ -31,25 +33,29 @@ export default function AddToCollectionModal({setAddToCollectionModal, refreshCo
             if (response.ok) {
                 const data = await response.json()
                 setMessage(data.message || "Collection created successfully!");
-                setShowMessageModal(true);
-                // setAddToCollectionModal(false)
+                // setShowMessageModal(true);
+
+                showMessage(data.message); // Use the notification context to show the message
+                
                 // alert(data.message)
-                if (onCollectionAdded) {
-                    onCollectionAdded(data.message); // Call the optional callback if provided
-                }
+                // if (onCollectionAdded) {
+                //     onCollectionAdded(data.message); // Call the optional callback if provided
+                // }
                 await refreshCollections();
+                setAddToCollectionModal(false)
             } 
         } catch (error) {
             alert(`Network error adding collection right here ${error}`)
         }
     }
     
-    if (showMessageModal) {
-        return (
-            <MessageModal message={message} setMessage={setMessage} />
-        );
-    }
-    else return(
+    // if (showMessageModal) {
+    //     return (
+    //         <MessageModal message={message} setMessage={setMessage} />
+    //     );
+    // }
+    // else
+    return(
         <>
         <div className="modal-backdrop d-flex justify-content-center align-items-center" style={{
                 position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', 

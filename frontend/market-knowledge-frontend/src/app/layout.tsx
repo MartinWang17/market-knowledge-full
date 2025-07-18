@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "./navbar";
 import { UserProvider } from '@/context/UserContext';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { NotificationProvider } from '@/context/NotificationContext';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,10 +35,11 @@ export default function RootLayout({
           className="d-flex flex-column justify-content-center align-items-center"
           style={{ minHeight: "calc(100vh - 72px)"}}
         >
-          
+          <NotificationProvider>
           <UserProvider>
             {children}
           </UserProvider>
+          </NotificationProvider>
         </div>
       </body>
     </html>
