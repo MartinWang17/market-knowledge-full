@@ -5,6 +5,7 @@ import { useUser } from '@/context/UserContext';
 import { useState, useEffect } from 'react';
 import LoadingSpinner from '../loadingSpinner';
 import AddToCollectionModal from '../comments/components/AddToCollectionModal';
+import MessageModal from '../messageModal';
 
 export default function Collections() {
 
@@ -12,6 +13,8 @@ export default function Collections() {
     const [loading, setLoading] = useState(true);
     const [addToCollectionModal, setAddToCollectionModal] = useState(false);
     const user = useUser();
+    const [showCollectionAddedNotification, setShowCollectionAddedNotification] = useState(false);
+    const [message, setMessage] = useState<string>("");
 
     useEffect(() => {
         if (!user) {
@@ -40,6 +43,7 @@ export default function Collections() {
             });
             if (response.ok) {
                 setCollections(prev => prev.filter(collection => collection.collection_names !== collection_name))
+                setAddToCollectionModal(false);
             }
         }   catch(error) {
             alert("Network error deleting collection")
@@ -61,6 +65,10 @@ export default function Collections() {
                 <AddToCollectionModal 
                     setAddToCollectionModal={setAddToCollectionModal} 
                     refreshCollections={refreshCollections} 
+                    onCollectionAdded={(message) => {
+                        setShowCollectionAddedNotification(true)
+                        setMessage(message);
+                    }}
                 />
             }
             <div className="d-flex justify-content-center text-start mb-3">No collections found... <br /> Start adding some!</div>
@@ -75,6 +83,13 @@ export default function Collections() {
  }
 
  return ( 
+    <>
+    {showCollectionAddedNotification && (
+        <MessageModal
+            message={message}
+            setMessage={setMessage}
+        />
+    )}
     <div className="container my-5">
         <ul className="d-flex list-group text-center">
             {collections.map((collection) => (
@@ -104,4 +119,5 @@ export default function Collections() {
             ))}
         </ul>
     </div>
+    </>
  )};

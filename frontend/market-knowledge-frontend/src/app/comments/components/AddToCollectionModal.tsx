@@ -4,16 +4,18 @@ import MessageModal from '../../messageModal';
 
 type AddToCollectionModalProps = {
     setAddToCollectionModal: (add: boolean) => void;
-    refreshCollections: () => Promise<void>
+    refreshCollections: () => Promise<void>;
+    onCollectionAdded?: (message: string) => void; // Optional callback when a collection is added
 }
 
-export default function AddToCollectionModal({setAddToCollectionModal, refreshCollections} : AddToCollectionModalProps) {
+export default function AddToCollectionModal({setAddToCollectionModal, refreshCollections, onCollectionAdded} : AddToCollectionModalProps) {
 
     const [collectionName, setCollectionName] = useState("")
     const [error, setError] = useState("")
     const user = useUser()
     const [message, setMessage] = useState("")
     const [showMessageModal, setShowMessageModal] = useState(false);
+
     const addCollection = async (collection_name: string) => {
         try {
             const response = await fetch("http://localhost:8000/add-collection", {
@@ -30,8 +32,11 @@ export default function AddToCollectionModal({setAddToCollectionModal, refreshCo
                 const data = await response.json()
                 setMessage(data.message || "Collection created successfully!");
                 setShowMessageModal(true);
-                // setAddToCollectionModal(false)
+                setAddToCollectionModal(false)
                 // alert(data.message)
+                if (onCollectionAdded) {
+                    onCollectionAdded(data.message); // Call the optional callback if provided
+                }
                 await refreshCollections();
             } 
         } catch (error) {
@@ -104,6 +109,7 @@ export default function AddToCollectionModal({setAddToCollectionModal, refreshCo
                                 return;
                             }
                             addCollection(collectionName)
+                            // setAddToCollectionModal(false)
                         }}>
                         Create
                     </button>
