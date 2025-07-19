@@ -208,7 +208,6 @@ def export_comments_csv(req: UserID):
     """
     Exports all comments from the Supabase unique to the user to a CSV file.
     """
-    #is this the correct way to get all comments for a specific user?
     result = supabase.table("reddit_posts").select("*").eq("user_id", req.user_id).execute()
     comments = result.data if hasattr(result, "data") else []
 
@@ -217,13 +216,18 @@ def export_comments_csv(req: UserID):
                                 media_type="text/csv",
                                 headers={"Content-Disposition": "attachment; filename=comments.csv"})
     #Dynamically get the fieldnames from the first comment
-    fieldnames = list(comments[0].keys())
+    # fieldnames = list(comments[0].keys())
+    fieldnames = ["title", "body", "link", "upvotes", "subreddit", "keyword"]
+
+    filtered_comments = [
+        {key: comment.get(key, "") for key in fieldnames} for comment in comments
+    ]
 
     #Use StringIO to write CSV in memory
     csv_file = StringIO()
     writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
     writer.writeheader()
-    writer.writerows(comments)
+    writer.writerows(filtered_comments)
     csv_file.seek(0)  # Reset the StringIO object to the beginning
 
     return StreamingResponse(
