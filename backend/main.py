@@ -1,11 +1,14 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 import os
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from reddit_scraper import RedditScraper
 from urllib.parse import quote
+import csv
+from io import StringIO
 
 load_dotenv()
 
@@ -196,6 +199,40 @@ def remove_collection(req: CollectionName):
         .eq("user_id", req.user_id) \
         .execute()
     return response
+
+class UserID(BaseModel):
+    user_id: str = Field(..., description="The user's unique id to export comments for.")
+
+@app.post("/export-comments")
+def export_comments_csv(req: UserID):
+    """
+    Exports all comments from the Supabase unique to the user to a CSV file.
+    """
+    #is this the correct way to get all comments for a specific user?
+    result = supabase.table("reddit_posts").select("*").eq("user_id", req.user_id).execute()
+    comments = result.data if hasattr(result, "data") else []
+
+    if not comments:
+        return StreamingResponse(StringIO(""),
+                                media_type="text/csv",
+                                headers={"Content-Disposition": "attachment; filename=comments.csv"})
+    #Dynamically get the fieldnames from the first comment
+    fieldnames = list(comments[0].keys())
+
+    #Use StringIO to write CSV in memory
+    csv_file = StringIO()
+    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(comments)
+    csv_file.seek(0)  # Reset the StringIO object to the beginning
+
+    return StreamingResponse(
+        csv_file,
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=comments.csv"}
+    )
+
+
 
 # For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
 if __name__ == "__main__":
