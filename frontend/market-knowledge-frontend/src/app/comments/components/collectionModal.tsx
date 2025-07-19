@@ -16,6 +16,7 @@ export default function RenderCollectionModal(props: collectionModalProps) {
     //use localCollections to auto update collections
     const [localCollections, setLocalCollections] = useState<string[]>(post?.collections ?? []); //Set localCollections to post.collections if it exists
     const [addToCollectionModal, setAddToCollectionModal] = useState(false)
+
     const saveToCollection = async (post: Comment, collection_name: string) => {
         try {
             const response = await fetch('http://localhost:8000/save-to-collection', {

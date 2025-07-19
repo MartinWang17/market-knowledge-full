@@ -18,7 +18,7 @@ export function useNotification() {
 export function NotificationProvider({ children }: { children: ReactNode }) {
     const [message, setMessage] = useState<string>("");
 
-    const showMessage = (msg: string) => setMessage(msg);
+    const showMessage = (msg: string) => setMessage(msg); // Function to set the message to be displayed
 
     return (
         <NotificationContext.Provider value={{ showMessage }}>

@@ -12,7 +12,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         const getUser = async () => {
             const {
                 data: { user },
-            } = await supabase.auth.getUser();
+            } = await supabase.auth.getUser(); //get the user from supabase
             setUser(user)
         }
         getUser();
