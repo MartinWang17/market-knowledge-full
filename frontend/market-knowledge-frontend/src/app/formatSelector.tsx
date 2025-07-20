@@ -23,12 +23,14 @@ export default function RenderFormatSelector(props: FormatSelectorProps) {
                 "Content-Type": "application/json" },
             body: JSON.stringify({ user_id: user.id }),
         });
-        const blob = await response.blob();
+        const blob = await response.blob(); //blob is a file-like object of immutable, raw data, could be text, images, csvs, etc
+        //This creates a special temporary URL (starting with blob:) that points to the in-memory csv file
         const url = window.URL.createObjectURL(blob);
-
+        //This creates a temporary anchor element to trigger the download
         const a = document.createElement("a");
         a.href = url;
-        a.download = "comments.csv";
+        //When link is clicked, browser will download file instead of navigating to it
+        a.download = "comments.csv"; //<-- name of the file to be downloaded
         document.body.appendChild(a);
         a.click();
         a.remove();
