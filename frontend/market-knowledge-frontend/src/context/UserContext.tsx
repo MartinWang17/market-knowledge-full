@@ -3,17 +3,17 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/app/supabaseClient';
 import type { User } from '@supabase/supabase-js'
 
-const UserContext = createContext<User | null>(null);
+const UserContext = createContext<User | null | undefined>(null);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null | undefined>(undefined);
 
     useEffect(() => {
         const getUser = async () => {
             const {
                 data: { user },
             } = await supabase.auth.getUser(); //get the user from supabase
-            setUser(user)
+            setUser(user ?? null)
         }
         getUser();
         const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {

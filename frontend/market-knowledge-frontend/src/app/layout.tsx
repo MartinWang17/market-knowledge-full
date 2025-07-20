@@ -35,11 +35,11 @@ export default function RootLayout({
           className="d-flex flex-column justify-content-center align-items-center"
           style={{ minHeight: "calc(100vh - 72px)"}}
         >
-          <NotificationProvider>
           <UserProvider>
+          <NotificationProvider>
             {children}
-          </UserProvider>
           </NotificationProvider>
+          </UserProvider>
         </div>
       </body>
     </html>
