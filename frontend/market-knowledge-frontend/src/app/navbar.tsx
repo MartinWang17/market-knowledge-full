@@ -10,6 +10,14 @@ export default function Navbar() {
     const pathname = usePathname();
     const user = useUser();
     const [menuOpen, setMenuOpen] = useState(false);
+    const [animatingOut, setAnimatingOut] = useState(false);
+    const handleCloseMenu = () => {
+        setAnimatingOut(true);
+        setTimeout(() => {
+            setMenuOpen(false);
+            setAnimatingOut(false);
+        }, 250); // Match this duration with the CSS animation duration
+    }
 
     if (user === undefined) {
         // If user is undefined, it means the user data is still being fetched
@@ -90,10 +98,13 @@ export default function Navbar() {
             </button>
 
             {/* Slide-in Menu Modal */}
-            {menuOpen && (
+            {(menuOpen || animatingOut) && (
                 <div className="mobile-menu-modal" onClick={() => setMenuOpen(false)}>
-                <div className="mobile-menu-content" onClick={e => e.stopPropagation()}>
-                    <button className="mobile-menu-close" onClick={() => setMenuOpen(false)}>
+                <div 
+                    className={`mobile-menu-content ${animatingOut ? "slideOut" : "slideIn"}`}
+                    onClick={e => e.stopPropagation()}
+                >
+                    <button className="mobile-menu-close" onClick={() => handleCloseMenu()}>
                     &times;
                     </button>
                     <ul className="nav flex-column align-items-center">
@@ -166,7 +177,12 @@ export default function Navbar() {
                 box-shadow: -2px 0 16px rgba(0,0,0,0.05);
                 display: flex;
                 flex-direction: column;
+                }
+                .mobile-menu-content.slideIn {
                 animation: slideIn 0.25s cubic-bezier(0.4,0,0.2,1);
+                }
+                .mobile-menu-content.slideOut {
+                animation: slideOut 0.25s cubic-bezier(0.4,0,0.2,1);
                 }
                 .mobile-menu-close {
                 align-self: flex-end;
@@ -187,6 +203,10 @@ export default function Navbar() {
                 @keyframes slideIn {
                 from { transform: translateX(100%); }
                 to   { transform: translateX(0); }
+                }
+                @keyframes slideOut {
+                from { transform: translateX(0); }
+                to { transform: translateX(100%); }
                 }
             `}</style>
         </nav>
