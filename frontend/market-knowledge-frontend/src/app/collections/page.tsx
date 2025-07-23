@@ -5,7 +5,6 @@ import { useUser } from '@/context/UserContext';
 import { useState, useEffect } from 'react';
 import LoadingSpinner from '../loadingSpinner';
 import AddToCollectionModal from '../comments/components/AddToCollectionModal';
-import MessageModal from '../messageModal';
 
 export default function Collections() {
 

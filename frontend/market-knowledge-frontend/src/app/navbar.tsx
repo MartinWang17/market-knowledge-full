@@ -61,7 +61,7 @@ export default function Navbar() {
                                 </Link>
                             </li>
                             <li className="nav-item d-none d-lg-block">
-                                <Link href="/features" className={`nav-link ${pathname === "/about" ? "active" : ""}`}>
+                                <Link href="/features" className={`nav-link ${pathname === "/features" ? "active" : ""}`}>
                                 Features
                                 </Link>
                             </li>

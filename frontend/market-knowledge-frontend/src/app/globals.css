@@ -1,6 +1,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --blue-font: #4B82F6; 
+  --background-light: #fff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -134,4 +136,85 @@ a {
   display: inline-block;
   transform: skew(-5deg);
   box-shadow: 2px 3px 6px rgba(40, 82, 128, 0.07)
+}
+
+.blurred-container {
+  margin-top: 180px;
+  border-radius: 10px 10px 10px 10px;
+  padding: 40px 48px 50px;
+  background: rgba(255,255,255,0.6); 
+  box-shadow: 0px 30px 19.072px -10px #0a0a0a40;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  width: 640px;
+  gap: 70px;
+  z-index: 2;
+  transition: all .5s;
+}
+.blurred-container:hover {
+  transform: scale(1.02);
+}
+
+.hero-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 90vw; /* or your preferred width */
+  align-items: left; /* centers children horizontally */
+  justify-content: flex-start; /* starts content from the top */
+  min-height: 100vh;
+}
+
+.green-font {
+  color: #1E555C;
+}
+
+.blue-font {
+  color: #285280;
+}
+
+.hiw-container {
+  display: flex;
+  margin-top: 2rem;
+  gap: 50px;
+  position: relative;
+  z-index: 2;
+}
+
+.hiw-card {
+  background: linear-gradient(214deg, hsla(0, 0%, 100%, .09) 2.32%, rgba(40, 82, 128, .2) 99.99%);      /* <-- White, 35% opacity */
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(40, 50, 80, 0.12);
+  backdrop-filter: blur(12px);                /* <-- This blurs what's behind the card */
+  -webkit-backdrop-filter: blur(12px);        /* Safari support */
+  text-align: center;
+  width: 280px;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 32px 16px;
+  margin: 0;
+  transition: box-shadow 0.2s;
+}
+
+.hiw-card>div>h2 {
+    color: var(--font-color);
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.blue-light {
+    position: absolute;
+    display: flex
+;
+    width: 939px;
+    height: 939px;
+    border-radius: 939px;
+    background: rgba(40, 82, 128, 0.7);
+    filter: blur(500px);
+    left: -550px;
+    bottom: -500;
+    z-index: -1;
 }
