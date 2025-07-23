@@ -6,6 +6,7 @@ import Navbar from "./navbar";
 import { UserProvider } from '@/context/UserContext';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { NotificationProvider } from '@/context/NotificationContext';
+import Footer from "./footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,6 +42,7 @@ export default function RootLayout({
           </NotificationProvider>
           </UserProvider>
         </div>
+        <Footer />
       </body>
     </html>
   );
