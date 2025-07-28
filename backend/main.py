@@ -28,6 +28,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+TIER_LIMITS = {
+    "free": 500,
+    "pro": 5000,
+    "max": 100000,
+}
+
 def save_post_to_supabase(title, body, link, upvotes, subreddit, user_id, keyword=None):
     """Saves a Reddit post to Supabase. Returns nothing."""
     data = {
@@ -58,6 +64,21 @@ def scrape_comments(req: ScrapeRequest):
     Accepts a JSON body with 'subreddit' and 'comments' parameters.
     Returns a list of top posts in JSON format.
     """
+    # Get the user's tier from user_profiles table
+    profile = supabase.table("user_profiles").select("tier").eq("user_id", req.user_id).single().execute()
+    user_tier = profile.data["tier"] if profile.data else "free"
+    max_allowed = TIER_LIMITS.get(user_tier, 500)
+
+    comment_count = supabase.table("reddit_posts").select("id", count="exact").eq("user_id", req.user_id).execute()
+    current_count = comment_count.count if hasattr(comment_count, "count") else 0
+
+    requested_count = req.commentCount
+    if current_count + requested_count > max_allowed:
+        return {
+            "message": f"""Your current tier '{user_tier}' allows a maximum of {max_allowed} posts. You have already scraped {current_count} posts.
+             Please export and delete some posts or upgrade to continue scraping"""
+        }
+
     now = datetime.now(timezone.utc)
     # Fetch the user's last scrape time
     result = supabase.table("scrape_cooldowns").select("last_scrape").eq("user_id", req.user_id).execute()
