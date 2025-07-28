@@ -28,9 +28,18 @@ export default function AuthForm() {
             // if sign up is successful, create user profile
             if (!result.error && result.data?.user) {
                 const userId = result.data.user.id;
+                // Check if user already exists in user_profiles
+                const { data: existing, error: profileError } = await supabase
+                    .from("user_profiles")
+                    .select("user_id")
+                    .eq("user_id", userId)
+                    .single();
+
+                if (!existing) {
                 await supabase.from("user_profiles").insert([
                     { user_id: userId, tier: "free" }
-                ])
+                ]);
+                }
             }
         }
         if (result.error) {
