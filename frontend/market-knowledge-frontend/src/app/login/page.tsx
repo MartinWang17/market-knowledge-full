@@ -25,6 +25,13 @@ export default function AuthForm() {
             result = await supabase.auth.signInWithPassword({ email, password });
         } else {
             result = await supabase.auth.signUp({ email, password });
+            // if sign up is successful, create user profile
+            if (!result.error && result.data?.user) {
+                const userId = result.data.user.id;
+                await supabase.from("user_profiles").insert([
+                    { user_id: userId, tier: "free" }
+                ])
+            }
         }
         if (result.error) {
             setMessage("❌ " + result.error.message);
