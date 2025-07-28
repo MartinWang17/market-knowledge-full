@@ -1,10 +1,23 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from "@/app/supabaseClient";
 import { useUser } from "@/context/UserContext"
 
 export default function AuthForm() {
     const user = useUser()
+    const [tier, setTier] = useState("free");
+    useEffect(() => {
+        if (!user?.id) return;
+        (async () => {
+            const { data } = await supabase
+                .from("user_profiles")
+                .select("tier")
+                .eq("user_id", user.id)
+                .single();
+            if (data) setTier(data.tier);
+            })();
+        }, [user?.id]);
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -72,6 +85,7 @@ export default function AuthForm() {
                 <div className="text-center">
                     <span className="fw-bold" style={{ color: '#1E555C' }}>Signed in as</span>
                     <div className="fs-5 mt-1 mb-2">{user.email}</div>
+                    <div className="fw-bold mb-2">Tier: {tier}</div>
                     <button 
                         onClick={logOut}
                         className="btn btn-outline-danger w-100 mt-2">
