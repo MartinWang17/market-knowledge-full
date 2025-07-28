@@ -9,6 +9,7 @@ from reddit_scraper import RedditScraper
 from urllib.parse import quote
 import csv
 from io import StringIO
+from datetime import datetime, timezone
 
 load_dotenv()
 
@@ -57,6 +58,23 @@ def scrape_comments(req: ScrapeRequest):
     Accepts a JSON body with 'subreddit' and 'comments' parameters.
     Returns a list of top posts in JSON format.
     """
+    now = datetime.now(timezone.utc)
+    # Fetch the user's last scrape time
+    result = supabase.table("scrape_cooldowns").select("last_scrape").eq("user_id", req.user_id).execute()
+    last_scrape = result.data[0]["last_scrape"] if result.data else None
+
+    if last_scrape:
+        last_scrape_dt = datetime.fromisoformat(last_scrape)
+        if (now - last_scrape_dt).total_seconds() < 30:
+            remaining_time = 30 - int((now - last_scrape_dt).total_seconds())
+            return {"message": f"You can only scrape every 30 seconds. Please wait {remaining_time} seconds."}
+        
+    # Update or insert the last scrape timestamp
+    if result.data:
+        supabase.table("scrape_cooldowns").update({"last_scrape": now.isoformat()}).eq("user_id", req.user_id).execute()
+    else:
+        supabase.table("scrape_cooldowns").insert({"user_id": req.user_id, "last_scrape": now.isoformat()}).execute()
+
     # If searching by keyword
     if req.keyword:
         all_posts = scraper.fetch_posts(
