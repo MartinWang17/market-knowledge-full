@@ -41,7 +41,7 @@ export default function FeaturesPage () {
                 <h1 className="main-heading justify-content-start" style={{ marginTop: "5rem" }}>
                     How it <br/><span className="blue-font">Works?</span>
                 </h1>
-                <div className="hiw-container justify-content-center row row-cols-1 row-cols-md-3 g-4">
+                <div className="hiw-container row row-cols-1 row-cols-md-3 g-4 justify-content-center">
                     <div className="hiw-card">
                         <div>
                             <i className="bi bi-search" style={{ fontSize: "2.5rem", marginBottom: "1rem", color: "#285280" }} />

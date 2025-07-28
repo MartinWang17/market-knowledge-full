@@ -173,7 +173,7 @@ a {
 }
 
 .hiw-container {
-  display: flex;
+  /* display: flex; */
   margin-top: 2rem;
   gap: 50px;
   position: relative;

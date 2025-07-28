@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useUser } from '@/context/UserContext';
+import { useNotification } from "@/context/NotificationContext";
 
 export default function Home() {
 
@@ -14,6 +15,7 @@ export default function Home() {
   const [timeFilter, setTimeFilter] = useState("all");
   const [scraping, setScraping] = useState(false)
   const user = useUser();
+  const { showMessage } = useNotification();
 
   if (user) {
     console.log("User ID:", user.id);
@@ -61,6 +63,13 @@ export default function Home() {
 
       //parse the JSON response
       const data = await response.json()
+      const { message } = data;
+      // Show notification message
+      if (message) {
+        setScraping(false);
+        showMessage(message);
+      }
+
       console.log("Scrape response:", data);
     } catch (error) {
       console.error("Error scraping comments:", error);
