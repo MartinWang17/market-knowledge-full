@@ -3,6 +3,42 @@ import { useState, useEffect } from 'react';
 import { supabase } from "@/app/supabaseClient";
 import { useUser } from "@/context/UserContext";
 
+const PLANS = [
+    {
+        key: 'free',
+        name: 'Free',
+        price: '$0',
+        features: [
+            'Store up to 500 comments',
+            'Export comments as CSV',
+            'Unlimited scrape requests',
+        ],
+        highlight: false,
+    },
+    {
+        key: 'pro',
+        name: 'Pro',
+        price: '$1',
+        features: [
+            'Everything in Free',
+            'Store up to 5,000 comments',
+            '(Just to cover database costs)',
+        ],
+        highlight: true,
+    },
+    {
+        key: 'max',
+        name: 'Max',
+        price: '$10',
+        features: [
+            'Everything in Pro',
+            'Store up to 100,000 comments',
+            '(Again just to cover database costs)',
+        ],
+        highlight: false,
+    }
+];
+
 export default function PricingPage() {
     const user = useUser();
     const [tier, setTier] = useState("free");
@@ -40,50 +76,108 @@ export default function PricingPage() {
     }
 
     return (
-        <div style={{ padding: "2rem" }}>
-      <h1>Choose Your Plan</h1>
-      <div style={{ display: "flex", gap: "1rem", marginTop: "2rem" }}>
-        <button
-          onClick={() => handleTierChange("free")}
-          style={{
-            padding: "1rem",
-            background: tier === "free" ? "#e0f7fa" : "#f4f4f4",
-            borderRadius: "10px",
-            border: "1px solid #ccc",
-          }}
-        >
-          Free
-        </button>
-        <button
-          onClick={() => handleTierChange("pro")}
-          style={{
-            padding: "1rem",
-            background: tier === "pro" ? "#fff3e0" : "#f4f4f4",
-            borderRadius: "10px",
-            border: "1px solid #ccc",
-          }}
-        >
-          Pro
-        </button>
-        <button
-          onClick={() => handleTierChange("max")}
-          style={{
-            padding: "1rem",
-            background: tier === "max" ? "#f3e5f5" : "#f4f4f4",
-            borderRadius: "10px",
-            border: "1px solid #ccc",
-          }}
-        >
-          Max
-        </button>
+        <div style={{
+      minHeight: "80vh",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    //   background: "linear-gradient(135deg,#f5f6fa 0%,#f1f1ff 100%)"
+    }}>
+      <h1 style={{ fontSize: "2.4rem", margin: "2rem 0 0.5rem 0", fontWeight: 700 }}>Choose Your Plan</h1>
+      <div style={{
+        display: "flex",
+        gap: "2rem",
+        marginTop: "2rem",
+        justifyContent: "center",
+        flexWrap: "wrap"
+      }}>
+        <span className="blue-light" style={{ zIndex: 10, left: "-800px", bottom: "300px" }}></span>
+        {PLANS.map((plan) => (
+          <div
+            key={plan.key}
+            style={{
+              background: "#fff",
+              borderRadius: 20,
+              boxShadow: plan.highlight
+                ? "0 10px 30px rgba(88,78,255,0.14)"
+                : "0 4px 20px rgba(60,60,100,0.10)",
+              border: plan.highlight
+                ? "2.5px solid #1E555C"
+                : "1.5px solid #e4e4e7",
+              minWidth: 260,
+              maxWidth: 300,
+              padding: "2rem 2.2rem 2.5rem 2.2rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              transform: plan.highlight ? "scale(1.07)" : "scale(1)",
+              zIndex: plan.highlight ? 1 : 0,
+              transition: "all 0.2s"
+            }}
+          >
+            <span style={{
+              fontWeight: 700,
+              color: plan.highlight ? "#1E555C" : "#555",
+              fontSize: "1.3rem",
+              marginBottom: 8,
+              letterSpacing: "0.04em"
+            }}>{plan.name}</span>
+            <span style={{
+              fontWeight: 900,
+              fontSize: "2.5rem",
+              margin: "0.5rem 0",
+              color: plan.highlight ? "#1E555C" : "#2c2c2c"
+            }}>{plan.price}
+              <span style={{ fontWeight: 400, fontSize: "1.1rem", color: "#888" }}></span>
+            </span>
+            <ul style={{
+              padding: 0,
+              margin: "1.2rem 0 2rem 0",
+              listStyle: "none",
+              textAlign: "left",
+              color: "#333",
+              fontSize: "1rem"
+            }}>
+              {plan.features.map(f =>
+                <li key={f} style={{ marginBottom: 7, display: "flex", alignItems: "center" }}>
+                  <span style={{
+                    display: "inline-block",
+                    width: 6, height: 6, borderRadius: 6, background: plan.highlight ? "#1E555C" : "#bbb", marginRight: 10
+                  }}></span>
+                  {f}
+                </li>
+              )}
+            </ul>
+            <button
+              onClick={() => handleTierChange(plan.key)}
+              style={{
+                background: plan.highlight ? "#285280" : "#f1f1f8",
+                color: plan.highlight ? "#fff" : "#285280",
+                fontWeight: 600,
+                border: "none",
+                borderRadius: 8,
+                fontSize: "1.08rem",
+                padding: "0.8rem 2rem",
+                boxShadow: plan.highlight ? "0 3px 12px rgba(88,78,255,0.13)" : "none",
+                cursor: tier === plan.key ? "default" : "pointer",
+                opacity: tier === plan.key ? 0.6 : 1,
+                marginTop: "auto",
+                transition: "all 0.15s"
+              }}
+              disabled={tier === plan.key}
+            >
+              {tier === plan.key ? "Current Plan" : "Select Plan"}
+            </button>
+          </div>
+        ))}
       </div>
       {tier && (
-        <div style={{ marginTop: "2rem" }}>
+        <div style={{ marginTop: "2.5rem", fontWeight: 500, color: "#222" }}>
           <strong>Your current tier:</strong> {tier}
         </div>
       )}
       {message && (
-        <div style={{ marginTop: "1rem", color: "#1976d2" }}>{message}</div>
+        <div style={{ marginTop: "1rem", color: "#285280" }}>{message}</div>
       )}
     </div>
     );
