@@ -37,7 +37,8 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                 alert("Error saving post to collection")
             }
         }   catch (error) {
-            alert("Network error adding to collection.")
+                console.error(error);
+                alert("Network error adding to collection.")
         }
     };
     const removeFromCollection = async (post: Comment, collection_name: string) => {
@@ -61,13 +62,15 @@ export default function RenderCollectionModal(props: collectionModalProps) {
                 alert(`Error removing ${post.title} from ${collection_name}`)
             }
         }   catch (error) {
-                alert("Nerwork error removing from collection")
+                console.error(error);
+                alert("Nerwork error removing from collection");
         }
     }
     
     useEffect(() => {
-        post && 
+        if (post) {
         setLocalCollections(post?.collections ?? []);
+        }
     }, [post])
 
     if (!post) return null //When modal first renders and post does not exist yet

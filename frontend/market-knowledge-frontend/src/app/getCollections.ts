@@ -27,7 +27,7 @@ export default function GetCollections(): {
             .catch(error => {
                 console.error("Error fetching comments:", error)
             })
-    }, [])
+    }, [user])
 
     const refreshCollections = async (): Promise<void> => {
         return fetch("http://localhost:8000/collections")

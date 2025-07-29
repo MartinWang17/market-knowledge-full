@@ -1,7 +1,6 @@
 import { CardCommentList, TitleCommentList, BodyCommentList } from './index';
 import { Comment } from '../types';
 import { Collection } from '../types';
-import { useState } from 'react';
 
 type CommentsManagerProps = {
     comments: Comment[];

@@ -27,7 +27,7 @@ export default function Collections() {
                 })
                 .finally(() => setLoading(false));
         }
-    }, [user, setCollections]);
+    }, [user, setCollections, refreshCollections]);
     const deleteCollection = async (collection_name: string) => {
         try {
             const response = await fetch("http://localhost:8000/delete-collection", {
@@ -45,7 +45,8 @@ export default function Collections() {
                 setAddToCollectionModal(false);
             }
         }   catch(error) {
-            alert("Network error deleting collection")
+            console.error(error);
+            alert("Network error deleting collection");
         }
     }
 

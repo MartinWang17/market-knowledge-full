@@ -1,5 +1,4 @@
 import { CommentListProps } from '../types';
-import RenderCollectionModal from './collectionModal';
 
 export default function BodyCommentList({
     comments, 

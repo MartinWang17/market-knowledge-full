@@ -14,8 +14,6 @@ export default function AddToCollectionModal({setAddToCollectionModal, refreshCo
     const [collectionName, setCollectionName] = useState("")
     const [error, setError] = useState("")
     const user = useUser()
-    const [message, setMessage] = useState("")
-    const [showMessageModal, setShowMessageModal] = useState(false);
     const { showMessage } = useNotification();
 
     const addCollection = async (collection_name: string) => {
@@ -32,8 +30,6 @@ export default function AddToCollectionModal({setAddToCollectionModal, refreshCo
             })
             if (response.ok) {
                 const data = await response.json()
-                setMessage(data.message || "Collection created successfully!");
-                // setShowMessageModal(true);
 
                 showMessage(data.message); // Use the notification context to show the message
                 

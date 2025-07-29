@@ -42,7 +42,7 @@ export default function AuthForm() {
             if (!result.error && result.data?.user) {
                 const userId = result.data.user.id;
                 // Check if user already exists in user_profiles
-                const { data: existing, error: profileError } = await supabase
+                const { data: existing } = await supabase
                     .from("user_profiles")
                     .select("user_id")
                     .eq("user_id", userId)
@@ -63,8 +63,12 @@ export default function AuthForm() {
     };
 
     const logOut = async () => {
-        let result;
-        result = await supabase.auth.signOut();
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            setMessage("❌ " + error.message);
+        } else {
+            setMessage("✅ You have been logged out.");
+        }
     }
 
     const handleResetPassword = async (e : React.FormEvent<HTMLFormElement>) => {

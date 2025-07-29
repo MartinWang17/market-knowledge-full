@@ -48,7 +48,8 @@ export default function CommentSection() {
                 alert("Error deleting comment: " + (data.error || response.status));
             }
         }   catch (error) {
-            alert("Network error deleting comment.")
+            console.error(error);
+            alert("Network error deleting comment.");
         }
     };
 

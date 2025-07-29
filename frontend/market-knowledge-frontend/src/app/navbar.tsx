@@ -51,7 +51,7 @@ export default function Navbar() {
                                         priority
                                         style={{ objectFit: "contain" }}
                             />
-                            Market-Knowledge
+                            Market Knowledge
                                     </Link>
                             </li>
                             {/* Centered */}
