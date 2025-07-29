@@ -27,6 +27,9 @@ export default function Collections() {
                 })
                 .finally(() => setLoading(false));
         }
+        console.log("User:", user);
+        console.log("Loading:", loading);
+        console.log("Collections:", collections);
     }, [user, setCollections, refreshCollections]);
     const deleteCollection = async (collection_name: string) => {
         try {

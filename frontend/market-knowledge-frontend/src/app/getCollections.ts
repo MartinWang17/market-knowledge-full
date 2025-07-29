@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Collection } from './comments/types';
 import { useUser } from '@/context/UserContext';
 
@@ -29,14 +29,14 @@ export default function GetCollections(): {
             })
     }, [user])
 
-    const refreshCollections = async (): Promise<void> => {
+    const refreshCollections = useCallback(async (): Promise<void> => {
         return fetch("http://localhost:8000/collections")
                     .then(res => res.json())
                     .then(data => {
                         const userCollections = data.collections.filter((collection: Collection) => collection.user_id === user?.id);
                         console.log("comments in refresh:", data.userCollections);
                         setCollections(userCollections);
-                    })
-    };
+                    });
+    }, [user]);
     return { collections, setCollections, refreshCollections };
 }
