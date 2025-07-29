@@ -30,7 +30,7 @@ export default function Collections() {
         console.log("User:", user);
         console.log("Loading:", loading);
         console.log("Collections:", collections);
-    }, [user, setCollections, refreshCollections]);
+    }, [user, refreshCollections]);
     const deleteCollection = async (collection_name: string) => {
         try {
             const response = await fetch("http://localhost:8000/delete-collection", {

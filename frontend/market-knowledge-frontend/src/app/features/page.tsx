@@ -6,7 +6,7 @@ export default function FeaturesPage () {
 
     return (
         <>
-        
+        <span className="blue-light"></span>
         <div className="hero-wrapper" style={{ marginBottom: "2px"}}>
             <div className="row row-cols-12">
                 <div id="hero" className="blurred-container p-4 p-md-5" style={{ marginTop: "32px", marginBottom: "2rem"}}>
@@ -37,7 +37,6 @@ export default function FeaturesPage () {
                 </Link>
             </div>
             <div id="how-it-works">
-                <span className="blue-light"></span>
                 <h1 className="main-heading justify-content-start" style={{ marginTop: "5rem" }}>
                     How it <br/><span className="blue-font">Works?</span>
                 </h1>
