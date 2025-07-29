@@ -13,8 +13,18 @@ type CommentsManagerProps = {
     setActivePost: (post: Comment) => void;
 }
 
+type CommentListProps = {
+    comments: Comment[];
+    onDelete: (id: string) => void;
+    collections: Collection[];
+    showCollectionModal: boolean;
+    setShowCollectionModal: (show: boolean) => void;
+    activePost: (Comment | null);
+    setActivePost: (post: Comment) => void;
+};
+
 //Object to store component references
-const COMMENT_LIST_COMPONENTS: Record<string, React.ComponentType<any>> = {
+const COMMENT_LIST_COMPONENTS: Record<string, React.ComponentType<CommentListProps>> = {
     card: CardCommentList,
     title: TitleCommentList,
     body: BodyCommentList,
