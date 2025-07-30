@@ -26,10 +26,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     event = stripe.webhooks.constructEvent(buf, sig, endpointSecret);
-  } catch (err: any) {
-    console.error(`Webhook Error: ${err.message}`);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
+  } catch (err) {
+      if (err instanceof Error) {
+        console.error(`Webhook Error: ${err.message}`);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+      }
+      return res.status(400).send(`Webhook Error: Unknown error`);
+    }
 
   // Handle event type
   if (event.type === 'checkout.session.completed') {
