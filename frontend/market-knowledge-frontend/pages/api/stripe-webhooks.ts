@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 import { createClient } from '@supabase/supabase-js';
+import { buffer } from "micro";
 
 // Stripe needs the raw body for signature verification
 export const config = {
@@ -19,17 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   console.log("Webhook hit!")
   if (req.method !== "POST") return res.status(405).send("Method Not Allowed");
 
-  const buf = await new Promise<Buffer>((resolve, reject) => {
-    let data = Buffer.alloc(0);
-    req.on("data", (chunk) => {
-      data = Buffer.concat([data, chunk]);
-    });
-    req.on("end", () => {
-      resolve(data);
-    });
-    req.on("error", reject);
-  });
-
+  const buf = await buffer(req);
   const sig = req.headers["stripe-signature"] as string;
 
   let event: Stripe.Event;
