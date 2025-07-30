@@ -19,7 +19,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       metadata: { userId, plan },
     });
     res.status(200).json({ url: session.url });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
+  } catch (error) {
+      if (error instanceof Error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.status(500).json({ error: String(error) });
+      }
+    }
 }
