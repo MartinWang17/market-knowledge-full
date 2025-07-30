@@ -1,15 +1,17 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, RedirectResponse
 from pydantic import BaseModel, Field
 import os
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from reddit_scraper import RedditScraper
+import urllib.parse
 from urllib.parse import quote
 import csv
 from io import StringIO
 from datetime import datetime, timezone
+from routes.auth import router as auth_router
 
 load_dotenv()
 
@@ -20,6 +22,7 @@ supabase: Client = create_client(supabase_url, supabase_key)
 scraper = RedditScraper()
 
 app = FastAPI()
+app.include_router(auth_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
