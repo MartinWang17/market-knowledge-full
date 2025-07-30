@@ -3,6 +3,15 @@ import { useState, useEffect } from 'react';
 import { supabase } from "@/app/supabaseClient";
 import { useUser } from "@/context/UserContext";
 
+type Plan = {
+  key: string;
+  name: string;
+  price: string;
+  features: string[];
+  highlight: boolean;
+  priceId: string;
+}
+
 const PLANS = [
     {
         key: 'free',
@@ -14,6 +23,7 @@ const PLANS = [
             'Unlimited scrape requests',
         ],
         highlight: false,
+        priceId: 'None'
     },
     {
         key: 'pro',
@@ -25,6 +35,7 @@ const PLANS = [
             '(Just to cover database costs)',
         ],
         highlight: true,
+        priceId: 'price_1RqFugATd798WEM4dS6aIBdT'
     },
     {
         key: 'max',
@@ -36,6 +47,7 @@ const PLANS = [
             '(Again just to cover database costs)',
         ],
         highlight: false,
+        priceId: 'price_1RqFvAATd798WEM4mp0G1EDu'
     }
 ];
 
@@ -43,6 +55,29 @@ export default function PricingPage() {
     const user = useUser();
     const [tier, setTier] = useState("free");
     const [message, setMessage] = useState("");
+
+    const handleBuyPlan = async (plan: Plan) => {
+      if (!user?.id) {
+        setMessage("Please log in to purchase.");
+        return;
+      }
+      setMessage("Redirecting to payment...");
+      try {
+        const res = await fetch("/api/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ priceId: plan.priceId, userId: user.id }),
+        });
+        const data = await res.json();
+        if (res.ok && data.url) {
+          window.location = data.url; // Redirect to Stripe Checkout
+        } else {
+          setMessage("❌ Payment error: " + (data.error || "Unknown error"));
+        }
+      } catch (e) {
+        setMessage("❌ Network error: " + (e as Error).message);
+      }
+    };
 
     useEffect(() => {
         if (!user?.id) return;
@@ -56,24 +91,24 @@ export default function PricingPage() {
         })();
     }, [user?.id]);
 
-    const handleTierChange = async (tier: string) => {
-        if (!user?.id) {
-            setMessage("Please log in to change your tier.");
-            return;
-        }
-        const { error } = await supabase
-            .from("user_profiles")
-            .update({ tier })
-            .eq("user_id", user.id);
-        console.log("Trying to set tier:", tier, "for user:", user.id);
+    // const handleTierChange = async (tier: string) => {
+    //     if (!user?.id) {
+    //         setMessage("Please log in to change your tier.");
+    //         return;
+    //     }
+    //     const { error } = await supabase
+    //         .from("user_profiles")
+    //         .update({ tier })
+    //         .eq("user_id", user.id);
+    //     console.log("Trying to set tier:", tier, "for user:", user.id);
 
-        if (error) {
-            setMessage("❌ " + error.message);
-        } else {
-            setTier(tier);
-            setMessage(`✅ Tier changed to ${tier}`);
-        }
-    }
+    //     if (error) {
+    //         setMessage("❌ " + error.message);
+    //     } else {
+    //         setTier(tier);
+    //         setMessage(`✅ Tier changed to ${tier}`);
+    //     }
+    // }
 
     return (
         <div style={{
@@ -149,7 +184,7 @@ export default function PricingPage() {
               )}
             </ul>
             <button
-              onClick={() => handleTierChange(plan.key)}
+              onClick={() => handleBuyPlan(plan)}
               style={{
                 background: plan.highlight ? "#285280" : "#f1f1f8",
                 color: plan.highlight ? "#fff" : "#285280",
@@ -164,9 +199,13 @@ export default function PricingPage() {
                 marginTop: "auto",
                 transition: "all 0.15s"
               }}
-              disabled={tier === plan.key}
+              disabled={tier === plan.key || (plan.key === 'free' && tier !== "free")} // Disable free is user is not on free
             >
-              {tier === plan.key ? "Current Plan" : "Select Plan"}
+              {tier === plan.key 
+                ? "Current Plan" 
+                : plan.key === "free" && tier !== "free"
+                ? "No need to downgrade"
+                : "Select Plan"}
             </button>
           </div>
         ))}
