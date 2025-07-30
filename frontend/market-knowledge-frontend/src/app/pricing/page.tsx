@@ -66,7 +66,7 @@ export default function PricingPage() {
         const res = await fetch("/api/create-checkout-session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ priceId: plan.priceId, userId: user.id }),
+          body: JSON.stringify({ priceId: plan.priceId, userId: user.id, plan: plan.key }),
         });
         const data = await res.json();
         if (res.ok && data.url) {
