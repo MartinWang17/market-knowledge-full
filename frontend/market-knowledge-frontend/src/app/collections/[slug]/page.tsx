@@ -53,6 +53,9 @@ export default function CollectionSlugPage() {
     };
 
     const params = useParams();
+    if (!params || !params.slug){
+        return <div>Invalid collection slug</div>
+    }
     const slug = params.slug as string;
 
     //update comment to only include comments in the current collection. Checks if the comment has a collection and if it includes the current collection name
