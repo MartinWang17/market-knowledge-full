@@ -35,7 +35,7 @@ const PLANS = [
             '(Just to cover database costs)',
         ],
         highlight: true,
-        priceId: 'price_1RqFugATd798WEM4dS6aIBdT'
+        priceId: 'price_1RqRU4ANRHj1i9Pk55R9K2Bd'
     },
     {
         key: 'max',
@@ -47,7 +47,7 @@ const PLANS = [
             '(Again just to cover database costs)',
         ],
         highlight: false,
-        priceId: 'price_1RqFvAATd798WEM4mp0G1EDu'
+        priceId: 'price_1RqRUvANRHj1i9Pk0ZCygalj'
     }
 ];
 
