@@ -25,7 +25,7 @@ app = FastAPI()
 app.include_router(auth_router)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://www.marketknowledge.app", "https://marketknowledge.app"],
+    allow_origins=["https://www.marketknowledge.app", "https://marketknowledge.app", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -142,17 +142,18 @@ def scrape_comments(req: ScrapeRequest):
 
 @app.get("/comments")
 def get_comments(
+    user_id: str = Query(..., description="Get comments that belong to the logged in user with their user_id."),
     filter: str = Query("relevance", description="Sort order by upvotes for the comments. Default is 'relevance'."),
 ):
     """
     Returns all scraped Reddit comments/posts from the Supabase database.
     """
     if filter == "relevance":
-        result = supabase.table("reddit_posts").select("*").execute()
+        result = supabase.table("reddit_posts").select("*").eq("user_id", user_id).execute()
     elif filter == "descending":
-        result = supabase.table("reddit_posts").select("*").order("upvotes", desc=True).execute()
+        result = supabase.table("reddit_posts").select("*").eq("user_id", user_id).order("upvotes", desc=True).execute()
     else:  #if filter == "ascending"
-        result = supabase.table("reddit_posts").select("*").order("upvotes", desc=False).execute()
+        result = supabase.table("reddit_posts").select("*").eq("user_id", user_id).order("upvotes", desc=False).execute()
     comments = result.data if hasattr(result, "data") else []
     return {"comments": comments}
 
