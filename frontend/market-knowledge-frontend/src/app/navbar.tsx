@@ -39,8 +39,8 @@ export default function Navbar() {
         <nav className="navbar-container d-flex align-items-center justify-content-between">
             <div className="container-fluid pt-2">
                 <header className="d-flex justify-content-between align-items-end my-3">
-                    <ul className="nav nav-pills w-100 d-flex justify-content-between align-items-center mx-3">
-                            <li className="nav-item ms-1 ms-md-4 ms-lg-5">
+                    <ul className="nav nav-pills w-100 d-flex justify-content-between align-items-center">
+                            <li className="nav-item ms-md-4 ms-lg-5">
                                 {/* Far left */}
                                 <Link href="/">
                                 <Image
@@ -207,11 +207,6 @@ export default function Navbar() {
                 @keyframes slideOut {
                 from { transform: translateX(0); }
                 to { transform: translateX(100%); }
-                }
-                @media (max-width: 576px) {
-                .nav-item.ms-1 {
-                    margin-left:0 !important;
-                    }
                 }
             `}</style>
         </nav>
