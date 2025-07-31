@@ -225,3 +225,21 @@ a {
   margin-bottom: 4rem;
   margin-left: 10vw;
 }
+
+/* Add this to your CSS file (e.g., globals.css) */
+
+.container-box {
+  padding: 24px 16px;            /* Space inside the box */
+  margin: 24px auto;             /* Space above/below and center horizontally */
+  box-shadow: 0 4px 24px rgba(0,0,0,0.04);  /* Soft shadow */
+  max-width: 400px;              /* Don't get too wide on big screens */
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .container-box {
+    padding: 18px 8px;
+    margin: 12px 0;
+    border-radius: 10px;
+  }
+}

@@ -32,7 +32,7 @@ export default function Navbar() {
         { href: "/features", label: "Features" },
         { href: "/comments", label: "Comments" },
         { href: "/collections", label: "Collections" },
-        { href: "/login", label: user ? "Profile" : "Login" }
+        { href: "/login", label: "Profile" },
     ]
 
     return (
@@ -207,6 +207,11 @@ export default function Navbar() {
                 @keyframes slideOut {
                 from { transform: translateX(0); }
                 to { transform: translateX(100%); }
+                }
+                @media (max-width: 576px) {
+                .nav-item.ms-1 {
+                    margin-left:0 !important;
+                    }
                 }
             `}</style>
         </nav>
