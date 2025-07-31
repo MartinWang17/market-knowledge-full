@@ -22,13 +22,22 @@ class RedditScraper:
             # username=self.username,
             # password=self.password
             )
-        
+
+    @staticmethod
+    def for_user(refresh_token):
+        return praw.Reddit(
+            client_id=os.getenv("REDDIT_CLIENT_ID"),
+            client_secret=os.getenv("REDDIT_CLIENT_SECRET"),
+            user_agent=os.getenv("REDDIT_USER_AGENT"),
+            refresh_token=refresh_token
+        )
+    
         # print("username:", self.username)
         # print("password:", self.password)
         # print("logged in as:", self.reddit.user.me())
         
         
-    def fetch_posts(self, subreddit_name, limit=10, method="top", query=None, sort="relevance", time_filter="all"):
+    def fetch_posts(self, subreddit_name, refresh_token, limit=10, method="top", query=None, sort="relevance", time_filter="all"):
         """
         Takes a subreddit name, an optional limit (default is 10), and optional method (default is "top").
         NOTE: subreddit_name should not include the 'r/' prefix,
@@ -37,9 +46,10 @@ class RedditScraper:
         Fetches top posts from a given subreddit and returns a json containing data of the posts including:
         title, body, link, and upvotes.
         """
+        reddit = RedditScraper.for_user(refresh_token)
         try:
             # Check if the subreddit exists
-            self.reddit.subreddit(subreddit_name).display_name
+            reddit.subreddit(subreddit_name).display_name
         except Forbidden:
             print(f"Error: The subreddit '{subreddit_name}' does not exist or is private.")
             return []
@@ -47,7 +57,7 @@ class RedditScraper:
             print(f"An error occurred while accessing the subreddit: {e}")
             return []
         else: 
-            subreddit_object = self.reddit.subreddit(subreddit_name)
+            subreddit_object = reddit.subreddit(subreddit_name)
             # Check if searching by query
             if query:
                 # Use the search method with the specified sort and time filter

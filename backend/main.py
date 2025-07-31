@@ -99,10 +99,18 @@ def scrape_comments(req: ScrapeRequest):
     else:
         supabase.table("scrape_cooldowns").insert({"user_id": req.user_id, "last_scrape": now.isoformat()}).execute()
 
+    profile = supabase.table("user_profiles").select("reddit_refresh_token").eq("user_id", req.user_id).single().execute()
+    refresh_token = profile.data["reddit_refresh_token"] if profile.data else None
+
+    if not refresh_token:
+        return {"message": "Reddit account not connected. Please connect your Reddit account to scrape"}
+
+    # Finally allow scrape if other tests pass
     # If searching by keyword
     if req.keyword:
         all_posts = scraper.fetch_posts(
             req.subreddit, 
+            refresh_token=refresh_token,
             limit=req.commentCount, 
             query=req.keyword, 
             sort=req.sort, 
@@ -111,7 +119,13 @@ def scrape_comments(req: ScrapeRequest):
         )
 
     else:
-        all_posts = scraper.fetch_posts(req.subreddit, req.commentCount, req.method)
+        all_posts = scraper.fetch_posts(
+            req.subreddit,
+            refresh_token=refresh_token,
+            limit=req.commentCount, 
+            method=req.method, 
+            )
+        
     for post in all_posts:
         save_post_to_supabase(
             title=post["title"],
