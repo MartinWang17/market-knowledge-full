@@ -115,7 +115,6 @@ def scrape_comments(req: ScrapeRequest):
             query=req.keyword, 
             sort=req.sort, 
             time_filter=req.time_filter,
-            user_id=req.user_id,
         )
 
     else:
