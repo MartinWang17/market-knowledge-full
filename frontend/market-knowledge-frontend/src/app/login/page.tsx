@@ -80,7 +80,7 @@ export default function AuthForm() {
             setMessage("✅ Check your email for password reset instructions.");
         }
     }
-
+    
     return (
 
     <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
@@ -90,6 +90,16 @@ export default function AuthForm() {
                     <span className="fw-bold" style={{ color: '#1E555C' }}>Signed in as</span>
                     <div className="fs-5 mt-1 mb-2">{user.email}</div>
                     <div className="fw-bold mb-2">Tier: {tier}</div>
+                    <button 
+                        onClick={() => {
+                            // Redirect to backend login route for Reddit OAuth
+                            window.location.href = "https://market-knowledge-full.onrender.com/reddit/login?user_id=" + user.id; // Change to api hosted location later
+                        }}
+                        className="btn btn-outline-secondary w-100 mb-2"
+                        style={{ background: "FF4500", color: "fff"}}
+                    >
+                        Connect Reddit To Scrape
+                    </button>
                     <button 
                         onClick={logOut}
                         className="btn btn-outline-danger w-100 mt-2">
