@@ -17,9 +17,10 @@ export default function CommentSection() {
     const [activePost, setActivePost] = useState<Comment | null>(null);
     const [loading, setLoading] = useState(true);
     const { collections, refreshCollections } = GetCollections();
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
-    fetch(`http://localhost:8000/comments?filter=${commentFilter}`)
+    fetch(`${API_URL}/comments?filter=${commentFilter}`)
         .then(res => res.json())
         .then(data => {
             // data.comments is the array of posts from Supabase
@@ -36,7 +37,7 @@ export default function CommentSection() {
     // delete comment function
     const deleteComment = async (id: string) => {
         try {
-            const response = await fetch('http://localhost:8000/comments/' + id, {
+            const response = await fetch(`${API_URL}/comments/` + id, {
                 method: 'DELETE',
             });
             if (response.ok) {

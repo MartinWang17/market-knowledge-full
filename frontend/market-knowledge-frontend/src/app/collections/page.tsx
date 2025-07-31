@@ -11,6 +11,7 @@ export default function Collections() {
     const { collections, setCollections, refreshCollections } = GetCollections();
     const [loading, setLoading] = useState(true);
     const [addToCollectionModal, setAddToCollectionModal] = useState(false);
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const user = useUser();
     // const [showCollectionAddedNotification, setShowCollectionAddedNotification] = useState(false);
     // const [message, setMessage] = useState<string>("");
@@ -33,7 +34,7 @@ export default function Collections() {
     }, [user, refreshCollections]);
     const deleteCollection = async (collection_name: string) => {
         try {
-            const response = await fetch("http://localhost:8000/delete-collection", {
+            const response = await fetch(`${API_URL}/collections`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

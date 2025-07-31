@@ -15,6 +15,7 @@ export default function Home() {
   const [timeFilter, setTimeFilter] = useState("all");
   const [scraping, setScraping] = useState(false)
   const user = useUser();
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const { showMessage } = useNotification();
 
   if (user) {
@@ -42,7 +43,7 @@ export default function Home() {
     setScraping(true);
 
     try {
-      const response = await fetch("http://localhost:8000/scrape", {
+      const response = await fetch(`${API_URL}/scrape`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

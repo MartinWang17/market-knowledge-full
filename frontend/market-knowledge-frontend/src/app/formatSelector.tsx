@@ -11,13 +11,14 @@ type FormatSelectorProps = {
 export default function RenderFormatSelector(props: FormatSelectorProps) {
     const { commentFormat, setCommentFormat, commentFilter, setCommentFilter } = props;
     const user = useUser();
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     const downloadCommentsCSV = async () => {
         if (!user) {
             return;
         }
 
-        const response = await fetch("http://localhost:8000/export-comments", {
+        const response = await fetch(`${API_URL}/export-comments`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json" },

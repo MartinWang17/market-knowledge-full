@@ -10,8 +10,9 @@ export default function GetCollections(): {
     } {
     const user = useUser();
     const [collections, setCollections] = useState<Collection[]>([])
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
     useEffect(() => {
-        fetch(`http://localhost:8000/collections`)
+        fetch(`${API_URL}/collections`)
             .then(res => res.json())
             .then(data => {
                 //data.collections is the array of collections from supabase
@@ -30,7 +31,7 @@ export default function GetCollections(): {
     }, [user])
 
     const refreshCollections = useCallback(async (): Promise<void> => {
-        return fetch("http://localhost:8000/collections")
+        return fetch(`${API_URL}/collections`)
                     .then(res => res.json())
                     .then(data => {
                         const userCollections = data.collections.filter((collection: Collection) => collection.user_id === user?.id);

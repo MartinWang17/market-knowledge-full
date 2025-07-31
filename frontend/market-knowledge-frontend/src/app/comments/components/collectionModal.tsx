@@ -16,10 +16,11 @@ export default function RenderCollectionModal(props: collectionModalProps) {
     //use localCollections to auto update collections
     const [localCollections, setLocalCollections] = useState<string[]>(post?.collections ?? []); //Set localCollections to post.collections if it exists
     const [addToCollectionModal, setAddToCollectionModal] = useState(false)
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     const saveToCollection = async (post: Comment, collection_name: string) => {
         try {
-            const response = await fetch('http://localhost:8000/save-to-collection', {
+            const response = await fetch(`${API_URL}/save-to-collection`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -43,7 +44,7 @@ export default function RenderCollectionModal(props: collectionModalProps) {
     };
     const removeFromCollection = async (post: Comment, collection_name: string) => {
         try{
-            const response = await fetch("http://localhost:8000/remove-from-collection", {
+            const response = await fetch(`${API_URL}/remove-from-collection`, {
                 method: "POST", 
                 headers: {
                     "Content-Type": "application/json",

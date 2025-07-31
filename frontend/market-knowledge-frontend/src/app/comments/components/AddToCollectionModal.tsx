@@ -15,10 +15,11 @@ export default function AddToCollectionModal({setAddToCollectionModal, refreshCo
     const [error, setError] = useState("")
     const user = useUser()
     const { showMessage } = useNotification();
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     const addCollection = async (collection_name: string) => {
         try {
-            const response = await fetch("http://localhost:8000/add-collection", {
+            const response = await fetch(`${API_URL}/add-collection`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
