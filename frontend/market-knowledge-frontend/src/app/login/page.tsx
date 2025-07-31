@@ -6,17 +6,21 @@ import { useUser } from "@/context/UserContext"
 export default function AuthForm() {
     const user = useUser()
     const [tier, setTier] = useState("free");
+    const [redditConnected, setRedditConnected] = useState(false);
     useEffect(() => {
         if (!user?.id) return;
         (async () => {
             const { data } = await supabase
                 .from("user_profiles")
-                .select("tier")
+                .select("tier, reddit_refresh_token")
                 .eq("user_id", user.id)
                 .single();
-            if (data) setTier(data.tier);
-            })();
-        }, [user?.id]);
+            if (data) {
+                setTier(data.tier);
+                setRedditConnected(!!data.reddit_refresh_token); // This will be true if the token exists and is non-empty
+            }
+        })();
+    }, [user?.id]);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -58,7 +62,7 @@ export default function AuthForm() {
         if (result.error) {
             setMessage("❌ " + result.error.message);
         } else {
-            setMessage(`✅ Success! ${!isLogin ? "Check your inbox" : "You're logged in"}`)
+            setMessage(`✅ Success! ${!isLogin ? "Check your inbox (Be sure to check spam too)" : "You're logged in"}`)
         }
     };
 
@@ -90,16 +94,23 @@ export default function AuthForm() {
                     <span className="fw-bold" style={{ color: '#1E555C' }}>Signed in as</span>
                     <div className="fs-5 mt-1 mb-2">{user.email}</div>
                     <div className="fw-bold mb-2">Tier: {tier}</div>
-                    <button 
-                        onClick={() => {
-                            // Redirect to backend login route for Reddit OAuth
-                            window.location.href = "https://market-knowledge-full.onrender.com/reddit/login?user_id=" + user.id; // Change to api hosted location later
-                        }}
-                        className="btn btn-outline-secondary w-100 mb-2"
-                        style={{ background: "FF4500", color: "fff"}}
-                    >
-                        Connect Reddit To Scrape
-                    </button>
+                    {!redditConnected && 
+                        <button 
+                            onClick={() => {
+                                // Redirect to backend login route for Reddit OAuth
+                                window.location.href = "https://market-knowledge-full.onrender.com/reddit/login?user_id=" + user.id; // Change to api hosted location later
+                            }}
+                            className="btn btn-outline-secondary w-100 mb-2"
+                            style={{ background: "FF4500", color: "fff"}}
+                        >
+                            Connect Reddit To Scrape
+                        </button>
+                    }
+                    {redditConnected && (
+                        <div className="alert alert-success w-100 mb-2 text-center">
+                            ✅ Reddit Connected!
+                        </div>
+                    )}
                     <button 
                         onClick={logOut}
                         className="btn btn-outline-danger w-100 mt-2">
