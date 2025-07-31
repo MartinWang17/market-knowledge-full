@@ -25,7 +25,7 @@ app = FastAPI()
 app.include_router(auth_router)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://www.marketknowledge.app", "https://marketknowledge.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
