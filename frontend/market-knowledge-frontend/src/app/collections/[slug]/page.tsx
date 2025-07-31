@@ -7,6 +7,7 @@ import LoadingSpinner from '../../loadingSpinner'
 import GetCollections from '../../getCollections'
 import CommentsManager from '../../comments/components/CommentsManager'
 import RenderCollectionModal from '../../comments/components/collectionModal'
+import { useUser } from '@/context/UserContext'
 
 export default function CollectionSlugPage() {
 
@@ -18,20 +19,27 @@ export default function CollectionSlugPage() {
     const [loading, setLoading] = useState(true);
     const { collections, refreshCollections } = GetCollections();
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const user = useUser()
 
     useEffect(() => {
-    fetch(`${API_URL}/comments?filter=${commentFilter}`)
-        .then(res => res.json())
-        .then(data => {
-            // data.comments is the array of posts from Supabase
-            console.log("Fetched comments:", data.comments);
-            setComments(data.comments);
+        if (!user) {
+            setComments([]);
             setLoading(false);
-        })
-        .catch(error => {
-            console.error("Error fetching comments:", error);
-            setLoading(false);
-        });
+            return;
+        } else {
+            fetch(`${API_URL}/comments?user_id=${user.id}&filter=${commentFilter}`)
+            .then(res => res.json())
+            .then(data => {
+                // data.comments is the array of posts from Supabase
+                console.log("Fetched comments:", data.comments);
+                setComments(data.comments);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error("Error fetching comments:", error);
+                setLoading(false);
+            });
+        };
     }, [commentFilter, showCollectionModal]) //Refresh comments when filter changes
 
     const deleteComment = async (id: string) => {
@@ -61,8 +69,10 @@ export default function CollectionSlugPage() {
 
     //update comment to only include comments in the current collection. Checks if the comment has a collection and if it includes the current collection name
     const collectionComments = comments.filter((comment) => 
+        comment.user_id === user?.id &&
         comment.collections && 
-        comment.collections.some((name) => encodeURIComponent(name) === slug)); //handle URL encoded names
+        comment.collections.some((name) => encodeURIComponent(name) === slug) // Handle URL encoded names
+    ); 
 
     if (loading) {
         return <LoadingSpinner />

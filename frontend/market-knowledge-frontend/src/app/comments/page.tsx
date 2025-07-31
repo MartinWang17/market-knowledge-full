@@ -28,7 +28,8 @@ export default function Comments() {
             return;
         } else {
             setLoading(true);
-            fetch(`${API_URL}/comments?filter=${commentFilter}`)
+            console.log("api url:", API_URL)
+            fetch(`${API_URL}/comments?user_id=${user.id}&filter=${commentFilter}`)
                 .then(res => res.json())
                 .then(data => {
                     // data.comments is the array of posts from Supabase
@@ -37,7 +38,7 @@ export default function Comments() {
                     //     setLoading(false);
                     //     return;
                     // }
-                    // Filter comments by user ID if user is logged in
+                    // Filter comments by user ID
                     const userComments = data.comments.filter((comment: Comment) => comment.user_id === user.id)
                     setComments(userComments);
                 })
