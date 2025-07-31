@@ -66,7 +66,7 @@ async def reddit_callback(request: Request):
         }).eq("user_id", state).execute()
 
     # Redirect the user back to your frontend, without sending tokens
-    frontend_url = "http://localhost:8000/"  # or wherever you want
+    frontend_url = "http://marketknowledge.app"  # or wherever you want
     return RedirectResponse(frontend_url)
 
 @router.post("/reddit/save_tokens")
