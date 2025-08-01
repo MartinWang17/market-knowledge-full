@@ -67,6 +67,12 @@ def scrape_comments(req: ScrapeRequest):
     Accepts a JSON body with 'subreddit' and 'comments' parameters.
     Returns a list of top posts in JSON format.
     """
+
+    # Ensure a user profile row exists for this user_id
+    existing_profile = supabase.table("user_profiles").select("user_id").eq("user_id", req.user_id).execute()
+    if not existing_profile.data or len(existing_profile.data) == 0:
+        supabase.table("user_profiles").insert({"user_id": req.user_id, "tier": "free"}).execute()
+
     # Get the user's tier from user_profiles table
     profile = supabase.table("user_profiles").select("tier").eq("user_id", req.user_id).single().execute()
     user_tier = profile.data["tier"] if profile.data else "free"
@@ -98,11 +104,6 @@ def scrape_comments(req: ScrapeRequest):
         supabase.table("scrape_cooldowns").update({"last_scrape": now.isoformat()}).eq("user_id", req.user_id).execute()
     else:
         supabase.table("scrape_cooldowns").insert({"user_id": req.user_id, "last_scrape": now.isoformat()}).execute()
-
-    # Ensure a user profile row exists for this user_id
-    existing_profile = supabase.table("user_profiles").select("user_id").eq("user_id", req.user_id).single().execute()
-    if not existing_profile.data:
-        supabase.table("user_profiles").insert({"user_id": req.user_id, "tier": "free"}).execute()
 
     profile = supabase.table("user_profiles").select("reddit_refresh_token").eq("user_id", req.user_id).single().execute()
     refresh_token = profile.data["reddit_refresh_token"] if profile.data else None
