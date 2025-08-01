@@ -37,7 +37,7 @@ export default function RootLayout({
         <Navbar />
         <div
           className="d-flex flex-column justify-content-center align-items-center"
-          style={{ minHeight: "calc(100vh - 112px)", marginTop: "7rem" }}
+          style={{ minHeight: "calc(100vh - 112px)", marginTop: "1rem" }}
         >
           <UserProvider>
           <NotificationProvider>

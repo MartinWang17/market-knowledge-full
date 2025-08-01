@@ -23,6 +23,8 @@ export default function Navbar() {
 
     useEffect(() => {
         const handleScroll = () => {
+            if (menuOpen) return;
+
             const currentScrollY = window.scrollY;
             if (currentScrollY < 60) {
                 setShowNavbar(true);
@@ -42,6 +44,19 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll)
     }, []);
 
+    useEffect(() => {
+        if (menuOpen) {
+            // Prevent background scroll
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [menuOpen]);
+
     if (user === undefined) {
         // If user is undefined, it means the user data is still being fetched
         return (
@@ -59,7 +74,9 @@ export default function Navbar() {
     ]
 
     return (
+        <>
         <div
+            className="navbar-desktop-only"
             style={{
                 position: "fixed",
                 top: 0,
@@ -69,7 +86,7 @@ export default function Navbar() {
                 background: "#fff",
                 transition: "transform 0.25s cubic-bezier(0.4,0,0.2,1)",
                 transform: showNavbar ? "translateY(0)" : "translateY(-100%)",
-                boxShadow: showNavbar ? "0 2px 8px rgba(10,22,34,0.08)" : "none"
+                boxShadow: showNavbar ? "0 2px 8px rgba(10,22,34,0.08)" : "none",
             }}
         >
             <nav className="navbar-container d-flex align-items-center justify-content-between">
@@ -121,46 +138,70 @@ export default function Navbar() {
                             </ul>
                     </header>
                 </div>
-
-                {/* Hamburger Icon for Mobile */}
-                <button
-                    className="navbar-hamburger d-xl-none me-1 me-md-4 me-lg-5"
-                    aria-label="Open navigation"
-                    onClick={() => setMenuOpen(true)}
-                >
-                    <span className="hamburger-bar"></span>
-                    <span className="hamburger-bar"></span>
-                    <span className="hamburger-bar"></span>
-                </button>
-
-                {/* Slide-in Menu Modal */}
-                {(menuOpen || animatingOut) && (
-                    <div className="mobile-menu-modal" onClick={() => setMenuOpen(false)}>
-                    <div 
-                        className={`mobile-menu-content ${animatingOut ? "slideOut" : "slideIn"}`}
-                        onClick={e => e.stopPropagation()}
-                    >
-                        <button className="mobile-menu-close" onClick={() => handleCloseMenu()}>
-                        &times;
-                        </button>
-                        <ul className="nav flex-column align-items-center">
-                        {navLinks.map(({ href, label }) => (
-                            <li className="nav-item mb-4" key={href}>
-                            <Link
-                                href={href}
-                                className={`nav-link${pathname === href ? " active" : ""}`}
-                                onClick={() => setMenuOpen(false)}
-                            >
-                                {label}
-                            </Link>
-                            </li>
-                        ))}
+                
+            </nav>
+        </div>
+        
+        <nav className="navbar-container d-flex align-items-center justify-content-between">
+            <div className="container-fluid pt-2">
+                    <header className="d-flex justify-content-between align-items-end my-3">
+                        <ul className="nav nav-pills w-100 d-flex justify-content-between align-items-center">
+                                <li className="nav-item ms-md-4 ms-lg-5">
+                                    {/* Far left */}
+                                    <Link href="/">
+                                    <Image
+                                            src="/market-knowledge-handlogo-transparent.png"
+                                            alt="Market Knowledge Logo"
+                                            width={40}
+                                            height={40}
+                                            priority
+                                            style={{ objectFit: "contain" }}
+                                />
+                                Market Knowledge
+                                        </Link>
+                                </li>
                         </ul>
-                    </div>
-                    </div>
-                )}
+                    </header>
+                </div>
+            {/* Hamburger Icon for Mobile */}
+                    <button
+                        className="navbar-hamburger d-xl-none me-1 me-md-4 me-lg-5"
+                        aria-label="Open navigation"
+                        onClick={() => setMenuOpen(true)}
+                    >
+                        <span className="hamburger-bar"></span>
+                        <span className="hamburger-bar"></span>
+                        <span className="hamburger-bar"></span>
+                    </button>
 
-                {/* CSS for nav bar*/}
+                    {/* Slide-in Menu Modal */}
+                    {(menuOpen || animatingOut) && (
+                        <div className="mobile-menu-modal" onClick={() => setMenuOpen(false)}>
+                        <div 
+                            className={`mobile-menu-content ${animatingOut ? "slideOut" : "slideIn"}`}
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <button className="mobile-menu-close" onClick={() => handleCloseMenu()}>
+                            &times;
+                            </button>
+                            <ul className="nav flex-column align-items-center">
+                            {navLinks.map(({ href, label }) => (
+                                <li className="nav-item mb-4" key={href}>
+                                <Link
+                                    href={href}
+                                    className={`nav-link${pathname === href ? " active" : ""}`}
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    {label}
+                                </Link>
+                                </li>
+                            ))}
+                            </ul>
+                        </div>
+                        </div>
+                    )}
+            </nav>
+        {/* CSS for nav bar*/}
                 <style jsx>{`
                     .navbar-container {
                     display: flex;
@@ -244,8 +285,15 @@ export default function Navbar() {
                     from { transform: translateX(0); }
                     to { transform: translateX(100%); }
                     }
+                    .navbar-desktop-only {
+                    display: block;
+                    }
+                    @media (max-width: 991px) {
+                    .navbar-desktop-only {
+                        display: none;
+                        }
+                    }
                 `}</style>
-            </nav>
-        </div>
+        </>
     );
 }
