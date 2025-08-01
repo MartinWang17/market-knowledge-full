@@ -21,13 +21,6 @@ export default function Navbar() {
         }, 250); // Match this duration with the CSS animation duration
     }
 
-    if (user === undefined) {
-        // If user is undefined, it means the user data is still being fetched
-        return (
-            <LoadingSpinner />
-        )
-    }
-
     useEffect(() => {
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
@@ -48,6 +41,13 @@ export default function Navbar() {
 
         return () => window.removeEventListener("scroll", handleScroll)
     }, []);
+
+    if (user === undefined) {
+        // If user is undefined, it means the user data is still being fetched
+        return (
+            <LoadingSpinner />
+        )
+    }
 
     const navLinks = [
         // { href: "/", label: "Home" },
