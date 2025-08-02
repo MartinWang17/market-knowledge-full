@@ -1,3 +1,4 @@
+//titleCommentList.tsx
 import { CommentListProps } from '../types';
 
 export default function TitleCommentList( { 
@@ -12,7 +13,7 @@ export default function TitleCommentList( {
                     {comments.map((comment) => (
                         <li 
                             key={comment.id} 
-                            className="list-group-item d-flex justify-content-between align-items-center"
+                            className="list-group-item"
                             style={{ 
                                 backgroundColor: "#1E555C",
                                 color: "#fff",
@@ -23,13 +24,7 @@ export default function TitleCommentList( {
                                 style={{ color: "#fff"}}>
                                 {comment.title}
                             </a>
-                            {/* <span className="badge bg-primary rounded-pill">
-                                {comment.upvotes} upvotes
-                                <span className="badge bg-secondary rounded-pill5 ms-2">
-                                    {comment.subreddit}
-                                </span>
-                            </span> */}
-                            <div className="d-flex align-items-center">
+                            <div className="d-flex align-items-center mt-2">
                                 <span className="badge bg-primary rounded-pill">{comment.upvotes} upvotes</span>
                                 <span className="badge bg-secondary rounded-pill">{comment.subreddit}</span>
                                 <button 

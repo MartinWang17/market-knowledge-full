@@ -1,3 +1,4 @@
+//bodyCommentList.tsx
 import { CommentListProps } from '../types';
 
 export default function BodyCommentList({
@@ -17,8 +18,7 @@ export default function BodyCommentList({
                         className="list-group-item"
                         style={{ backgroundColor: "#1E555C", color: "#fff", border: "none" }}>
                             {comment.body}
-                            {/* <span className="badge bg-primary rounded-pill">{comment.upvotes} upvotes</span> */}
-                            <div className="d-flex align-items-center">
+                            <div className="d-flex align-items-center mt-2">
                                 <span className="badge bg-primary rounded-pill">{comment.upvotes} upvotes</span>
                                 <span className="badge bg-secondary rounded-pill ms-2">{comment.subreddit}</span>
                                 <button 
