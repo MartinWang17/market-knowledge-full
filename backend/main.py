@@ -298,6 +298,9 @@ def export_comments_csv(req: UserID):
         headers={"Content-Disposition": "attachment; filename=comments.csv"}
     )
 
+@app.get("/health")
+def health_check(): 
+    return {"status": "ok"}
 
 
 # For testing purposes, run the scraper directly. This just makes sure the scraper works first if there's any errors. 
