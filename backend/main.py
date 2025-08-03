@@ -298,7 +298,7 @@ def export_comments_csv(req: UserID):
         headers={"Content-Disposition": "attachment; filename=comments.csv"}
     )
 
-@app.get("/health")
+@app.get("/health", methods=["GET", "HEAD"])
 def health_check(): 
     return {"status": "ok"}
 
