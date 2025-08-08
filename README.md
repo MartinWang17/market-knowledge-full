@@ -1,4 +1,4 @@
-MarketKnowledge
+<h1>MarketKnowledge</h1>
 
 Scrape thousands of Reddit comments in one go and turn them into fast, useful insights—sentiment, themes, and keywords; so you can validate markets and understand customers without reading threads for hours.
 
@@ -27,7 +27,7 @@ Reddit (PRAW)    # Data source API
 	•	Frontend: Next.js app that authenticates via Supabase and calls the backend.
 	•	DB: Supabase hosts Postgres + Auth. Tables store users’ scrapes, comments, collections, etc.
 
-💪 Try It Out!
+<h2>💪 Try It Out! </h2>
 
 This app is hosted at marketknowledge.app
 Feel free to check it out without needing to clone and set it up yourself! (I don't know if I did a good job writing the setup instructions anyways, so it might save you unnecessary headaches to visit the site!)
