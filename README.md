@@ -29,8 +29,9 @@ Reddit (PRAW)    # Data source API
 
 <h2>💪 Try It Out! </h2>
 
-This app is hosted at marketknowledge.app
-Feel free to check it out without needing to clone and set it up yourself! (I don't know if I did a good job writing the setup instructions anyways, so it might save you unnecessary headaches to visit the site!)
+<p>This app is hosted at marketknowledge.app
+Feel free to check it out without needing to clone and set it up yourself!</p> 
+(I don't know if I did a good job writing the setup instructions anyways, so it might save you unnecessary headaches to visit the site!)
 
 ⸻
 
