@@ -18,10 +18,12 @@ MarketKnowledge = Reddit data → structured insights for:
 
 🧱 Architecture
 
-/backend         # FastAPI (Python) – scraping + API
-/frontend/...    # Next.js/React (TypeScript) – web UI
-Supabase         # Auth + Postgres database + storage
-Reddit (PRAW)    # Data source API
+<ul>
+<li>/backend         # FastAPI (Python) – scraping + API </li>
+<li>/frontend/...    # Next.js/React (TypeScript) – web UI </li>
+<li>Supabase         # Auth + Postgres database + storage </li>
+<li>Reddit (PRAW)    # Data source API </li>
+</ul>
 
 	•	Backend: FastAPI + PRAW (Reddit). Writes to Supabase/Postgres.
 	•	Frontend: Next.js app that authenticates via Supabase and calls the backend.
