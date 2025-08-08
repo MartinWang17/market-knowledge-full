@@ -19,8 +19,8 @@ MarketKnowledge = Reddit data → structured insights for:
 🧱 Architecture
 
 <ul>
-<li>/backend         # FastAPI (Python) – scraping + API </li>
-<li>/frontend/...    # Next.js/React (TypeScript) – web UI </li>
+<li>Backend         # FastAPI (Python) – scraping + API </li>
+<li>Frontend...    # Next.js/React (TypeScript) – web UI </li>
 <li>Supabase         # Auth + Postgres database + storage </li>
 <li>Reddit (PRAW)    # Data source API </li>
 </ul>
